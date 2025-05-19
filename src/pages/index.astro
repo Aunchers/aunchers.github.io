@@ -1,16 +1,104 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PrjLinks from "../components/PrjLinks.astro"
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <div id="header" class="flex items-end">
+    <div id="pfp" class="w-[188px] h-[166px]">
+      <img
+        src="https://cdn.discordapp.com/avatars/800718471935557663/757dd08a5230de37efa9dac13665cd2a.webp "
+        alt="pfp"
+        class="w-full h-full rounded-[4px]"
+        style={{ objectFit: "cover" }}
+      />
+    </div>
+    <div class="ml-4 flex flex-col leading-none">
+      <h1 class="text-[68px] m-0 p-0 leading-[1]">CHAIRS</h1>
+      <h4 class="ml-[4px] text-xs m-0 p-0 leading-[1]">
+        (Aunchers/1_aunchers)
+      </h4>
+    </div>
+  </div>
+
+  <div
+    id="description"
+    class="mt-5 text-[12.5px] min-w-[520px] leading-none tracking-tight"
+  >
+    <div>
+      Hey! I'm Chairs (*formally* known as aunchers). I'm a
+      &#123;age.something&#125; he/him programmer, pentester, OSINT ... thing,
+      shitposter and very "smart" person. I do a lot of things, make a lot of
+      things, and post an unhealthy amount of times.
+    </div>
+    <p>Thanks for stopping by.</p>
+  </div>
+  <div id="links" class="text-[16px] flex items-end">
+    <h1 class="">Links:</h1>
+
+    <div class="relative group inline-block ml-2">
+      <a
+        href="/blog"
+        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
+      >
+        blog
+        <span class="text-gray-500 cursor-pointer">(?)</span>
+      </a>
+      <div
+        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
+      >
+        My little spot on the internet. I love it here
+      </div>
+    </div>
+    <div class="relative group inline-block ml-2">
+      <a
+        href="https://github.com/aunchers"
+        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
+      >
+        github
+        <span class="text-gray-500 cursor-pointer">(?)</span>
+      </a>
+      <div
+        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
+      >
+        I try to use this, but as much as i program, 99% of my projects are
+        never published lol.
+      </div>
+    </div>
+    <div class="relative group inline-block ml-2">
+      <a
+        href="mailto:aunchers+blog@proton.me"
+        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
+      >
+        email
+        <span class="text-gray-500 cursor-pointer">(?)</span>
+      </a>
+      <div
+        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
+      >
+        My email, it uses PROTON cause as you can see, i like privacy
+      </div>
+    </div>
+    <div class="relative group inline-block ml-2">
+      <a
+        href="/aunchers.asc"
+        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
+      >
+        PGP
+        <span class="text-gray-500 cursor-pointer">(?)</span>
+      </a>
+      <div
+        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
+      >
+        Pretty Good Privacy – my preffered enycryption method. I use it on
+        github commits when I can, and I accept emails encrypted with it.
+      </div>
+    </div>
+  </div>
+  <div class="mt-6 flex flex-col leading-none">
+    <h1 class="text-[68px] m-0 p-0 leading-[1] pb-[10px]">PROJECTS</h1>
+    <div style="display: grid; gap: 1rem;">
+      <PrjLinks />
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  metaDescription?: string;
+}
+
+const {
+  title = "CHAIRS",
+  metaDescription = "Personal website and blog of CHAIRS"
+} = Astro.props;
+
+const pageTitle = title === "CHAIRS" ? title : `${title} - CHAIRS`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={metaDescription} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="CHAIRS Blog RSS Feed"
+      href="/rss.xml"
+    />
+    <title>{pageTitle}</title>
+  </head>
+
+  <body class="bg-black text-white m-0 p-0">
+    <!-- Main container -->
+    <div class="flex">
+      <div class="w-[374px]"></div>
+      <div
+        class="flex-1 flex flex-col justify-center ml-[115px] mr-[206px] mt-[60px]"
+      >
+        <slot />
+      </div>
+      <div class="w-[336px]"></div>
+    </div>
+  </body>
+</html>

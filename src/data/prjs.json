@@ -1,0 +1,14 @@
+{
+  "G5F": {
+    "description": "A WIP project made by <a class=\"links\">Leander</a>, <a href=\"https://github.com/Sabsterrex\" class=\"links\">Sabs</a> and Me.",
+    "links": { "github": "https://github.com/Aunchers" }
+  },
+  "Zukijourney": {
+    "description": "A free AI service made by me and a few friends of mine (<a href=\"github.com/zukixa\" class=\"links\">Zuki</a>, <a href=\"github.com/Lukinhas\" class=\"links\">Lukinhas</a>, etc..)",
+    "links": {
+      "github": "https://github.com/zukijourney",
+      "site": "https://zukijourney.com",
+      "discord": "https://discord.gg/zukijourney"
+    }
+  }
+}

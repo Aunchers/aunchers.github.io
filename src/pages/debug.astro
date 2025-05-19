@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+
+// Fetch all posts from the collection
+const allPosts = await getCollection('posts');
+
+// Debug information
+const debugInfo = allPosts.map(post => ({
+  id: post.id,
+  slug: post.data.slug,
+  title: post.data.title,
+  body: post.body.substring(0, 100) + '...' // Show first 100 chars of content
+}));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Debug Content Collections</title>
+    <style>
+      body { font-family: system-ui, sans-serif; padding: 2rem; line-height: 1.5; }
+      pre { background: #f4f4f4; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
+      .post { margin-bottom: 2rem; border: 1px solid #ccc; padding: 1rem; border-radius: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Content Collection Debug Info</h1>
+    <p>Number of posts found: {allPosts.length}</p>
+    
+    <h2>Post Details:</h2>
+    {allPosts.length === 0 ? (
+      <p>No posts found in collection!</p>
+    ) : (
+      allPosts.map(post => (
+        <div class="post">
+          <h3>{post.data.title}</h3>
+          <p><strong>ID:</strong> {post.id}</p>
+          <p><strong>Slug:</strong> {post.data.slug}</p>
+          <p><strong>Date:</strong> {post.data.date.toISOString()}</p>
+          <details>
+            <summary>Frontmatter Data</summary>
+            <pre>{JSON.stringify(post.data, null, 2)}</pre>
+          </details>
+          <details>
+            <summary>Preview Content</summary>
+            <pre>{post.body.substring(0, 200)}...</pre>
+          </details>
+        </div>
+      ))
+    )}
+    
+    <h2>Raw Debug Data:</h2>
+    <pre>{JSON.stringify(debugInfo, null, 2)}</pre>
+  </body>
+</html>

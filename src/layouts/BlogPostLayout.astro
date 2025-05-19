@@ -1,0 +1,23 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+const { frontmatter = {} } = Astro.props;
+const title = frontmatter.title ?? 'Untitled';
+const date  = frontmatter.date ?? new Date();
+---
+
+<BaseLayout title={title}>
+  <div class="relative group inline-block mt-3">
+    <a
+      href="/blog"
+      class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200"
+    >
+      back
+    </a>
+  </div>
+  <h1 class="text-[68px] m-0 p-0 leading-[1]">{title}</h1>
+  <p>{date}</p>
+
+  <div class="">
+    <slot />
+  </div>
+</BaseLayout>
