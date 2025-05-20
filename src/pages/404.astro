@@ -1,112 +1,27 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PrjLinks from "../components/PrjLinks.astro";
 Astro.response.status = 404;
 Astro.response.statusText = 'Not Found';
 ---
 
 <BaseLayout>
-  <div id="header" class="flex items-end">
-    <div id="pfp" class="w-[188px] h-[166px]">
-      <img
-        src="https://cdn.discordapp.com/avatars/800718471935557663/757dd08a5230de37efa9dac13665cd2a.webp"
-        alt="pfp"
-        class="w-full h-full rounded-[4px]"
-        style={{ objectFit: "cover" }}
-      />
-    </div>
-    <div class="ml-4 flex flex-col leading-none">
-      <h1 class="text-[68px] m-0 p-0 leading-[1]">CHAIRS</h1>
-      <h4 class="ml-[4px] text-xs m-0 p-0 leading-[1]">
-        (Aunchers/1_aunchers)
-      </h4>
-    </div>
-  </div>
-
-  <div
-    id="description"
-    class="mt-5 text-[12.5px] min-w-[520px] leading-none tracking-tight"
-  >
-    <div>
-      Oops! The page you're looking for doesn't exist. Perhaps you mistyped the
-      URL or followed a broken link.
-    </div>
-    <p>
-      Feel free to explore the links below to navigate back to familiar
-      territory.
+  <div class="text-center py-12">
+    <img
+      src="https://http.cat/404.jpg"
+      alt="404 Cat Error"
+      class="mx-auto mb-4 w-48 h-48 object-cover rounded-full"
+    />
+    <h1 class="text-4xl font-semibold text-gray-800 mb-2">
+      Oops! Page Not Found
+    </h1>
+    <p class="text-lg text-gray-600 mb-6">
+      Looks like you've wandered off the beaten path.
     </p>
-  </div>
-
-  <div id="links" class="text-[16px] flex items-end">
-    <h1 class="">Links:</h1>
-
-    <div class="relative group inline-block ml-2">
-      <a
-        href="/site/blog/"
-        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
-      >
-        blog
-        <span class="text-gray-500 cursor-pointer">(?)</span>
-      </a>
-      <div
-        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        My little spot on the internet. I love it here.
-      </div>
-    </div>
-
-    <div class="relative group inline-block ml-2">
-      <a
-        href="https://github.com/aunchers"
-        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
-      >
-        github
-        <span class="text-gray-500 cursor-pointer">(?)</span>
-      </a>
-      <div
-        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        I try to use this, but as much as I program, 99% of my projects are
-        never published lol.
-      </div>
-    </div>
-
-    <div class="relative group inline-block ml-2">
-      <a
-        href="mailto:aunchers+blog@proton.me"
-        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
-      >
-        email
-        <span class="text-gray-500 cursor-pointer">(?)</span>
-      </a>
-      <div
-        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        My email, it uses PROTON because, as you can see, I like privacy.
-      </div>
-    </div>
-
-    <div class="relative group inline-block ml-2">
-      <a
-        href="/site/aunchers.asc"
-        class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200 peer"
-      >
-        PGP
-        <span class="text-gray-500 cursor-pointer">(?)</span>
-      </a>
-      <div
-        class="absolute left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        Pretty Good Privacy – my preferred encryption method. I use it on GitHub
-        commits when I can, and I accept emails encrypted with it.
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-6 flex flex-col leading-none">
-    <h1 class="text-[68px] m-0 p-0 leading-[1] pb-[10px]">PROJECTS</h1>
-    <div style="display: grid; gap: 1rem;">
-      <PrjLinks />
-    </div>
+    <a
+      href="/"
+      class="inline-block px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-lg hover:bg-blue-700 transition duration-200"
+    >
+      Go Home
+    </a>
   </div>
 </BaseLayout>
