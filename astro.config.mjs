@@ -13,7 +13,7 @@ export default defineConfig({
   site: "https://aunchers.github.io", // Replace with your actual site URL
   base: "/site",
   integrations: [react(), icon(), mdx()],
-
+  output: "static",
   vite: {
     plugins: [tailwindcss()],
   },
