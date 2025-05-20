@@ -17,20 +17,24 @@ const projects = Object.entries(prjs).map(([key, value]) => ({
       <summary style="font-weight: bold; font-size: 1.1rem;">{key}</summary>
       <div style="margin-top: 0.5rem;">
         <div style="margin-bottom: 0.5rem;" set:html={description} />
-        links:
-        {Object.entries(links).map(([name, url], i) => (
-          <>
-            <a
-              class="links"
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {name}
-            </a>
-            {i < Object.entries(links).length - 1 ? " | " : ""}
-          </>
-        ))}
+        {links && Object.keys(links).length > 0 && (
+          <div>
+            links:{" "}
+            {Object.entries(links).map(([name, url], i) => (
+              <>
+                <a
+                  class="links"
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {name}
+                </a>
+                {i < Object.entries(links).length - 1 ? " | " : ""}
+              </>
+            ))}
+          </div>
+        )}
       </div>
     </details>
   ))
