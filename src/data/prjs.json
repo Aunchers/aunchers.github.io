@@ -9,9 +9,10 @@
       "github": "https://github.com/zukijourney",
       "site": "https://zukijourney.com",
       "discord": "https://discord.gg/zukijourney"
-    },
-    "OPENSHAPES-RS": {
-      "description": "A recreating of openshapes, but in rust form"
     }
+  },
+
+  "OPENSHAPES-RS": {
+    "description": "A recreating of openshapes, but in rust form"
   }
 }
