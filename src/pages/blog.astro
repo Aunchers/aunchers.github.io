@@ -34,10 +34,14 @@ posts.sort(
         <span class="text-gray-500 cursor-pointer">(?)</span>
       </a>
       <div
-        class="absolute left-0 mt-1 w-48 cursor-default p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        return button.
-      </div>
+  class="absolute left-0 mt-1 w-48 cursor-default p-2 text-sm text-white bg-gray-700 rounded shadow-lg 
+         opacity-0 peer-hover:opacity-100 
+         pointer-events-none peer-hover:pointer-events-auto 
+         transition-opacity duration-200 z-10"
+>
+  return button.
+</div>
+
     </div>
 
     <div class="relative group inline-block">
@@ -49,26 +53,34 @@ posts.sort(
         <span class="text-gray-500 cursor-pointer">(?)</span>
       </a>
       <div
-        class="absolute cursor-default left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 peer-hover:opacity-100 transition-opacity duration-200 z-10"
-      >
-        Really Simple Syndication - Add my blog, to your site.
-      </div>
+  class="absolute cursor-default left-0 mt-1 w-48 p-2 text-sm text-white bg-gray-700 rounded shadow-lg 
+         opacity-0 peer-hover:opacity-100 
+         pointer-events-none peer-hover:pointer-events-auto 
+         transition-opacity duration-200 z-10"
+>
+  Really Simple Syndication - Add my blog, to your site.
+</div>
+
     </div>
   </div>
   <ul class="space-y-6 mt-5">
-    {
-      posts.map(({ id, data }) => (
-        <li>
-          <a
-            href={`${data.slug}/`}
-            class="text-2xl font-semibold hover:underline"
-          >
-            {data.title}
-          </a>
-          <p class="text-sm text-gray-500">{data.date.toLocaleDateString()}</p>
-          {data.description && <p class="mt-1">{data.description}</p>}
-        </li>
-      ))
-    }
-  </ul>
+  {posts.map(({ id, data }) => (
+    <li key={id}>
+      <a
+  href={`${data.slug}`}
+  class="block w-fit text-2xl font-semibold hover:underline transition-colors"
+>
+  {data.title}
+</a>
+
+
+      <p class="text-sm text-gray-500">{data.date.toLocaleDateString()}</p>
+      {data.description && (
+        <p class="mt-1 text-base">{data.description}</p>
+      )}
+    </li>
+  ))}
+</ul>
+
+
 </BaseLayout>
