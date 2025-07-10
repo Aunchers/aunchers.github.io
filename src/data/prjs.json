@@ -4,7 +4,8 @@
     "description": "A small side project to make reddit posts readable in markdown",
     "links": {
       "github": "https://github.com/aunchers/RedditToMarkdown",
-      "site": "https://aunchers.github.io/RedditToMarkdown"
+      "site": "https://aunchers.github.io/RedditToMarkdown",
+      "blog": "https://aunchers.github.io/site/reddit-to-markdown",
     }
   },
   "G5F": {
