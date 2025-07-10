@@ -1,8 +1,30 @@
 ---
 title: "Turning Reddit Posts into Markdown"
 description: "A fast sideproject to make reddit more readable"
-date: 2025-07-09
+date: 2025-07-10
 slug: reddit-to-markdown
 ---
-#### TO BE EDITED
-project on [github pages](https://aunchers.github.io/RedditToMarkdown)
+# Introduction
+A few days ago, I was browsing r/programmerhumor, while mindlessly scrolling I noticed that the layout of reddit is kinda annoying.
+It's soo cluttered, and half the things on the page I'm never going to need to use. I wanted to change it, and thats when I had a sudden, and honesty kinda expected, epiphany. I am a programmer, if I don't like something, I can just make program a better version of it. After a bit of debating, I decided the best course of action would be to make something that converts reddit posts into a better format. 
+
+# Designing
+I had a few idea of the new design, mostly similar to the github docs page. 
+Although while writing a pastebin of my new ideas in [rentry.co](https://rentry.co), I had another epihpany. Markdown is the most minimalistic and good looking design formats... in existence. So markdown it is! 
+
+# Actual Code
+For some god forsaken reason, Ig efficiency, I wrote THE ENTIRE CODEBASE, in a singular html file. I initially started writing it on
+the tailwind cdn "play" website. Basically codepen but tailwind actually works on it (and yes, i know you can get tailwind on codepen but non of the methods provided have ever worked for me). After tinkering with the original design on tailwind play, I moved to JSFiddle, due to tailwind play being incompatible with Javascript. 
+I ran into this weird bug where anything that used a manual unit (px, em, rem) wouldn't work? Samething happened locally and on Github Pages, so I have absolutely no clue.
+
+In order to get information about a post, I used a client side request to the Reddit JSON API. This gave me all the info I needed, but unless I ran it through a CORS proxy, it wouldn't work. I'm thinking of adding a way to change the CORS proxy in the future but idk. I'm using client side requests due to this being a static page. 
+
+And to show the post in that beautiful style, as well as you being able to copy the markdown, I actually created 2 parsers (Well technically more, but 2 main parsers). One was to show the JSON in Html, and another was to show the JSON in Markdown. This is why, when you paste the Markdown copied, it will look similar BUT not the same to the rendered html. 
+
+# Final Thoughts
+This was supposed to be, and was, a short project. I am a beginner at writing these blog posts so sorry for the shitty language and grammer. The code is quite spaghettified, so I might refactor in the future aswell as making the media showcase better. 
+Features can be added, but to be honest, for the small project it was, this it prob a good final piece. 
+
+[site](https://aunchers.github.io/RedditToMarkdown) [github](https://github.com/aunchers/RedditToMarkdown/)
+
+
