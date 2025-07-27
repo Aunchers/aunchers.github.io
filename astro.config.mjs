@@ -11,7 +11,7 @@ import mdx from "@astrojs/mdx";
 // https://astro.build/config
 export default defineConfig({
   site: "https://aunchers.github.io", // Replace with your actual site URL
-  base: "/site",
+  base: "/",
   integrations: [react(), icon(), mdx()],
   output: "static",
   vite: {
