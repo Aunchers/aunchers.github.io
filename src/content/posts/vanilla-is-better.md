@@ -1,0 +1,25 @@
+---
+title: "Vanilla HTML/JS is better than any fullstack project"
+description: "Next.js+Shadcn woes, and css love."
+date: 2025-07-10
+slug: reddit-to-markdown
+---
+## INTRO
+This is weird. I have always fawned over new tech. Whether it being Zed, or Arc browser. I just love new stuff.
+I distro-hop (will talk another time), I language-hop, way too much. Always chasing the pretty new thing.
+It was different with web based stuff. I found Next.JS, I stuck with it. I played around with other stuff, but Next had me. Hook-Line and sinekr.
+And to be honest, Next fucking sucked.
+I recommended it so much. And I've never enjoyed making things with it. The most make I've done is v0 (AI) which has sucked every living feeling out of my
+bones. So, the other day, I decided to start a new project. It was called RedditToMarkdown. For speed I did it in Vanilla HTML, for the first time in forever.
+And I LOVED it
+
+## Continuance
+I don't know what it is, but writing Vanilla JS inspires me. CSS (albeit tailwind/src) is faar better than prebuilt shit. Idk
+rediscoverance (not a word lol) I guess. While continuing this journey, I'll periodically update this page linking new vanilla
+projects and their data in this format
+{PROJ_NAME} (month, year)
+HTMX seems interesting, so anything thats basically vanilla will be listed here, with +HTMX or whatev added. 
+
+## LIST
+- [RedditToMarkdown](https://aunchers.github.io/site/reddit-to-markdown) (July, 2025)
+- 
