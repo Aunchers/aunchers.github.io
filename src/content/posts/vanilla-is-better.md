@@ -1,8 +1,8 @@
 ---
 title: "Vanilla HTML/JS is better than any fullstack project"
 description: "Next.js+Shadcn woes, and css love."
-date: 2025-07-10
-slug: reddit-to-markdown
+date: 2025-07-27
+slug: vanilla-is-better
 ---
 ## INTRO
 This is weird. I have always fawned over new tech. Whether it being Zed, or Arc browser. I just love new stuff.
@@ -17,9 +17,9 @@ And I LOVED it
 I don't know what it is, but writing Vanilla JS inspires me. CSS (albeit tailwind/src) is faar better than prebuilt shit. Idk
 rediscoverance (not a word lol) I guess. While continuing this journey, I'll periodically update this page linking new vanilla
 projects and their data in this format
-{PROJ_NAME} (month, year)
+{PROJ_NAME} (day, month year)
 HTMX seems interesting, so anything thats basically vanilla will be listed here, with +HTMX or whatev added. 
 
 ## LIST
-- [RedditToMarkdown](https://aunchers.github.io/site/reddit-to-markdown) (July, 2025)
+- [RedditToMarkdown](https://aunchers.github.io/site/reddit-to-markdown) (10, July, 2025)
 - 
