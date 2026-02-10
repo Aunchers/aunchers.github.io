@@ -42,8 +42,8 @@ jobs:
         run: pnpm build # This creates the 'dist' directory
 
       # ✅ Your custom step is now in the correct place: after build, before upload
-      - name: Add CNAME file for custom domain
-        run: echo 'blog.openrne.pw' > dist/CNAME
+      #- name: Add CNAME file for custom domain
+        #run: echo 'blog.openrne.pw' > dist/CNAME
 
       # ✅ This is now the ONLY upload step, so there is no conflict
       - name: Upload artifact
