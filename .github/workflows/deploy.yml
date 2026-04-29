@@ -18,34 +18,18 @@ jobs:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
 
-      # ❌ REMOVE the all-in-one action that was causing the conflict.
-      # - name: Install, build, and upload your site
-      #   uses: withastro/action@v3
-
-      # ✅ ADD manual setup steps for Node.js and pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      # Setup Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: latest
+          bun-version: latest
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.15.1
-          cache: 'pnpm' # This will cache your dependencies for faster runs
-
-      # ✅ ADD manual install and build steps
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Build your site
-        run: pnpm build # This creates the 'dist' directory
+        run: bun run build
 
-      # ✅ Your custom step is now in the correct place: after build, before upload
-      #- name: Add CNAME file for custom domain
-        #run: echo 'blog.openrne.pw' > dist/CNAME
-
-      # ✅ This is now the ONLY upload step, so there is no conflict
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -54,7 +38,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Use the standard 'github-pages' environment name
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
