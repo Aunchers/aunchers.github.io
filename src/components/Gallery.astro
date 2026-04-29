@@ -1,0 +1,17 @@
+---
+interface Props {
+  images: { src: string; alt: string; caption?: string }[];
+  columns?: number;
+}
+
+const { images, columns = 2 } = Astro.props;
+---
+
+<div class="gallery" style={`--gallery-columns: ${columns};`}>
+  {images.map((img) => (
+    <figure class="gallery-item">
+      <img src={img.src} alt={img.alt} loading="lazy" />
+      {img.caption && <figcaption class="gallery-caption">{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>

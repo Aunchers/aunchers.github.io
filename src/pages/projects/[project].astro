@@ -1,32 +1,50 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import prjs from "../../data/prjs.json";
+import { getCollection, render } from 'astro:content';
 
-export function getStaticPaths() {
-  return Object.entries(prjs).map(([key, value]) => ({
-    params: { project: key.toLowerCase() },
-    props: { key, ...value },
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((proj) => ({
+    params: { project: proj.data.name.toLowerCase() },
+    props: { proj },
   }));
 }
 
-const { key, description, links } = Astro.props;
+const { proj } = Astro.props;
+const { Content } = await render(proj);
 ---
 
-<BaseLayout title={`${key} - CHAIRS`}>
-  <nav class="nav"><a href="/projects">← projects</a></nav>
+<BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
+  <nav class="sub-nav">
+    <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
+    <a href="/projects">projects</a>
+    <span class="sub-nav-sep">/</span>
+    <span>{proj.data.name.toLowerCase()}</span>
+  </nav>
   <hr>
-  <h1 class="proj-page-title"><em>/</em>{key.toLowerCase()}</h1>
-  <p class="proj-page-meta">{Object.keys(links || {}).join(' · ')}</p>
-  <p class="proj-page-desc" set:html={description} />
+  <h1 class="proj-page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
+  <p class="proj-page-desc">{proj.data.description}</p>
+  {proj.data.tech && proj.data.tech.length > 0 && (
+    <div class="proj-tech">
+      {proj.data.tech.map(t => <span class="tag">{t}</span>)}
+    </div>
+  )}
   <hr>
   <div class="proj-body">
-    <p set:html={description} />
+    <Content />
   </div>
-  <hr>
-  <div>{links && Object.entries(links).map(([name, url]) => <span class="tag">{name}</span>)}</div>
+  {(proj.data.repo || proj.data.url) && (
+    <>
+      <hr>
+      <div class="proj-links-bottom">
+        {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+        {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
+      </div>
+    </>
+  )}
   <hr>
   <div class="post-nav">
-    <a href="/projects">← all projects</a>
-    {links && links.github && <a href={links.github}>source →</a>}
+    <a href="/projects">all projects</a>
   </div>
 </BaseLayout>

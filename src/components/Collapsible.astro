@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  open?: boolean;
+}
+
+const { title, open = false } = Astro.props;
+const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+---
+
+<details class="collapsible" {open}>
+  <summary class="collapsible-trigger">{title}</summary>
+  <div class="collapsible-content" id={id}>
+    <slot />
+  </div>
+</details>

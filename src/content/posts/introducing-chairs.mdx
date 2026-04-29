@@ -1,0 +1,264 @@
+---
+title: "Introducing CHAIRS / aunchers"
+description: "the blog system got an overhaul. here's how it works under the hood"
+date: 2026-04-29
+slug: "introducing-chairs"
+categories: ["announcement", "web dev"]
+readTime: "~6 min"
+num: "06"
+featured: true
+articleType: "deep-dive"
+difficulty: "beginner"
+tools: ["Astro", "MDX", "CSS"]
+author: "aunchers"
+---
+
+import Callout from '../../components/Callout.astro';
+import Gallery from '../../components/Gallery.astro';
+import CodeCompare from '../../components/CodeCompare.astro';
+import Collapsible from '../../components/Collapsible.astro';
+import ToolsUsed from '../../components/ToolsUsed.astro';
+import Footnote from '../../components/Footnote.astro';
+
+the old blog was dead simple. content collection, glob loader pulling `.mdx` files out of `src/content/posts/`, a layout that dumped the rendered content into a div, and that was it. it worked because there wasn't much to break.
+
+but "it works" and "it does what i want" turned out to be different things.
+
+## how the old system was structured
+
+everything lived in one collection. one schema. the frontmatter had maybe six fields -- title, description, date, slug, categories, read time. the layout didn't care what type of post it was because there was only one type.
+
+```
+src/content/posts/
+  making-this-site.mdx
+  rust-3d-one.mdx
+  reddit-to-markdown.mdx
+  ...
+```
+
+the build pipeline was straightforward: astro reads the mdx, renders it to html, injects it into the layout. the layout wraps it in some css and you get a page. no decisions, no branching, no metadata beyond the basics.
+
+that's fine when you write one kind of thing. less fine when you want to write different kinds of things.
+
+## what changed
+
+the content config now has two collections -- posts and projects. the schema got a lot bigger. the layout renders conditionally based on frontmatter fields. the blog index filters and groups things differently.
+
+<Callout type="info" title="architecture">
+posts and projects are both content collections now. no more JSON for projects. everything goes through astro's content layer with zod validation, which means typos in frontmatter fail at build time instead of silently breaking something.
+</Callout>
+
+here's what the content tree looks like now:
+
+```
+src/content/
+  posts/
+    making-this-site.mdx       # archived (2025)
+    rust-3d-one.mdx            # archived (2025)
+    introducing-chairs.mdx     # featured, deep-dive
+  projects/
+    reddit-to-markdown.mdx     # active, featured
+    zukijourney.mdx            # active, featured
+    g5f.mdx                    # wip
+    openshapes-rs.mdx          # wip
+```
+
+## article types and metadata
+
+every post has an `articleType` field now. it's a zod enum that constrains the options at build time:
+
+```ts
+articleType: z.enum([
+  "essay", "tutorial", "log",
+  "review", "deep-dive", "link-post",
+  "photo-essay"
+]).optional().default("essay"),
+```
+
+the layout maps the raw value to a display label and puts it in the metadata bar. same deal for difficulty -- another enum, rendered as tilde marks:
+
+```ts
+difficulty: z.enum([
+  "beginner", "intermediate",
+  "advanced", "expert"
+]).optional(),
+```
+
+the metadata bar at the top of each post is built from these fields. instead of the old `//` separator soup, it's structured like a path:
+
+```
+#06 / deep-dive / ~ / announcement / web dev / 2026.04.29 / ~6min
+```
+
+the number, type, difficulty, categories, date, and read time all flow in sequence separated by `/`. feels more intentional than random comment syntax.
+
+## status system
+
+posts have a status field that controls visibility and display:
+
+```ts
+status: z.enum(["published", "draft", "wip", "archived"])
+  .optional().default("published"),
+```
+
+draft posts get filtered out of the blog index entirely. wip posts show up with a yellow banner. archived posts show up with a red banner and a date -- they're readable but marked as potentially stale. published posts render normally.
+
+all the 2025 posts are archived now. i didn't delete them, just set the status. they still render, they just have a banner telling you they're from the past.
+
+<Callout type="warning">
+if you open any of the old posts now you'll see the archive banner. same content, just a visual signal that it might be outdated.
+</Callout>
+
+## the TOC
+
+headings come from astro's `render()` function -- it returns both the rendered Content and a headings array. each heading has a depth, text, and slug. i filter to h2 and h3 only, pass them to the layout, and it builds a nav list.
+
+the TOC is wrapped in a `<details>` element so it starts collapsed. clicking the header expands it. for long articles this saves a ton of vertical space -- you only open it when you need it.
+
+the trick with TOC links is matching the slug format. astro generates slugs from the heading text, so you have to pass `h.slug` directly instead of trying to reconstruct it. the old code was doing `.toLowerCase().replace(/[^\w]+/g, '-')` which produced different slugs than what astro actually renders. that's why the links were broken.
+
+## projects as a content collection
+
+projects used to be a JSON file. `src/data/prjs.json` with an object mapping names to descriptions and links. it worked but it was limited -- no markdown in descriptions, no metadata, no structure.
+
+now projects are a content collection same as posts, with their own schema:
+
+```ts
+const projects = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
+    status: z.enum(["active", "archived", "hiatus", "wip"]).default("active"),
+    dateRange: z.string().optional(),
+    url: z.string().optional(),
+    repo: z.string().optional(),
+    tech: z.array(z.string()).optional(),
+    featured: z.boolean().optional().default(false),
+  }),
+});
+```
+
+each project is an mdx file in `src/content/projects/`. the body can be full markdown -- descriptions, notes, whatever. the frontmatter has structured fields for links, tech stack, status, and date ranges.
+
+the project index page renders featured projects first with accent borders, then the rest. each card shows the name, status, date range, description, tech tags, and links.
+
+individual project pages render the full markdown body through `<Content />` just like blog posts. they show the tech stack as tags, and have links to source, site, and any related blog post.
+
+## components
+
+the mdx integration lets me import astro components directly into posts. each one is just an `.astro` file that takes props and renders markup. nothing fancy, no build step beyond what astro already does.
+
+<Collapsible title="how the components work">
+each component is a standalone `.astro` file in `src/components/`. they export a default interface for props and render their markup. in an mdx file you import them at the top and use them like jsx tags:
+
+```mdx
+---
+title: "my post"
+---
+import Callout from '../../components/Callout.astro';
+
+<Callout type="warning">
+this will break if you do it wrong
+</Callout>
+```
+
+astro's mdx integration handles the import and rendering at build time. the component output is inlined as static html. no client-side js, no hydration overhead.
+</Collapsible>
+
+the components themselves are straightforward:
+
+**Callout** -- colored border box with a label and icon. five types (info, warning, tip, danger, note), each with different border/header colors.
+
+**Gallery** -- css grid of images. takes an array of `{ src, alt, caption }` and a column count.
+
+**CodeCompare** -- two-panel layout for before/after or side-by-side code. each panel has its own title and language label.
+
+**Collapsible** -- just a styled `<details>` element. takes a title and optional open state.
+
+**ToolsUsed** -- renders a label and a row of accent-colored tags. separate from categories -- these are the tech/tools used, not what the post is about.
+
+**Footnote** -- numbered reference with text. renders inline or as a standalone block.
+
+## reading progress
+
+the progress bar is a fixed div at the top of the page with a child div whose width is set by a scroll event listener. calculates scroll position as a percentage of total scrollable height. two pixels tall, accent color, transitions at 0.1s.
+
+```js
+var progress = (scrollTop / docHeight) * 100;
+progressBar.style.width = progress + '%';
+```
+
+barely visible but it's there.
+
+## drop caps
+
+first paragraph gets a `drop-cap` class which uses `::first-letter` to style the first character. 52px, bold, accent color, floated left. runs client-side on domcontentloaded because we need to find the first p inside the article wrapper after the slot is rendered.
+
+can disable per-post with `noDropCap: true` in frontmatter.
+
+## the full schema
+
+<Collapsible title="every frontmatter field for posts">
+
+| Field | Type | Default | Purpose |
+|-------|------|---------|---------|
+| `title` | string | required | post title |
+| `description` | string | required | subtitle |
+| `date` | date | required | publish date |
+| `slug` | string | required | url path |
+| `num` | string | optional | display number (#06) |
+| `categories` | string[] | optional | topic tags |
+| `readTime` | string | optional | "~6 min" |
+| `status` | enum | published | visibility/display state |
+| `featured` | bool | false | pin to top of index |
+| `articleType` | enum | essay | post classification |
+| `difficulty` | enum | optional | tutorial difficulty |
+| `tools` | string[] | optional | tech used |
+| `externalUrl` | string | optional | link post target |
+| `updatedDate` | date | optional | revision date |
+| `author` | string | optional | author name |
+| `authorUrl` | string | optional | author link |
+| `noTOC` | bool | false | skip table of contents |
+| `noDropCap` | bool | false | skip drop cap |
+| `cover` | string | optional | cover image |
+| `coverAlt` | string | optional | cover alt text |
+
+</Collapsible>
+
+<Collapsible title="every frontmatter field for projects">
+
+| Field | Type | Default | Purpose |
+|-------|------|---------|---------|
+| `name` | string | required | project name |
+| `description` | string | required | one-line summary |
+| `status` | enum | active | active/archived/hiatus/wip |
+| `dateRange` | string | optional | "2025" or "2025 - present" |
+| `url` | string | optional | live site url |
+| `repo` | string | optional | github url |
+| `tech` | string[] | optional | tech stack tags |
+| `featured` | bool | false | pin to top of index |
+
+</Collapsible>
+
+## why astro
+
+astro was the obvious choice. static output, content collections with zod validation, mdx support built in, zero client javascript by default. the whole site ships as html and css with one tiny script for the reading progress bar and drop cap. no framework runtime, no hydration, no bundle to download.
+
+it's fast because there's nothing to load. it's simple because the build process is just "read files, render templates, write html." nothing more complicated than that.
+
+the alternative would've been adding react or something, which would mean shipping a js bundle, setting up hydration, dealing with client state. for a blog. that's insane.
+
+## anyway
+
+the system can now handle different kinds of writing without changing the aesthetic. the dark bg, monospace font, pink accent, dashed borders -- all the same. just more structure underneath.
+
+if you want to write something, you can now pick what kind of thing it is and the system will handle it. tutorials get difficulty levels. essays stay simple. link posts point elsewhere. projects have their own collection with structured metadata. old stuff gets archived instead of deleted.
+
+that's about it.
+
+---
+
+*go look around. break something. tell me what broke.*
+
+<Footnote number="1" text="the name CHAIRS came from a friend mispronouncing something. genuinely don't remember what." />

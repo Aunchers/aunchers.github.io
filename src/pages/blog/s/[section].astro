@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  const visiblePosts = posts.filter(p => p.data.status !== "draft");
+  const allCategories = [...new Set(visiblePosts.flatMap(p => p.data.categories || []))];
+
+  return allCategories.map(cat => ({
+    params: { section: cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") },
+    props: { category: cat, posts: visiblePosts.filter(p => p.data.categories?.includes(cat)) },
+  }));
+}
+
+const { category, posts } = Astro.props;
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const fmt = (d) => {
+  const date = new Date(d);
+  return String(date.getMonth() + 1).padStart(2, "0") + "." + String(date.getDate()).padStart(2, "0");
+};
+
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+---
+
+<BaseLayout title={`${category} - CHAIRS`} description={`${posts.length} posts about ${category}.`} ogType="article">
+  <nav class="sub-nav">
+    <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
+    <a href="/blog">blog</a>
+    <span class="sub-nav-sep">/</span>
+    <span>{category}</span>
+  </nav>
+  <hr>
+  <h1 class="page-title"><em>/</em>{category.toLowerCase()}</h1>
+  <p class="page-desc">{posts.length} posts</p>
+  <hr>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li class={`post-item ${post.data.status === "archived" ? "post-archived" : ""}`}>
+        <div class="post-header">
+          <div class="post-title-text">
+            {post.data.featured && <span class="featured-star">*</span>}
+            <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
+          </div>
+          <span class="post-date">{fmt(post.data.date)}</span>
+        </div>
+        {post.data.description && <p class="post-preview">{post.data.description}</p>}
+        {post.data.categories && post.data.categories.length > 0 && (
+          <div class="post-cats">
+            {post.data.categories.map(cat => (
+              <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
+            ))}
+          </div>
+        )}
+        {post.data.status === "archived" && <span class="archived-label">archived</span>}
+      </li>
+    ))}
+  </ul>
+  <hr>
+  <div class="post-nav">
+    <a href="/blog">all posts</a>
+  </div>
+</BaseLayout>

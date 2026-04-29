@@ -9,14 +9,81 @@ interface Props {
     categories?: string[];
     readTime?: string;
     num?: string;
+    status?: string;
+    featured?: boolean;
+    articleType?: string;
+    series?: string;
+    seriesPosition?: { current: number; total: number };
+    difficulty?: string;
+    tools?: string[];
+    updatedDate?: Date;
+    author?: string;
+    authorUrl?: string;
+    noTOC?: boolean;
+    noDropCap?: boolean;
+    cover?: string;
+    coverAlt?: string;
+    externalUrl?: string;
+    relatedProject?: string;
+  };
+  headings?: { text: string; level: number; slug: string }[];
+  relatedProject?: {
+    data: {
+      name: string;
+      description: string;
+      status?: string;
+      dateRange?: string;
+      url?: string;
+      repo?: string;
+      tech?: string[];
+    };
   };
 }
-const { frontmatter } = Astro.props;
 
-// Split title into parts, putting last word in <em> tags
+const { frontmatter, headings = [], relatedProject } = Astro.props;
+
 const titleParts = frontmatter.title.split(" ");
 const lastWord = titleParts.pop();
 const restOfTitle = titleParts.join(" ");
+
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+const articleLabels: Record<string, string> = {
+  essay: "essay",
+  tutorial: "tutorial",
+  log: "log",
+  review: "review",
+  "deep-dive": "deep dive",
+  "link-post": "link",
+  "photo-essay": "photos",
+};
+
+const fmtDate = (d: Date) => {
+  const mo = String(d.getMonth() + 1).padStart(2, "0");
+  const dy = String(d.getDate()).padStart(2, "0");
+  const yr = d.getFullYear();
+  return `${mo}.${dy}.${yr}`;
+};
+
+interface TOCSection {
+  text: string;
+  level: number;
+  slug: string;
+  children: { text: string; level: number; slug: string }[];
+}
+
+const tocSections: TOCSection[] = [];
+let currentSection: TOCSection | null = null;
+for (const h of headings) {
+  if (h.level === 2) {
+    currentSection = { text: h.text, level: h.level, slug: h.slug, children: [] };
+    tocSections.push(currentSection);
+  } else if (h.level === 3 && currentSection) {
+    currentSection.children.push(h);
+  } else if (!currentSection) {
+    tocSections.push({ text: h.text, level: h.level, slug: h.slug, children: [] });
+  }
+}
 ---
 
 <html lang="en">
@@ -26,34 +93,189 @@ const restOfTitle = titleParts.join(" ");
   <title>{frontmatter.title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
+  {frontmatter.externalUrl && <link rel="canonical" href={frontmatter.externalUrl} />}
+
+  <meta property="og:title" content={frontmatter.title} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={Astro.url} />
+  <meta property="og:image" content={frontmatter.cover ? new URL(frontmatter.cover, "https://aunchers.github.io").href : "https://aunchers.github.io/og.png"} />
+  <meta property="og:description" content={frontmatter.description} />
+  <meta property="og:site_name" content="CHAIRS" />
+  <meta property="article:published_time" content={frontmatter.date.toISOString()} />
+  {frontmatter.categories && frontmatter.categories.map(cat => <meta property="article:tag" content={cat} />)}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={frontmatter.title} />
+  <meta name="twitter:description" content={frontmatter.description} />
+  <meta name="twitter:image" content={frontmatter.cover ? new URL(frontmatter.cover, "https://aunchers.github.io").href : "https://aunchers.github.io/og.png"} />
 </head>
 <body>
+  <div class="reading-progress"><div class="reading-progress-bar" id="progressBar"></div></div>
   <div class="page">
-    <nav class="nav"><a href="/">← home</a></nav>
+    <nav class="sub-nav">
+      <a href="/">home</a>
+      <span class="sub-nav-sep">/</span>
+      <a href="/blog">blog</a>
+      <span class="sub-nav-sep">/</span>
+      <span>{frontmatter.title.toLowerCase()}</span>
+    </nav>
     <hr>
-    <div class="post-meta">
-      <span>#{frontmatter.num}</span> // {frontmatter.categories?.join(' // ')} // {frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} // {frontmatter.readTime}
+
+    {relatedProject && (
+      <>
+        <div class="related-project-card">
+          <span class="related-project-label">about this project</span>
+          <div class="related-project-info">
+            <a href={`/projects/${relatedProject.data.name.toLowerCase()}`} class="related-project-name">{relatedProject.data.name}</a>
+            <p class="related-project-desc">{relatedProject.data.description}</p>
+            {relatedProject.data.tech && relatedProject.data.tech.length > 0 && (
+              <div class="related-project-tech">
+                {relatedProject.data.tech.map(t => <span class="tag">{t}</span>)}
+              </div>
+            )}
+            {(relatedProject.data.url || relatedProject.data.repo) && (
+              <div class="related-project-links">
+                {relatedProject.data.repo && <a href={relatedProject.data.repo} target="_blank" rel="noopener">source</a>}
+                {relatedProject.data.url && <a href={relatedProject.data.url} target="_blank" rel="noopener">site</a>}
+              </div>
+            )}
+          </div>
+        </div>
+        <hr>
+      </>
+    )}
+
+    {frontmatter.externalUrl ? (
+      <h1 class="post-hero-title">
+        <a href={frontmatter.externalUrl} target="_blank" rel="noopener">{restOfTitle} <em>{lastWord}</em></a>
+      </h1>
+    ) : (
+      <h1 class="post-hero-title">{restOfTitle} <em>{lastWord}</em></h1>
+    )}
+
+    {frontmatter.articleType && (
+      <span class="meta-type">{articleLabels[frontmatter.articleType] || frontmatter.articleType}</span>
+    )}
+
+    <div class="post-meta-top">
+      {frontmatter.num && <span class="meta-num">#{frontmatter.num}</span>}
+      {frontmatter.readTime && <span class="meta-read">{frontmatter.readTime}</span>}
+      <span class="meta-date">{fmtDate(frontmatter.date)}</span>
     </div>
-    <h1 class="post-hero-title">{restOfTitle} <em>{lastWord}</em></h1>
+
     <p class="post-subtitle">{frontmatter.description}</p>
+
+    {frontmatter.status === "archived" && (
+      <div class="archived-line">
+        <span class="archived-label">archived</span>
+        <span class="muted-text">{frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      </div>
+    )}
+
+    {frontmatter.status === "wip" && (
+      <div class="wip-line">
+        <span class="muted-label">work in progress</span>
+      </div>
+    )}
+
+    {frontmatter.cover && (
+      <figure class="cover-image">
+        <img src={frontmatter.cover} alt={frontmatter.coverAlt || frontmatter.title} />
+        {frontmatter.coverAlt && <figcaption>{frontmatter.coverAlt}</figcaption>}
+      </figure>
+    )}
+
+    {tocSections.length > 1 && !frontmatter.noTOC && (
+      <details class="toc toc-collapsible">
+        <summary class="toc-header">contents</summary>
+        <ol class="toc-list">
+          {tocSections.map((section) => (
+            <li class="toc-section">
+              <a href={`#${section.slug}`} class="toc-section-link">{section.text}</a>
+              {section.children.length > 0 && (
+                <details class="toc-sub">
+                  <summary class="toc-sub-trigger"></summary>
+                  <ol class="toc-sub-list">
+                    {section.children.map(child => (
+                      <li class="toc-sub-item">
+                        <a href={`#${child.slug}`}>{child.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              )}
+            </li>
+          ))}
+        </ol>
+      </details>
+    )}
+
     <hr>
-    <article class="article post-content drop-cap-wrapper">
+    <article class={`article post-content ${!frontmatter.noDropCap ? 'drop-cap-wrapper' : ''}`}>
       <slot />
     </article>
     <hr>
-    <div>{frontmatter.categories?.map(cat => <span class="tag">{cat}</span>)}</div>
+
+    {frontmatter.tools && frontmatter.tools.length > 0 && (
+      <div class="tools-used">
+        <span class="tools-label">built with</span>
+        <div class="tools-list">
+          {frontmatter.tools.map((tool) => (
+            <span class="tag tool-tag">{tool}</span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {frontmatter.categories && frontmatter.categories.length > 0 && (
+      <div class="post-categories">
+        {frontmatter.categories.map(cat => (
+          <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
+        ))}
+      </div>
+    )}
     <hr>
     <div class="post-nav">
-      <a href="/blog">← all posts</a>
-      <a href="#">next →</a>
+      <a href="/blog">all posts</a>
+      <a href="#">next</a>
     </div>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var firstP = document.querySelector('.article p:first-of-type');
-      if (firstP && firstP.textContent.trim().length > 0) {
-        firstP.classList.add('drop-cap');
+      var wrapper = document.querySelector('.drop-cap-wrapper');
+      if (wrapper) {
+        var firstP = wrapper.querySelector('p');
+        if (firstP && firstP.textContent.trim().length > 0) {
+          firstP.classList.add('drop-cap');
+        }
       }
+
+      var progressBar = document.getElementById('progressBar');
+      if (progressBar) {
+        window.addEventListener('scroll', function() {
+          var scrollTop = window.scrollY;
+          var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          var progress = (scrollTop / docHeight) * 100;
+          progressBar.style.width = progress + '%';
+        });
+      }
+
+      var pres = document.querySelectorAll('.post-content pre');
+      pres.forEach(function(pre) {
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'copy';
+        pre.appendChild(btn);
+        btn.addEventListener('click', function() {
+          var code = pre.querySelector('code');
+          var text = code ? code.textContent : pre.textContent;
+          navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'copied';
+            setTimeout(function() { btn.textContent = 'copy'; }, 1500);
+          });
+        });
+      });
     });
   </script>
 </body>

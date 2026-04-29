@@ -3,8 +3,15 @@ import '../styles/global.css';
 
 interface Props {
   title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
 }
-const { title } = Astro.props;
+const { title, description, ogImage, ogType } = Astro.props;
+
+const siteUrl = "https://aunchers.github.io";
+const defaultOgImage = "/og.png";
+const defaultDesc = "thoughts, tutorials, logs, and other writings.";
 ---
 
 <html lang="en">
@@ -14,6 +21,18 @@ const { title } = Astro.props;
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:type" content={ogType || "website"} />
+  <meta property="og:url" content={Astro.url} />
+  <meta property="og:image" content={ogImage ? new URL(ogImage, siteUrl).href : new URL(defaultOgImage, siteUrl).href} />
+  <meta property="og:description" content={description || defaultDesc} />
+  <meta property="og:site_name" content="CHAIRS" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description || defaultDesc} />
+  <meta name="twitter:image" content={ogImage ? new URL(ogImage, siteUrl).href : new URL(defaultOgImage, siteUrl).href} />
 </head>
 <body>
   <div class="page">

@@ -14,12 +14,26 @@ const posts = await getCollection('posts');
 const post = posts.find(p => p.data.slug === id);
 
 if (!post) {
-  throw new Error(`Post with id "${id}" not found`);
+  throw new Error(`Post with slug "${id}" not found`);
 }
 
-const { Content } = await render(post);
+let relatedProject = null;
+if (post.data.relatedProject) {
+  const projects = await getCollection('projects');
+  relatedProject = projects.find(p => p.data.name.toLowerCase() === post.data.relatedProject.toLowerCase());
+}
+
+const { Content, headings } = await render(post);
+
+const headingList = (headings || [])
+  .filter(h => h.depth >= 2 && h.depth <= 3)
+  .map(h => ({
+    text: h.text,
+    level: h.depth,
+    slug: h.slug,
+  }));
 ---
 
-<BlogPostLayout frontmatter={post.data}>
+<BlogPostLayout frontmatter={post.data} headings={headingList} relatedProject={relatedProject}>
   <Content />
 </BlogPostLayout>

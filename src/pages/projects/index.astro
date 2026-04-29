@@ -1,25 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import prjs from "../../data/prjs.json";
+import { getCollection } from "astro:content";
 
-const projects = Object.entries(prjs).map(([key, value]) => ({ key, ...value }));
+const projects = await getCollection("projects");
 ---
 
-<BaseLayout title="Projects - CHAIRS">
-  <nav class="nav"><a href="/">← home</a></nav>
+<BaseLayout title="Projects - CHAIRS" description="things I've built, broken, and occasionally fixed." ogType="website">
+  <nav class="sub-nav">
+    <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
+    <span>projects</span>
+  </nav>
   <hr>
   <h1 class="page-title"><em>/</em>projects</h1>
   <p class="page-desc">things I've built, broken, and occasionally fixed.</p>
   <hr>
-  {projects.map(({ key, description, links }) => (
+  {projects.map((proj) => (
     <div class="proj-card">
-      <span class="proj-name"><a href={`/projects/${key.toLowerCase()}`}>{key}</a></span>
-      <p class="proj-desc" set:html={description} />
-      {links && (
+      <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
+      <p class="proj-desc">{proj.data.description}</p>
+      {(proj.data.url || proj.data.repo) && (
         <div class="proj-links">
-          {Object.entries(links).map(([name, url]) => (
-            <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
-          ))}
+          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
         </div>
       )}
     </div>

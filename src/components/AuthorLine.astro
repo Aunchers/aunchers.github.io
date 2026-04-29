@@ -1,0 +1,17 @@
+---
+interface Props {
+  author: string;
+  url?: string;
+  date: Date;
+  updatedDate?: Date;
+}
+
+const { author, url, date, updatedDate } = Astro.props;
+const fmt = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "2-digit", day: "2-digit" });
+---
+
+<div class="author-line">
+  {url ? <a href={url}>{author}</a> : <span>{author}</span>}
+  <span class="muted-text">// {fmt(date)}</span>
+  {updatedDate && <span class="muted-text">// updated {fmt(updatedDate)}</span>}
+</div>

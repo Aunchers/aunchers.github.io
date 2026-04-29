@@ -2,10 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("posts");
-posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const allPosts = await getCollection("posts");
+const visiblePosts = allPosts.filter(p => p.data.status !== "draft");
+visiblePosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const postsByYear = posts.reduce((acc, post) => {
+const allCategories = [...new Set(visiblePosts.flatMap(p => p.data.categories || []))].sort();
+
+const postsByYear = visiblePosts.reduce((acc, post) => {
   const year = post.data.date.getFullYear();
   if (!acc[year]) acc[year] = [];
   acc[year].push(post);
@@ -13,29 +16,47 @@ const postsByYear = posts.reduce((acc, post) => {
 }, {});
 const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
-const formatDate = (d) => {
+const fmt = (d) => {
   const date = new Date(d);
   return String(date.getMonth() + 1).padStart(2, "0") + "." + String(date.getDate()).padStart(2, "0");
 };
+
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 ---
 
-<BaseLayout title="Blog - CHAIRS">
-  <nav class="nav"><a href="/">← home</a></nav>
+<BaseLayout title="Blog - CHAIRS" description="thoughts, tutorials, logs, and other writings." ogType="article">
+  <nav class="sub-nav">
+    <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
+    <span>blog</span>
+  </nav>
   <hr>
   <h1 class="page-title"><em>/</em>blog</h1>
-  <p class="page-desc">thoughts on privacy, the web, and self-hosting.</p>
+  <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
   <hr>
+
   {sortedYears.map(year => (
     <>
       <div class="year-divider">{year}</div>
       <ul class="post-list">
         {postsByYear[Number(year)].map((post) => (
-          <li class="post-item">
+          <li class={`post-item ${post.data.status === "archived" ? "post-archived" : ""}`}>
             <div class="post-header">
-              <div class="post-title-text"><a href={`/blog/${post.data.slug}`}>{post.data.title}</a></div>
-              <span class="post-date">{formatDate(post.data.date)}</span>
+              <div class="post-title-text">
+                {post.data.featured && <span class="featured-star">*</span>}
+                <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
+              </div>
+              <span class="post-date">{fmt(post.data.date)}</span>
             </div>
             {post.data.description && <p class="post-preview">{post.data.description}</p>}
+            {post.data.categories && post.data.categories.length > 0 && (
+              <div class="post-cats">
+                {post.data.categories.map(cat => (
+                  <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
+                ))}
+              </div>
+            )}
+            {post.data.status === "archived" && <span class="archived-label">archived</span>}
           </li>
         ))}
       </ul>
@@ -43,7 +64,7 @@ const formatDate = (d) => {
   ))}
   <hr>
   <div class="flex-between" style="font-size:13px;">
-    <span class="muted-text">{posts.length} posts</span>
+    <span class="muted-text">{visiblePosts.length} posts</span>
     <a href="/rss.xml">rss</a>
   </div>
 </BaseLayout>

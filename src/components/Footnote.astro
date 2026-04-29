@@ -1,0 +1,13 @@
+---
+interface Props {
+  text: string;
+  number?: string;
+}
+
+const { text, number } = Astro.props;
+---
+
+<div class="footnote" id={`fn-${number || text.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+  <span class="footnote-num">{number || "*"}</span>
+  <span class="footnote-text">{text}</span>
+</div>
