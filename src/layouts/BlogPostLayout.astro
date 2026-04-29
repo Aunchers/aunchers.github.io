@@ -1,23 +1,60 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
-const { frontmatter = {} } = Astro.props;
-const title = frontmatter.title ?? 'Untitled';
-const date  = frontmatter.date ?? new Date();
+import '../styles/global.css';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: Date;
+    categories?: string[];
+    readTime?: string;
+    num?: string;
+  };
+}
+const { frontmatter } = Astro.props;
+
+// Split title into parts, putting last word in <em> tags
+const titleParts = frontmatter.title.split(" ");
+const lastWord = titleParts.pop();
+const restOfTitle = titleParts.join(" ");
 ---
 
-<BaseLayout title={title}>
-  <div class="relative group inline-block mt-3">
-    <a
-      href="/blog"
-      class="underline decoration-gray-500 underline-offset-2 hover:text-gray-500 transition-colors duration-200"
-    >
-      back
-    </a>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{frontmatter.title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="page">
+    <nav class="nav"><a href="/">← home</a></nav>
+    <hr>
+    <div class="post-meta">
+      <span>#{frontmatter.num}</span> // {frontmatter.categories?.join(' // ')} // {frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} // {frontmatter.readTime}
+    </div>
+    <h1 class="post-hero-title">{restOfTitle} <em>{lastWord}</em></h1>
+    <p class="post-subtitle">{frontmatter.description}</p>
+    <hr>
+    <article class="article post-content drop-cap-wrapper">
+      <slot />
+    </article>
+    <hr>
+    <div>{frontmatter.categories?.map(cat => <span class="tag">{cat}</span>)}</div>
+    <hr>
+    <div class="post-nav">
+      <a href="/blog">← all posts</a>
+      <a href="#">next →</a>
+    </div>
   </div>
-  <h1 class="text-[68px] m-0 p-0 leading-[1]">{title}</h1>
-  <p>{date}</p>
-
-  <div class="">
-    <slot />
-  </div>
-</BaseLayout>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var firstP = document.querySelector('.article p:first-of-type');
+      if (firstP && firstP.textContent.trim().length > 0) {
+        firstP.classList.add('drop-cap');
+      }
+    });
+  </script>
+</body>
+</html>

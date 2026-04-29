@@ -1,92 +1,262 @@
-@import "tailwindcss";
-@import "@fontsource/inconsolata";
+:root {
+  --bg: #1e1e1e;
+  --text: #d3d3d3;
+  --accent: #D90166;
+  --muted: #555;
+  --white: #f0f0f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    font-family: "Inconsolata", monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Fira Code', monospace;
+  font-style: italic;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  margin: 0;
 }
 
-.links {
-    text-decoration: underline;
-    text-decoration-color: #6b7280; /* Tailwind's gray-500 */
-    text-underline-offset: 0.5rem; /* Tailwind's underline-offset-2 */
-    transition: 200ms;
-
-    &:hover {
-        color: #6b7280;
-    }
+.page {
+  max-width: 640px;
+  width: 100%;
+  margin: auto;
 }
 
-/* MDX Content Styling */
-.mdx-content {
-    font-family: "Inconsolata", monospace;
-    line-height: 1.6;
+::selection { background: var(--accent); color: #fff; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0 4px;
+  margin: 0 -4px;
+  transition: all 0.12s;
+  border-radius: 2px;
+}
+a:hover {
+  background: var(--accent);
+  color: var(--bg);
+  font-style: normal;
 }
 
-.mdx-content h2, 
-.mdx-content h3, 
-.mdx-content h4 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
+hr {
+  border: 0;
+  border-top: 1px dashed var(--muted);
+  margin: 1.5rem 0;
 }
 
-.mdx-content h2 {
-    font-size: 1.5rem;
+.nav { font-size: 14px; }
+
+.tag {
+  display: inline-block;
+  border: 1px dashed var(--muted);
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--muted);
+  font-style: normal;
+  margin-right: 4px;
+}
+.tag:hover { border-color: var(--accent); color: var(--accent); }
+
+.intro { margin-bottom: 20px; }
+.intro-line {
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.intro-line:last-child { margin-bottom: 0; }
+.home-text { font-size: 15px; white-space: pre-wrap; }
+
+.page-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.page-title em { color: var(--accent); font-style: normal; }
+.page-desc { font-size: 14px; color: var(--muted); }
+
+.post-list { list-style: none; }
+.post-item { padding: 1rem 0; border-bottom: 1px dashed var(--muted); }
+.post-item:last-child { border-bottom: none; }
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.post-title-text {
+  font-size: 15px;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--white);
+  flex: 1;
+}
+.post-title-text a { color: var(--white); padding: 0; margin: 0; }
+.post-title-text a:hover { color: var(--bg); background: var(--accent); }
+.post-date { font-size: 12px; color: var(--muted); font-style: normal; white-space: nowrap; }
+.post-preview { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.year-divider {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  padding: 1rem 0 0.5rem 0;
+  border-bottom: 1px dashed var(--muted);
 }
 
-.mdx-content h3 {
-    font-size: 1.25rem;
+.post-meta {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.post-meta span { color: var(--accent); }
+.post-hero-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.post-hero-title em { color: var(--accent); font-style: normal; }
+.post-subtitle { color: var(--muted); font-size: 14px; }
+
+.article p { margin-bottom: 1.4rem; font-size: 15px; }
+.drop-cap::first-letter {
+  font-size: 52px;
+  font-weight: 700;
+  font-style: normal;
+  float: left;
+  line-height: 0.8;
+  margin-right: 10px;
+  margin-top: 4px;
+  color: var(--accent);
+}
+.pull-quote {
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.3;
+  color: var(--white);
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  margin: 2rem 0;
+}
+.pull-quote em { color: var(--accent); font-style: normal; }
+
+.image-block {
+  border: 1px dashed var(--muted);
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: normal;
+  letter-spacing: 2px;
+}
+.image-caption { font-size: 11px; color: var(--muted); margin-top: -1rem; margin-bottom: 1.5rem; }
+
+.code-block {
+  border: 1px dashed var(--muted);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  font-style: normal;
+}
+.code-block code { font-size: 13px; color: var(--text); white-space: pre; display: block; overflow-x: auto; }
+
+.post-nav { display: flex; justify-content: space-between; font-size: 14px; }
+
+.proj-card { padding: 1rem 0; border-bottom: 1px dashed var(--muted); }
+.proj-card:last-of-type { border-bottom: none; }
+.proj-name { font-size: 16px; font-weight: 700; font-style: normal; color: var(--white); }
+.proj-name a { color: var(--white); padding: 0; margin: 0; }
+.proj-name a:hover { background: var(--accent); color: var(--bg); }
+.proj-desc { font-size: 13px; color: var(--muted); margin: 4px 0 8px 0; line-height: 1.5; }
+.proj-links {
+  font-size: 12px;
+  margin-top: 6px;
+}
+.proj-links a { margin-right: 12px; }
+
+.proj-page-title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.proj-page-title em { color: var(--accent); font-style: normal; }
+.proj-page-meta {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: normal;
+  margin-bottom: 4px;
+}
+.proj-page-desc { font-size: 14px; color: var(--muted); }
+.proj-body p { margin-bottom: 1.4rem; font-size: 15px; }
+.proj-body ul {
+  list-style: none;
+  margin-bottom: 1.4rem;
+}
+.proj-body ul li {
+  font-size: 14px;
+  padding: 4px 0;
+}
+.proj-body ul li::before {
+  content: '→ ';
+  color: var(--accent);
+  font-style: normal;
 }
 
-.mdx-content p {
-    margin-bottom: 1rem;
-}
+.flex-between { display: flex; justify-content: space-between; }
+.muted-text { color: var(--muted); font-style: normal; }
 
-.mdx-content a {
-    text-decoration: underline;
-    text-decoration-color: #6b7280;
-    text-underline-offset: 0.5rem;
-    transition: 200ms;
+.post-content p { margin-bottom: 1.4rem; font-size: 15px; }
+.post-content h2, .post-content h3 {
+  font-style: normal;
+  color: var(--white);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
+.post-content ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+.post-content li { margin-bottom: 0.5rem; }
+.post-content blockquote {
+  font-size: clamp(17px, 2.5vw, 22px);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.3;
+  color: var(--white);
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  margin: 2rem 0;
+}
+.post-content code {
+  background-color: var(--bg);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  border: 1px dashed var(--muted);
+}
+.post-content pre { border: 1px dashed var(--muted); padding: 1rem; margin: 1.5rem 0; overflow-x: auto; font-style: normal; }
+.post-content pre code { border: none; padding: 0; }
+.post-content img { max-width: 100%; height: auto; margin: 1rem 0; }
 
-.mdx-content a:hover {
-    color: #6b7280;
-}
-
-.mdx-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin: 1rem 0;
-}
-
-.mdx-content ul, 
-.mdx-content ol {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.mdx-content li {
-    margin-bottom: 0.5rem;
-}
-
-.mdx-content blockquote {
-    border-left: 4px solid #6b7280;
-    padding-left: 1rem;
-    margin-left: 0;
-    font-style: italic;
-}
-
-.mdx-content code {
-    background-color: #1e1e1e;
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-size: 0.9rem;
-}
-
-.mdx-content pre {
-    background-color: #1e1e1e;
-    padding: 1rem;
-    border-radius: 4px;
-    overflow-x: auto;
-    margin: 1rem 0;
-}
+@media (max-width: 600px) { body { padding: 2rem 1.5rem; } }

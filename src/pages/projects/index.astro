@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import prjs from "../../data/prjs.json";
+
+const projects = Object.entries(prjs).map(([key, value]) => ({ key, ...value }));
+---
+
+<BaseLayout title="Projects - CHAIRS">
+  <nav class="nav"><a href="/">← home</a></nav>
+  <hr>
+  <h1 class="page-title"><em>/</em>projects</h1>
+  <p class="page-desc">things I've built, broken, and occasionally fixed.</p>
+  <hr>
+  {projects.map(({ key, description, links }) => (
+    <div class="proj-card">
+      <span class="proj-name"><a href={`/projects/${key.toLowerCase()}`}>{key}</a></span>
+      <p class="proj-desc" set:html={description} />
+      {links && (
+        <div class="proj-links">
+          {Object.entries(links).map(([name, url]) => (
+            <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
+          ))}
+        </div>
+      )}
+    </div>
+  ))}
+  <hr>
+  <div class="flex-between" style="font-size:13px;">
+    <span class="muted-text">{projects.length} projects</span>
+    <a href="https://github.com/aunchers">github</a>
+  </div>
+</BaseLayout>

@@ -1,20 +1,11 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-
-import react from "@astrojs/react";
-import tailwindcss from "@tailwindcss/vite";
-
-import icon from "astro-icon";
-
 import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://aunchers.github.io", // Replace with your actual site URL
+  site: "https://aunchers.github.io",
   base: "/",
-  integrations: [react(), icon(), mdx()],
+  integrations: [mdx()],
   output: "static",
-  vite: {
-    plugins: [tailwindcss()],
-  },
 });

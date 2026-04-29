@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import prjs from "../../data/prjs.json";
+
+export function getStaticPaths() {
+  return Object.entries(prjs).map(([key, value]) => ({
+    params: { project: key.toLowerCase() },
+    props: { key, ...value },
+  }));
+}
+
+const { key, description, links } = Astro.props;
+---
+
+<BaseLayout title={`${key} - CHAIRS`}>
+  <nav class="nav"><a href="/projects">← projects</a></nav>
+  <hr>
+  <h1 class="proj-page-title"><em>/</em>{key.toLowerCase()}</h1>
+  <p class="proj-page-meta">{Object.keys(links || {}).join(' · ')}</p>
+  <p class="proj-page-desc" set:html={description} />
+  <hr>
+  <div class="proj-body">
+    <p set:html={description} />
+  </div>
+  <hr>
+  <div>{links && Object.entries(links).map(([name, url]) => <span class="tag">{name}</span>)}</div>
+  <hr>
+  <div class="post-nav">
+    <a href="/projects">← all projects</a>
+    {links && links.github && <a href={links.github}>source →</a>}
+  </div>
+</BaseLayout>
