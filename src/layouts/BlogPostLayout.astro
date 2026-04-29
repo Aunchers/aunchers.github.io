@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Callout from '../components/Callout.astro';
 
 interface Props {
   frontmatter: {
@@ -166,10 +167,9 @@ for (const h of headings) {
     <p class="post-subtitle">{frontmatter.description}</p>
 
     {frontmatter.status === "archived" && (
-      <div class="archived-line">
-        <span class="archived-label">archived</span>
-        <span class="muted-text">{frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-      </div>
+      <Callout type="warning" title="archived">
+        This post is from {frontmatter.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} and may contain outdated information.
+      </Callout>
     )}
 
     {frontmatter.status === "wip" && (

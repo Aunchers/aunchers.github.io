@@ -3,6 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 
 const projects = await getCollection("projects");
+const sorted = [...projects].sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return 0;
+});
 ---
 
 <BaseLayout title="Projects - CHAIRS" description="things I've built, broken, and occasionally fixed." ogType="website">
@@ -15,10 +20,19 @@ const projects = await getCollection("projects");
   <h1 class="page-title"><em>/</em>projects</h1>
   <p class="page-desc">things I've built, broken, and occasionally fixed.</p>
   <hr>
-  {projects.map((proj) => (
+  {sorted.map((proj) => (
     <div class="proj-card">
-      <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
+      <div class="proj-card-top">
+        <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
+        <span class={`proj-status proj-status-${proj.data.status || "active"}`}>{proj.data.status || "active"}</span>
+      </div>
       <p class="proj-desc">{proj.data.description}</p>
+      {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
+      {proj.data.tech && proj.data.tech.length > 0 && (
+        <div class="proj-tech">
+          {proj.data.tech.map(t => <span class="proj-tech-tag">{t}</span>)}
+        </div>
+      )}
       {(proj.data.url || proj.data.repo) && (
         <div class="proj-links">
           {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
