@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import InfoPanel from '../../components/InfoPanel.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,6 +13,12 @@ export async function getStaticPaths() {
 
 const { proj } = Astro.props;
 const { Content } = await render(proj);
+
+const infoItems = [
+  { label: 'status', value: proj.data.status || 'active' },
+  ...(proj.data.dateRange ? [{ label: 'timeline', value: proj.data.dateRange }] : []),
+  ...(proj.data.tech ? [{ label: 'stack', value: proj.data.tech }] : []),
+].filter(Boolean);
 ---
 
 <BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
@@ -22,28 +29,27 @@ const { Content } = await render(proj);
     <span class="sub-nav-sep">/</span>
     <span>{proj.data.name.toLowerCase()}</span>
   </nav>
-  <hr>
-  <h1 class="proj-page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
-  <p class="proj-page-desc">{proj.data.description}</p>
-  {proj.data.tech && proj.data.tech.length > 0 && (
-    <div class="proj-tech">
-      {proj.data.tech.map(t => <span class="tag">{t}</span>)}
+
+  <div class="project-header">
+    <h1 class="proj-page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
+    <p class="proj-page-desc">{proj.data.description}</p>
+  </div>
+
+  {infoItems.length > 0 && (
+    <InfoPanel title="info" items={infoItems} />
+  )}
+
+  {(proj.data.repo || proj.data.url) && (
+    <div class="proj-links-bottom">
+      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
     </div>
   )}
-  <hr>
+
   <div class="proj-body">
     <Content />
   </div>
-  {(proj.data.repo || proj.data.url) && (
-    <>
-      <hr>
-      <div class="proj-links-bottom">
-        {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
-        {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
-      </div>
-    </>
-  )}
-  <hr>
+
   <div class="post-nav">
     <a href="/projects">all projects</a>
   </div>
