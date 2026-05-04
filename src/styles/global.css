@@ -49,6 +49,17 @@ body {
 
 ::selection { background: var(--accent); color: #fff; }
 
+/* Blinking cursor effect for page titles */
+.page-title::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+  font-weight: 400;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
@@ -61,6 +72,7 @@ a:hover {
   background: var(--accent);
   color: #fff;
   font-style: normal;
+  text-shadow: 0 0 8px rgba(217, 1, 102, 0.3);
 }
 
 .post-cat {
@@ -131,6 +143,12 @@ hr {
   font-size: clamp(28px, 5vw, 48px);
   line-height: 1.2;
   margin-bottom: 8px;
+}
+.prompt {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 700;
+  margin-right: 0.15rem;
 }
 .intro-line:last-child { margin-bottom: 0; }
 .home-text { font-size: 15px; white-space: pre-wrap; line-height: 1.8; }
