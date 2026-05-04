@@ -7,9 +7,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <a href="/">home</a>
   </nav>
 
-  <div style="text-align: center; padding: 4rem 0;">
-    <h1 class="page-title" style="margin-bottom: 1rem;">404</h1>
-    <p class="page-desc" style="margin-bottom: 2rem;">this page doesn't exist</p>
-    <a href="/" style="font-size: 14px;">go home</a>
+  <div style="padding: 3rem 0;">
+    <div style="font-size: 13px; color: var(--muted); margin-bottom: 0.5rem; font-style: normal;">error</div>
+    <h1 class="page-title" style="margin-bottom: 0.5rem;">404</h1>
+    <p class="page-desc" style="margin-bottom: 1.5rem;">the page you were looking for doesn't exist.<br>you may have mistyped the address, or the page may have moved.</p>
+    <div style="display: flex; gap: 1rem; font-size: 14px;">
+      <a href="/">go home</a>
+      <span class="sub-nav-sep">|</span>
+      <a href="/blog">blog</a>
+      <span class="sub-nav-sep">|</span>
+      <a href="/projects">projects</a>
+    </div>
   </div>
 </BaseLayout>

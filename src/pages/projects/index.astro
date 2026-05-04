@@ -11,25 +11,35 @@ const projects = await getCollection("projects");
     <span class="sub-nav-sep">/</span>
     <span>projects</span>
   </nav>
+  <hr>
 
   <h1 class="page-title"><em>/</em>projects</h1>
+  <p class="page-desc">things I've built, broken, and occasionally fixed.</p>
+  <hr>
 
-  <div class="projects-grid">
-    {projects.map((proj) => (
-      <a href={`/projects/${proj.data.name.toLowerCase()}`} class="project-card-minimal">
-        <span class="project-name">{proj.data.name}</span>
-        <span class="project-desc">{proj.data.description}</span>
-        {proj.data.tech && proj.data.tech.length > 0 && (
-          <div class="project-tech-minimal">
-            {proj.data.tech.slice(0, 3).map(t => <span class="tech-dot">{t}</span>)}
-            {proj.data.tech.length > 3 && <span class="tech-dot">+{proj.data.tech.length - 3}</span>}
-          </div>
-        )}
-      </a>
-    ))}
-  </div>
+  {projects.map((proj) => (
+    <div class="proj-card">
+      <div class="proj-card-top">
+        <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
+      </div>
+      <p class="proj-desc">{proj.data.description}</p>
+      {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
+      {proj.data.tech && proj.data.tech.length > 0 && (
+        <div class="proj-tech">
+          {proj.data.tech.map(t => <span class="proj-tech-tag">{t}</span>)}
+        </div>
+      )}
+      {(proj.data.url || proj.data.repo) && (
+        <div class="proj-links">
+          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
+        </div>
+      )}
+    </div>
+  ))}
 
-  <div class="flex-between" style="font-size:13px; margin-top: 2rem;">
+  <hr>
+  <div class="flex-between" style="font-size:13px;">
     <span class="muted-text">{projects.length} projects</span>
     <a href="https://github.com/aunchers">github</a>
   </div>
