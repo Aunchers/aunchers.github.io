@@ -18,7 +18,7 @@ const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a
 
 const fmt = (d) => {
   const date = new Date(d);
-  return String(date.getMonth() + 1).padStart(2, "0") + "." + String(date.getDate()).padStart(2, "0");
+  return String(date.getDate()).padStart(2, "0") + "/" + String(date.getMonth() + 1).padStart(2, "0") + "/" + date.getFullYear();
 };
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -36,33 +36,26 @@ const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
   <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
   <hr>
 
-  {sortedYears.map(year => (
-    <>
-      <div class="year-divider">{year}</div>
-      <ul class="post-list">
-        {postsByYear[Number(year)].map((post) => (
-          <li class="post-item">
-            <div class="post-header">
-              <div class="post-title-text">
-                {post.data.featured && <span class="featured-star">*</span>}
-                <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
-                {post.data.status === "archived" && <span class="archived-banner">archived</span>}
-              </div>
-              <span class="post-date">{fmt(post.data.date)}</span>
-            </div>
-            {post.data.description && <p class="post-preview">{post.data.description}</p>}
-            {post.data.categories && post.data.categories.length > 0 && (
-              <div class="post-cats">
-                {post.data.categories.map(cat => (
-                  <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
-                ))}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-    </>
-  ))}
+  <ul class="post-list">
+    {visiblePosts.map((post) => (
+      <li class="post-item">
+        <div class="post-header">
+          <span class="post-date-inline">{fmt(post.data.date)}</span>
+          <div class="post-title-text">
+            <a href={`/blog/${post.data.slug}`} class:list={[{archived: post.data.status === "archived"}]}>{post.data.title}</a>
+          </div>
+        </div>
+        {post.data.description && <p class="post-preview">{post.data.description}</p>}
+        {post.data.categories && post.data.categories.length > 0 && (
+          <div class="post-cats">
+            {post.data.categories.map(cat => (
+              <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
+            ))}
+          </div>
+        )}
+      </li>
+    ))}
+  </ul>
 
   <hr>
   <div class="flex-between" style="font-size:13px;">
