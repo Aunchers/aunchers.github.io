@@ -24,6 +24,24 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+.tooltip-trigger { position: relative; cursor: help; border-bottom: 1px dashed var(--muted); }
+.tooltip-trigger:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--muted);
+  padding: 0.35rem 0.5rem;
+  font-size: 11px;
+  font-style: normal;
+  white-space: nowrap;
+  z-index: 100;
+  margin-bottom: 0.35rem;
+}
+
 html { scroll-behavior: smooth; }
 
 ::-webkit-scrollbar { width: 6px; }

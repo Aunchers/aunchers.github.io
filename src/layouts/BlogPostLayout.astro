@@ -110,6 +110,10 @@ for (const h of headings) {
   <meta name="twitter:title" content={frontmatter.title} />
   <meta name="twitter:description" content={frontmatter.description} />
   <meta name="twitter:image" content={frontmatter.cover ? new URL(frontmatter.cover, "https://aunchers.github.io").href : "https://aunchers.github.io/og.png"} />
+  <script is:inline>
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
+  </script>
 </head>
 <body>
   <div class="reading-progress"><div class="reading-progress-bar" id="progressBar"></div></div>
@@ -243,6 +247,9 @@ for (const h of headings) {
       <a href="/blog">all posts</a>
       <a href="#">next</a>
     </div>
+    <div class="theme-switcher" style="position: fixed; bottom: 1rem; right: 1rem; font-size: 10px; color: var(--muted); font-style: normal; opacity: 0.5;">
+      [<a href="#" class="theme-opt" data-theme="default">default</a>][<a href="#" class="theme-opt" data-theme="midnight">midnight</a>][<a href="#" class="theme-opt" data-theme="paper">paper</a>]
+    </div>
   </div>
 
   <script>
@@ -281,6 +288,20 @@ for (const h of headings) {
         });
       });
 
+      });
+
+      document.querySelectorAll('.theme-opt').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var theme = this.getAttribute('data-theme');
+          if (theme === 'default') {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.removeItem('theme');
+          } else {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+          }
+        });
       });
   </script>
 </body>
