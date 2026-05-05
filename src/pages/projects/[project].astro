@@ -15,8 +15,7 @@ const { proj } = Astro.props;
 const { Content } = await render(proj);
 
 const infoItems = [
-  { label: 'status', value: proj.data.status || 'active' },
-  ...(proj.data.dateRange ? [{ label: 'timeline', value: proj.data.dateRange }] : []),
+  { label: 'timeline', value: proj.data.dateRange || 'unknown' },
   ...(proj.data.tech ? [{ label: 'stack', value: proj.data.tech }] : []),
 ].filter(Boolean);
 ---
