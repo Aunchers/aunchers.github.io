@@ -27,7 +27,6 @@ import Callout from '../components/Callout.astro';
     externalUrl?: string;
     relatedProject?: string;
     funFact?: string;
-    previousTitle?: string;
   };
   headings?: { text: string; level: number; slug: string }[];
   relatedProject?: {
@@ -151,16 +150,9 @@ for (const h of headings) {
     {frontmatter.externalUrl ? (
       <h1 class="post-hero-title">
         <a href={frontmatter.externalUrl} target="_blank" rel="noopener">{restOfTitle} <em>{lastWord}</em></a>
-        {frontmatter.previousTitle && (
-          <span class="title-history-btn" id="titleHistoryBtn">*</span>
-        )}
       </h1>
     ) : (
-      <h1 class="post-hero-title">{restOfTitle} <em>{lastWord}</em>
-        {frontmatter.previousTitle && (
-          <span class="title-history-btn" id="titleHistoryBtn">*</span>
-        )}
-      </h1>
+      <h1 class="post-hero-title">{restOfTitle} <em>{lastWord}</em></h1>
     )}
 
     {frontmatter.articleType && (
@@ -175,11 +167,6 @@ for (const h of headings) {
         <span class="fun-fact-tooltip" data-tip={frontmatter.funFact}>?</span>
       )}
     </div>
-    {frontmatter.previousTitle && (
-      <div class="title-history" id="titleHistory">
-        <span class="muted-label">previously: </span>{frontmatter.previousTitle}
-      </div>
-    )}
 
     <p class="post-subtitle">{frontmatter.description}</p>
 
@@ -294,14 +281,7 @@ for (const h of headings) {
         });
       });
 
-      var titleBtn = document.getElementById('titleHistoryBtn');
-      var titleHistory = document.getElementById('titleHistory');
-      if (titleBtn && titleHistory) {
-        titleBtn.addEventListener('click', function() {
-          titleHistory.classList.toggle('show');
-        });
-      }
-    });
+      });
   </script>
 </body>
 </html>

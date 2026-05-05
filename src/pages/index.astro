@@ -4,10 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="CHAIRS">
   <div class="intro">
-    <div class="intro-line"><span class="tooltip-trigger" data-tip="aka aunchers"><a href="/">CHAIRS</a></span></div>
-    <div class="intro-line" style="padding-left: 2ch;">I'm <span class="tooltip-trigger" data-tip="aka aunchers"><a href="/blog">Chairs</a>.</span></div>
-    <div class="intro-line" style="padding-left: 4ch;">I live in <span class="tooltip-trigger" data-tip="cold, vast, maple syrup"><a href="#">Canada</a></span></div>
-    <div class="intro-line" style="padding-left: 6ch;">and I love computers</div>
+    <div class="intro-line">Hi. I'm <span class="tooltip-trigger" data-tip="aka aunchers"><a href="/blog">Chairs</a>.</span></div>
+    <div class="intro-line" style="padding-left: 2ch;">I live in <span class="tooltip-trigger" data-tip="cold, vast, maple syrup"><a href="#">Canada</a></span></div>
+    <div class="intro-line" style="padding-left: 4ch;">and I love computers</div>
   </div>
   <hr>
   <div class="home-text">you might be here for my <a href="/blog">blog</a>
@@ -25,26 +24,4 @@ Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a></div>
     <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE" class="home-link" target="_blank">license</a>
     <a href="https://github.com/aunchers/aunchers.github.io" class="home-link" target="_blank">source</a>
   </div>
-  <div class="theme-switcher" style="margin-top: 2rem; font-size: 11px; color: var(--muted); font-style: normal;">
-    [<a href="#" class="theme-opt" data-theme="default">default</a>][<a href="#" class="theme-opt" data-theme="midnight">midnight</a>][<a href="#" class="theme-opt" data-theme="paper">paper</a>]
-  </div>
-  <script>
-    document.querySelectorAll('.theme-opt').forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        var theme = this.getAttribute('data-theme');
-        if (theme === 'default') {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.removeItem('theme');
-        } else {
-          document.documentElement.setAttribute('data-theme', theme);
-          localStorage.setItem('theme', theme);
-        }
-      });
-    });
-    var savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    }
-  </script>
-</BaseLayout>
+  </BaseLayout>
