@@ -279,12 +279,9 @@ hr {
   height: 31px;
   image-rendering: pixelated; /* Keeps small badges crisp */
   border: none;
-  transition: opacity 0.12s;
 }
 
-.badge-grid img:hover {
-  opacity: 0.8;
-}
+
 .home-link {
   display: inline-block;
   border: 1px dashed var(--muted);
