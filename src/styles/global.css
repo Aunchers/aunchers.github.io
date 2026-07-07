@@ -143,7 +143,7 @@ a:not(unstyled) {
   transition: all 0.12s;
   border-radius: 2px;
 }
-a:hover {
+a:not(unstyled):hover {
   background: var(--accent);
   color: #fff;
   font-style: normal;
