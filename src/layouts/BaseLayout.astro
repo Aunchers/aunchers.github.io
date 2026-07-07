@@ -19,7 +19,35 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Initial favicon (fallback) -->
+<link rel="icon" id="favicon" type="image/svg+xml" href="/defaultlogo.svg" />
+
+<script is:inline>
+  function updateFavicon() {
+    // Get the theme from the <html> tag, default to 'default' if not set
+    const theme = document.documentElement.getAttribute('data-theme') || 'default';
+    const favicon = document.getElementById('favicon');
+    
+    if (favicon) {
+      // Maps 'midnight' -> '/midnightlogo.svg', 'paper' -> '/paperlogo.svg', etc.
+      favicon.href = `/${theme}logo.svg`;
+    }
+  }
+
+  // 1. Update on initial load
+  updateFavicon();
+
+  // 2. Watch for theme changes in real-time (when the user clicks the switcher)
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        updateFavicon();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, { attributes: true });
+</script>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <meta property="og:title" content={title} />
