@@ -277,18 +277,13 @@ hr {
 .badge-grid img {
   width: 88px;
   height: 31px;
-  image-rendering: pixelated;
+  image-rendering: pixelated; /* Keeps small badges crisp */
   border: none;
-  transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
-  cursor: pointer;
+  transition: opacity 0.12s;
 }
 
 .badge-grid img:hover {
   opacity: 0.8;
-}
-
-.badge-grid img:active {
-  transform: scale(0.9); 
 }
 .home-link {
   display: inline-block;
