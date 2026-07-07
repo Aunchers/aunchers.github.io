@@ -135,7 +135,7 @@ body {
 
 ::selection { background: var(--accent); color: #fff; }
 
-a {
+a:not(unstyled) {
   color: var(--accent);
   text-decoration: none;
   padding: 0 4px;
