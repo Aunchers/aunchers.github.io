@@ -1,0 +1,13 @@
+<svg width="31" height="31" viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad_default" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e1e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#141414;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="31" height="31" fill="url(#grad_default)" />
+  <rect width="31" height="31" fill="none" stroke="#D90166" stroke-width="1" />
+  <text x="50%" y="52%" dominant-baseline="central" text-anchor="middle" 
+        fill="#d3d3d3" 
+        style="font-family: 'Fira Code', monospace; font-size: 20px; font-weight: bold; font-style: italic;">a</text>
+</svg>
