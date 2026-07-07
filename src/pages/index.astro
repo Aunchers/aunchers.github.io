@@ -7,26 +7,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <a href="/">home</a>
   </nav>
   <hr>
-
+  
   <div class="intro">
     <div class="intro-line">Hi. I'm <span class="tooltip-trigger" data-tip="aka aunchers"><a href="/blog">Chairs</a>.</span></div>
     <div class="intro-line" style="padding-left: 2ch;">I live in <span class="tooltip-trigger" data-tip="cold, vast, maple syrup"><a href="#">Canada</a></span></div>
     <div class="intro-line" style="padding-left: 4ch;">and I love computers</div>
   </div>
   <hr>
-  <div class="home-text">you might be here for my <a href="/blog">blog</a>
-or you want to see some of my <a href="/projects">projects</a></div>
-  <hr>
-  <div class="home-text">questions? here's my:
 
-Matrix: <a href="https://matrix.to/#/#home:matrix.aunchers.org">#home:matrix.aunchers.org</a>
-Fluxer: <a href="#">aunchers</a>
-GitHub: <a href="https://github.com/aunchers">aunchers</a>
-Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a></div>
+  <div class="home-text">
+    you might be here for my <a href="/blog">blog</a><br>
+    or you want to see some of my <a href="/projects">projects</a>
+  </div>
   <hr>
+
+  <div class="home-text">
+    questions? here's my:<br>
+    Matrix: <a href="https://matrix.to/#/#home:matrix.aunchers.org">#home:matrix.aunchers.org</a><br>
+    Fluxer: <a href="#">aunchers</a><br>
+    GitHub: <a href="https://github.com/aunchers">aunchers</a><br>
+    Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a>
+  </div>
+  <hr>
+
   <div class="home-links">
     <a href="/aunchers.asc" class="home-link">pgp key</a>
     <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE" class="home-link" target="_blank">license</a>
     <a href="https://github.com/aunchers/aunchers.github.io" class="home-link" target="_blank">source</a>
+  </div>
+
+  <div class="badge-section">
+    <span class="badge-title">badges (88x31)</span>
+    <div class="badge-grid">
+      <!-- my badge -->
+      <a href="https://aunchers.org">
+        <img src="/default8831.png" alt="aunchers">
+      </a>
+    </div>
   </div>
 </BaseLayout>
