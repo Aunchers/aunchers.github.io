@@ -22,7 +22,7 @@
   --white: #3a3a3a;
 }
 
-[data-theme="paper"] a { color: var(--accent); }
+[data-theme="paper"] a:not(.unstyled) { color: var(--accent); }
 [data-theme="paper"] .post-title-text a,
 [data-theme="paper"] .proj-name a { color: #3a3a3a; }
 
