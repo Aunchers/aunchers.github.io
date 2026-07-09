@@ -10,9 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.2.6",
-    "@astrojs/rss": "^4.0.11",
-    "astro": "^5.7.12"
+    "@astrojs/mdx": "7.0.2",
+    "@astrojs/rss": "4.0.19",
+    "astro": "^7.0.7"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
