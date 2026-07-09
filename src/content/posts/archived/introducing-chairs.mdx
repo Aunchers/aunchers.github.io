@@ -12,15 +12,15 @@ articleType: "deep-dive"
 difficulty: "beginner"
 tools: ["Astro", "MDX", "CSS"]
 author: "aunchers"
-
+# todo: fix imports to use dynamic paths
 ---
 
-import Callout from '../../components/Callout.astro';
-import Gallery from '../../components/Gallery.astro';
-import CodeCompare from '../../components/CodeCompare.astro';
-import Collapsible from '../../components/Collapsible.astro';
-import ToolsUsed from '../../components/ToolsUsed.astro';
-import Footnote from '../../components/Footnote.astro';
+import Callout from '../../../components/Callout.astro';
+import Gallery from '../../../components/Gallery.astro';
+import CodeCompare from '../../../components/CodeCompare.astro';
+import Collapsible from '../../../components/Collapsible.astro';
+import ToolsUsed from '../../../components/ToolsUsed.astro';
+import Footnote from '../../../components/Footnote.astro';
 
 the old blog was dead simple. content collection, glob loader pulling `.mdx` files out of `src/content/posts/`, a layout that dumped the rendered content into a div, and that was it. it worked because there wasn't much to break.
 
