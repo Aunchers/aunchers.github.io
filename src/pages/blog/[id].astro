@@ -6,34 +6,14 @@ export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map((post) => ({
     params: { id: post.data.slug },
+    props: { post },
   }));
 }
 
-const { id } = Astro.params;
-const posts = await getCollection('posts');
-const post = posts.find(p => p.data.slug === id);
-
-if (!post) {
-  throw new Error(`Post with slug "${id}" not found`);
-}
-
-let relatedProject = null;
-if (post.data.relatedProject) {
-  const projects = await getCollection('projects');
-  relatedProject = projects.find(p => p.data.name.toLowerCase() === post.data.relatedProject.toLowerCase());
-}
-
-const { Content, headings } = await render(post);
-
-const headingList = (headings || [])
-  .filter(h => h.depth >= 2 && h.depth <= 3)
-  .map(h => ({
-    text: h.text,
-    level: h.depth,
-    slug: h.slug,
-  }));
+const { post } = Astro.props;
+const { Content } = await render(post);
 ---
 
-<BlogPostLayout frontmatter={post.data} headings={headingList} relatedProject={relatedProject}>
+<BlogPostLayout frontmatter={post.data}>
   <Content />
 </BlogPostLayout>

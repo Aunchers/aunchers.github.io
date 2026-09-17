@@ -7,6 +7,7 @@ export default defineConfig({
   base: "/",
   integrations: [mdx()],
   output: "static",
+  prefetch: true,
   markdown: {
     shikiConfig: {
       theme: "github-dark",

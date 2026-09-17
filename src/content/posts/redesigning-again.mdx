@@ -1,0 +1,96 @@
+---
+title: "Redesigning, again"
+description: "why the site shipped twice this month, and what a boring stylesheet taught me"
+date: 2026-09-16
+slug: "redesigning-again"
+status: "published"
+---
+
+import Callout from '../../components/Callout.astro';
+
+this site went through three versions in about a month. the first one was built
+in three days, the second was stripped down to almost nothing, and this one sits
+somewhere in between. this post is about why the middle version was wrong and
+what ended up sticking around.
+
+## the truth about the first version
+
+the original design had everything: reading progress bars, drop caps, collapsible
+tables of contents, series navigation, five kinds of post metadata, footnotes about
+footnotes. every single feature existed because it *could* exist, not because any
+correctly-classed reader had asked for it.
+
+<Callout type="warning" title="the trap">
+a blog system is over-engineered the moment you add a feature to impress
+yourself rather than to help someone reading the site. i built four of them.
+</Callout>
+
+the site looked great in screenshots. but underneath, the css had grown to over a
+thousand lines with three themes, each one carving out exceptions for the others.
+changing one color meant checking eighteen files.
+
+## what got deleted
+
+the payoff, in rough numbers:
+
+| thing i removed | lines it cost |
+| --- | --- |
+| category pages and tag routing | ~130 |
+| collapsible TOC + heading plumbing | ~90 |
+| reading progress bar and drop caps | ~60 |
+| series nav, related projects, tools tags | ~150 |
+| one-off css for each of the above | ~400 |
+
+none of it came back. nobody misses any of it.
+
+<Callout type="info" title="what stayed">
+callouts, collapsible sections, galleries, footnotes. the components that a real
+post actually uses. if i haven't written with it, it doesn't ship it.
+</Callout>
+
+## borrowing a font, keeping a look
+
+the serif you're reading right now is borrowed from a philosophy professor's
+hand-rolled webpage: [markmccullagh.ca](https://www.markmccullagh.ca/). his site
+is one page of text on a cream background, with a single stylesheet that his
+editor students could read in under a minute. no framework, no `<footer>`, no
+cookie banner, absolutely nothing to apologize for.
+
+what i took from it:
+
+1. **the font**. georgia and friends for body text. reading long-form prose in
+   monospace is like doing crosswords with a sledgehammer.
+2. **the layout**. one column, sized in characters, not pixels. text that no one
+   has to squint at.
+3. **the honesty**. a plain page that says exactly what it is.
+
+what i kept from the original: the dark theme, the pink accent, the monospace
+for everything that *isn't* prose (nav, dates, tags, code), and the 88x31 badges
+because some traditions are load-bearing.
+
+```css
+/* the entire type system now */
+body  { font-family: Georgia, serif; }
+code, nav, time { font-family: 'Fira Code', monospace; }
+h1, h2, h3 { margin: 0.5em 0 0 0; }
+```
+
+## consistency is just minimalism with a memory
+
+the rule this version follows: for any visual concept there is exactly one
+definition. one border color, one border width, one muted color, one accent.
+three themes still exist, but now each of them only overrides six css variables
+instead of six hundred selectors.
+
+<Callout type="tip" title="the one rule that survived">
+if you find yourself writing a second rule to fix the first rule, delete
+both and change the first rule.
+</Callout>
+
+the stylesheet that took three days to write originally now fits on one screen.
+the blog system fits in two files. and somehow the site still looks like itself --
+just quieter about it.
+
+---
+
+*the next redesign will either not happen, or will only make things fewer. ask me in a month which i bet on.*

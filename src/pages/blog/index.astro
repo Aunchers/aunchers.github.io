@@ -6,8 +6,6 @@ const allPosts = await getCollection("posts");
 const visiblePosts = allPosts.filter(p => p.data.status !== "draft");
 visiblePosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const allCategories = [...new Set(visiblePosts.flatMap(p => p.data.categories || []))].sort();
-
 const postsByYear = visiblePosts.reduce((acc, post) => {
   const year = post.data.date.getFullYear();
   if (!acc[year]) acc[year] = [];
@@ -21,14 +19,16 @@ const fmt = (d) => {
   return String(date.getDate()).padStart(2, "0") + "/" + String(date.getMonth() + 1).padStart(2, "0") + "/" + date.getFullYear();
 };
 
-const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 ---
 
 <BaseLayout title="Blog - CHAIRS" description="thoughts, tutorials, logs, and other writings." ogType="article">
   <nav class="sub-nav">
-    <a href="/">home</a>
-    <span class="sub-nav-sep">/</span>
-    <span>blog</span>
+    <span class="sub-nav-links">
+      <a href="/">home</a>
+      <span class="sub-nav-sep">/</span>
+      <span>blog</span>
+    </span>
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
   </nav>
   <hr>
 
@@ -46,13 +46,6 @@ const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
           </div>
         </div>
         {post.data.description && <p class="post-preview">{post.data.description}</p>}
-        {post.data.categories && post.data.categories.length > 0 && (
-          <div class="post-cats">
-            {post.data.categories.map(cat => (
-              <a href={`/blog/s/${slugify(cat)}`} class="post-cat">{cat}</a>
-            ))}
-          </div>
-        )}
       </li>
     ))}
   </ul>

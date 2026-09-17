@@ -4,17 +4,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="404 - CHAIRS" description="page not found">
   <nav class="sub-nav">
-    <a href="/">home</a>
+    <span class="sub-nav-links">
+      <a href="/">home</a>
+    </span>
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
   </nav>
 
-  <div style="padding: 4rem 0; text-align: center;">
-    <div style="font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; font-style: normal;">error</div>
-    <h1 class="page-title" style="margin-bottom: 1rem; font-size: clamp(48px, 8vw, 72px);">404</h1>
-    <p class="page-desc" style="margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">the page you were looking for doesn't exist.</p>
-    <div style="display: flex; gap: 1.5rem; font-size: 14px; justify-content: center;">
-      <a href="/">home</a>
-      <a href="/blog">blog</a>
-      <a href="/projects">projects</a>
-    </div>
-  </div>
+  <h1 class="page-title">404</h1>
+  <p class="page-desc">the page you were looking for doesn't exist.</p>
+
+  <hr>
+
+  <p>
+    <a href="/">home</a> ·
+    <a href="/blog">blog</a> ·
+    <a href="/projects">projects</a>
+  </p>
 </BaseLayout>
