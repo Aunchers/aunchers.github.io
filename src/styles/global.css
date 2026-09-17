@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    CHAIRS — minimal redesign
    one page width, one border style, one link style, three themes
    serif body text (markmccullagh.ca), code/nav stays Fira Code
@@ -119,6 +119,11 @@ del, s { color: var(--muted); }
   font-style: normal;
   font-size: 13px;
   margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .sub-nav-sep { color: var(--muted); margin: 0 0.3em; }
@@ -126,7 +131,6 @@ del, s { color: var(--muted); }
 /* ---------- theme toggle ---------- */
 
 .theme-toggle {
-  margin: 0.25rem 0 0;
   padding: 3px 10px;
   font-family: 'Fira Code', monospace;
   font-style: normal;
@@ -589,7 +593,7 @@ figcaption {
 
 .proj-card {
   border-bottom: 1px solid var(--border);
-  padding: 1.25rem 0;
+  padding: 1.5rem 0;
 }
 
 .proj-card:first-child { border-top: 1px solid var(--border); }
@@ -602,63 +606,73 @@ figcaption {
   gap: 0.25rem 1rem;
 }
 
-.proj-name {
-  font-size: 18px;
-  font-weight: bold;
-  flex: 1;
-}
+.proj-name { font-size: 20px; font-weight: bold; }
 
-.proj-name a { color: var(--white); padding: 2px 0; }
-
-.proj-name a:hover { color: var(--accent); }
-
-.proj-hero { margin: 0.25rem 0 0; }
-
-.proj-row-actions, .proj-links { display: flex; gap: 0.5rem; }
-
-.proj-action-btn {
-  font-family: 'Fira Code', monospace;
-  font-style: normal;
-  font-size: 12px;
-  border: 1px solid var(--text);
+.proj-name a {
   color: var(--white);
-  padding: 4px 12px;
-  text-decoration: none;
+  padding: 2px 0;
+  font-style: normal;
 }
 
-.proj-action-btn:hover {
-  border-color: var(--accent);
+.proj-name a:hover {
   color: var(--accent);
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.proj-hero { margin: 0.25rem 0 0; }
-
-.proj-hero .page-title { margin-top: 0.3em; }
-
-.proj-hero-desc {
-  font-size: 15px;
-  color: var(--muted);
-  margin: 0.2em 0 1em;
-}
-
-.proj-hero-meta {
+.proj-dates {
   font-family: 'Fira Code', monospace;
   font-style: normal;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
+  white-space: nowrap;
+}
+
+.proj-desc {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin: 0.35em 0 0.6em;
+  line-height: 1.5;
+}
+
+/* dashed chips = what the project is about */
+.proj-taglist, .proj-tech {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 0;
+  margin: 0 0 0.9rem;
+}
+
+.proj-tech-tag {
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* footer row: status dot on the left, link buttons on the right
+   (solid border style, a different family from the dashed chips) */
+.proj-foot {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 0.75rem;
-  margin-bottom: 0.75rem;
 }
-
-.proj-hero-meta .meta-date { color: var(--muted); }
 
 .status-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.3em;
+  gap: 0.35em;
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .status-chip::before {
@@ -671,48 +685,63 @@ figcaption {
 
 .status-chip[data-status="active"]::before { background: #2e7d4f; }
 .status-chip[data-status="archived"]::before { background: var(--muted); }
-.status-chip[data-status="hiatus"]::before { background: #b58900; }
+.status-chip[data-status="hiatus"]::before,
 .status-chip[data-status="wip"]::before { background: #b58900; }
 
-.proj-taglist {
-  list-style: none;
+.proj-foot-links, .proj-hero-links, .proj-row-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  padding: 0;
-  margin: 0 0 1rem;
-}
-
-.proj-hero-links {
-  display: flex;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
 }
 
-.proj-body { margin: 1rem 0; }
-
-/* ---------- old project row helpers ---------- */
-
-.proj-dates { white-space: nowrap; }
-
-.proj-desc {
-  font-size: 14px;
-  color: var(--muted);
-  margin: 0.3em 0 0.4em;
-  line-height: 1.45;
-}
-
-.proj-tech { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.5rem; }
-
-.proj-tech-tag {
+.proj-foot-links a,
+.proj-hero-links a,
+.proj-row-actions a {
   font-family: 'Fira Code', monospace;
   font-style: normal;
-  font-size: 11px;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  padding: 2px 8px;
-  border-radius: 2px;
+  font-size: 12px;
+  border: 1px solid var(--text);
+  color: var(--white);
+  padding: 4px 12px;
+  text-decoration: none;
 }
+
+.proj-foot-links a:hover,
+.proj-hero-links a:hover,
+.proj-row-actions a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* individual project page */
+.proj-hero { padding: 0.5rem 0 1.25rem; }
+
+.proj-hero .page-title { margin-top: 0.25em; }
+
+.proj-hero-desc {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0.25em 0 1.1em;
+  line-height: 1.5;
+}
+
+.proj-hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 12px;
+  margin-bottom: 0.9rem;
+}
+
+.proj-hero-meta .meta-date { color: var(--muted); }
+
+.proj-body { margin: 1.5rem 0 2rem; }
+
+.proj-body :first-child { margin-top: 0; }
 
 /* ---------- print & misc ---------- */
 

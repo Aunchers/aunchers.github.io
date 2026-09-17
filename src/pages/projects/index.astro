@@ -7,9 +7,12 @@ const projects = await getCollection("projects");
 
 <BaseLayout title="Projects - CHAIRS" description="things I've built, broken, and occasionally fixed." ogType="website">
   <nav class="sub-nav">
-    <a href="/">home</a>
-    <span class="sub-nav-sep">/</span>
-    <span>projects</span>
+    <span class="sub-nav-links">
+      <a href="/">home</a>
+      <span class="sub-nav-sep">/</span>
+      <span>projects</span>
+    </span>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐ theme</button>
   </nav>
   <hr>
 
@@ -21,20 +24,21 @@ const projects = await getCollection("projects");
     <div class="proj-card">
       <div class="proj-card-top">
         <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
-        {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
+        <span class="proj-dates">{proj.data.dateRange || ''}</span>
       </div>
       <p class="proj-desc">{proj.data.description}</p>
       {proj.data.tech && proj.data.tech.length > 0 && (
-        <div class="proj-tech">
-          {proj.data.tech.map(t => <span class="proj-tech-tag">{t}</span>)}
-        </div>
+        <ul class="proj-taglist">
+          {proj.data.tech.map(t => <li class="proj-tech-tag">{t}</li>)}
+        </ul>
       )}
-      {(proj.data.url || proj.data.repo) && (
-        <div class="proj-row-actions">
-          {proj.data.repo && <a class="proj-action-btn" href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
-          {proj.data.url && <a class="proj-action-btn" href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
-        </div>
-      )}
+      <div class="proj-foot">
+        <span class="status-chip" data-status={proj.data.status || 'active'}>{proj.data.status || 'active'}</span>
+        <span class="proj-foot-links">
+          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
+          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
+        </span>
+      </div>
     </div>
   ))}
 

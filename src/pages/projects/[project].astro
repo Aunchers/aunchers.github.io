@@ -25,9 +25,12 @@ const status = statusLabels[proj.data.status || 'active'] || proj.data.status;
 
 <BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
   <nav class="sub-nav">
-    <a href="/">home</a>
-    <span class="sub-nav-sep">/</span>
-    <a href="/projects">projects</a>
+    <span class="sub-nav-links">
+      <a href="/">home</a>
+      <span class="sub-nav-sep">/</span>
+      <a href="/projects">projects</a>
+    </span>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐ theme</button>
   </nav>
 
   <header class="proj-hero">
