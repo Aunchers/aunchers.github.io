@@ -2,41 +2,33 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="CHAIRS">
-  <nav class="sub-nav">
-    <a href="/">home</a>
-  </nav>
+<BaseLayout title="Chairs">
+  <img src="/default8831.png" width="130" height="130" alt="chairs" style="height:auto;">
+
+  <h1>Chairs</h1>
+  <h2>a guy who appreciates <a href="https://en.wikipedia.org/wiki/Chair" rel="noopener">chairs</a></h2>
+
+  <p>Hi. I'm Chairs. I live in Canada, and I love computers.</p>
+
+  <h3>Writing</h3>
+  <p>I put my <a href="/blog">blog</a> on here. it's not a ton of posts, but they're
+  mine.</p>
+
+  <h3>Projects</h3>
+  <p>Things I've built (and broken) live on the <a href="/projects">projects</a>
+  page.</p>
+
+  <h3>Contact</h3>
+  <p>Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a></p>
+  <p>Matrix: <a href="https://matrix.to/#/#home:matrix.aunchers.org" rel="noopener">#home:matrix.aunchers.org</a></p>
+  <p>GitHub: <a href="https://github.com/aunchers" rel="noopener">aunchers</a></p>
+
   <hr>
 
-  <div class="intro">
-    <div class="intro-line">Hi. I'm <span class="tooltip-trigger" data-tip="aka aunchers"><a href="/blog">Chairs</a>.</span></div>
-    <div class="intro-line" style="padding-left: 2ch;">I live in <span class="tooltip-trigger" data-tip="cold, vast, maple syrup"><a href="#">Canada</a></span></div>
-    <div class="intro-line" style="padding-left: 4ch;">and I love computers</div>
-  </div>
-  <hr>
-  <div class="home-text">you might be here for my <a href="/blog">blog</a> <br>
-or you want to see some of my <a href="/projects">projects</a></div>
-  <hr>
-  <div class="home-text">questions? here's my: <br>
-Matrix: <a href="https://matrix.to/#/#home:matrix.aunchers.org">#home:matrix.aunchers.org</a> <br>
-Fluxer: <a href="#">aunchers</a> <br>
-GitHub: <a href="https://github.com/aunchers">aunchers</a> <br>
-Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a></div>
-  <hr>
-
-  <div class="home-links">
-    <a href="/aunchers.asc" class="home-link">pgp key</a>
-    <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE" class="home-link" target="_blank">license</a>
-    <a href="https://github.com/aunchers/aunchers.github.io" class="home-link" target="_blank">source</a>
-  </div>
-
-  <div class="badge-section">
-    <span class="badge-title">badges (88x31)</span>
-    <div class="badge-grid">
-      <!-- my badge -->
-      <a href="https://aunchers.org" class="unstyled">
-        <img src="/default8831.png" id="home-badge" alt="aunchers">
-      </a>
-    </div>
-  </div>
+  <p class="muted">
+    <a href="/aunchers.asc">pgp key</a> ·
+    <a href="/rss.xml">rss</a> ·
+    <a href="https://github.com/aunchers/aunchers.github.io" rel="noopener">source</a> ·
+    <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE" rel="noopener">license</a>
+  </p>
 </BaseLayout>

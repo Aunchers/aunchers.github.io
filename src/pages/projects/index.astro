@@ -5,42 +5,24 @@ import { getCollection } from "astro:content";
 const projects = await getCollection("projects");
 ---
 
-<BaseLayout title="Projects - CHAIRS" description="things I've built, broken, and occasionally fixed." ogType="website">
+<BaseLayout title="Projects - Chairs" description="things I've built, broken, and occasionally fixed.">
   <nav class="sub-nav">
     <a href="/">home</a>
-    <span class="sub-nav-sep">/</span>
-    <span>projects</span>
   </nav>
-  <hr>
 
-  <h1 class="page-title"><em>/</em>projects</h1>
-  <p class="page-desc">things I've built, broken, and occasionally fixed.</p>
-  <hr>
+  <h1>Projects</h1>
+  <p>things I've built, broken, and occasionally fixed.</p>
 
-  {projects.map((proj) => (
-    <div class="proj-card">
-      <div class="proj-card-top">
-        <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
-      </div>
-      <p class="proj-desc">{proj.data.description}</p>
-      {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
-      {proj.data.tech && proj.data.tech.length > 0 && (
-        <div class="proj-tech">
-          {proj.data.tech.map(t => <span class="proj-tech-tag">{t}</span>)}
-        </div>
-      )}
-      {(proj.data.url || proj.data.repo) && (
-        <div class="proj-links">
-          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
-          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
-        </div>
-      )}
-    </div>
-  ))}
+  <ul class="postlist">
+    {projects.map((proj) => (
+      <li>
+        <a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a>
+        {proj.data.dateRange && <span class="muted"> ( {proj.data.dateRange} )</span>} —
+        {proj.data.description}
+      </li>
+    ))}
+  </ul>
 
   <hr>
-  <div class="flex-between" style="font-size:13px;">
-    <span class="muted-text">{projects.length} projects</span>
-    <a href="https://github.com/aunchers">github</a>
-  </div>
+  <p class="muted">{projects.length} projects · <a href="https://github.com/aunchers" rel="noopener">github</a></p>
 </BaseLayout>

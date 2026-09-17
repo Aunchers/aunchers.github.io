@@ -11,7 +11,7 @@ const { title, description, ogImage, ogType } = Astro.props;
 
 const siteUrl = "https://aunchers.github.io";
 const defaultOgImage = "/og.png";
-const defaultDesc = "thoughts, tutorials, logs, and other writings.";
+const defaultDesc = "thoughts, logs, and other writings.";
 ---
 
 <html lang="en">
@@ -19,33 +19,9 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
-  <link rel="icon" id="favicon" type="image/svg+xml" href="/defaultlogo.svg" />
-  <script is:inline>
-    function updateThemeAssets() {
-      const theme = document.documentElement.getAttribute('data-theme') || 'default';
-      const favicon = document.getElementById('favicon');
-      if (favicon) {
-        favicon.href = `/${theme}logo.svg`;
-      }
-      const badge = document.getElementById('home-badge');
-      if (badge) {
-        badge.src = `/${theme}8831.png`;
-      }
-    }
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    updateThemeAssets();
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          updateThemeAssets();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
 
   <meta property="og:title" content={title} />
   <meta property="og:type" content={ogType || "website"} />
@@ -54,38 +30,11 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
   <meta property="og:description" content={description || defaultDesc} />
   <meta property="og:site_name" content="CHAIRS" />
 
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description || defaultDesc} />
-  <meta name="twitter:image" content={ogImage ? new URL(ogImage, siteUrl).href : new URL(defaultOgImage, siteUrl).href} />
-  <script is:inline>
-    var savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
-  </script>
 </head>
 <body>
-  <div class="page">
-    <slot />
-  </div>
-  <div class="theme-switcher">
-    [<a href="#" class="theme-opt" data-theme="default">default</a>][<a href="#" class="theme-opt" data-theme="midnight">midnight</a>][<a href="#" class="theme-opt" data-theme="paper">paper</a>]
-  </div>
-  <script is:inline>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.theme-opt').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          var theme = this.getAttribute('data-theme');
-          if (theme === 'default') {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.removeItem('theme');
-          } else {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-          }
-        });
-      });
-    });
-  </script>
+  <slot />
 </body>
 </html>
