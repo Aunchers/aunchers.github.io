@@ -1,5 +1,18 @@
 ---
 import '../styles/global.css';
+import { execSync } from 'node:child_process';
+
+function getLastCommit() {
+  try {
+    const hash = execSync('git rev-parse --short=7 HEAD', { encoding: 'utf8' }).trim();
+    const date = execSync('git log -1 --format=%as', { encoding: 'utf8' }).trim();
+    return { hash, date };
+  } catch {
+    return null;
+  }
+}
+
+const lastCommit = getLastCommit();
 
 interface Props {
   title: string;
@@ -60,6 +73,17 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
 <body>
   <div class="page">
     <slot />
+    <footer class="site-footer">
+      <p>made with love by <a href="https://github.com/aunchers" target="_blank" rel="noopener">aunchers</a></p>
+      {lastCommit && (
+        <p>
+          <a href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`} target="_blank" rel="noopener">
+            last commit {lastCommit.hash}
+          </a>
+          <span class="muted-text"> · {lastCommit.date}</span>
+        </p>
+      )}
+    </footer>
   </div>
   <script is:inline>
     var THEME_ORDER = ['default', 'midnight', 'paper'];
