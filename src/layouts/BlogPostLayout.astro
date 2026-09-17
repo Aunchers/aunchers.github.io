@@ -104,13 +104,9 @@ const fmtDate = (d: Date) => {
     </div>
 
     <footer class="site-footer">
-      <p>made with love by <a href="https://github.com/aunchers" target="_blank" rel="noopener">aunchers</a></p>
       {lastCommit && (
         <p>
-          <a href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`} target="_blank" rel="noopener">
-            last commit {lastCommit.hash}
-          </a>
-          <span class="muted-text"> · {lastCommit.date}</span>
+          made with love by aunchers<span class="muted-text"> · last commit<sup class="footnote-ref"><a href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}>{lastCommit.hash}</a></sup> · {lastCommit.date}</span>
         </p>
       )}
     </footer>
