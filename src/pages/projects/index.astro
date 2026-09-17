@@ -21,9 +21,9 @@ const projects = await getCollection("projects");
     <div class="proj-card">
       <div class="proj-card-top">
         <span class="proj-name"><a href={`/projects/${proj.data.name.toLowerCase()}`}>{proj.data.name}</a></span>
+        {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
       </div>
       <p class="proj-desc">{proj.data.description}</p>
-      {proj.data.dateRange && <span class="proj-dates">{proj.data.dateRange}</span>}
       {proj.data.tech && proj.data.tech.length > 0 && (
         <div class="proj-tech">
           {proj.data.tech.map(t => <span class="proj-tech-tag">{t}</span>)}
@@ -31,8 +31,8 @@ const projects = await getCollection("projects");
       )}
       {(proj.data.url || proj.data.repo) && (
         <div class="proj-links">
-          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
-          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
+          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
+          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
         </div>
       )}
     </div>

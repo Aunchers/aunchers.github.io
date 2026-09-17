@@ -107,10 +107,11 @@ del, s { color: var(--muted); }
 /* ---------- page headings ---------- */
 
 .page-title {
-  font-size: clamp(24px, 4vw, 36px);
+  font-size: clamp(32px, 7vw, 48px);
   font-weight: bold;
+  line-height: 1.2;
   color: var(--white);
-  margin: 0.4em 0 0.25em;
+  margin: 0.35em 0 0.2em;
 }
 
 .page-title em { color: var(--accent); font-style: normal; }
@@ -254,11 +255,11 @@ del, s { color: var(--muted); }
 /* ---------- blog post ---------- */
 
 .post-hero-title {
-  font-size: clamp(26px, 5vw, 40px);
+  font-size: clamp(30px, 6vw, 44px);
   font-weight: bold;
   line-height: 1.2;
   color: var(--white);
-  margin: 0.4em 0 0;
+  margin: 0.35em 0 0;
 }
 
 .post-hero-title a { color: var(--white); }
@@ -483,41 +484,39 @@ figcaption {
 
 .proj-card {
   border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+  padding: 1.25rem 0;
 }
 
-.proj-card:last-child { border-bottom: none; }
+.proj-card:first-child { border-top: 1px solid var(--border); }
 
 .proj-card-top {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.25rem 1rem;
 }
 
 .proj-name {
-  font-size: 17px;
-  font-style: normal;
+  font-size: 18px;
+  font-weight: bold;
+  flex: 1;
 }
 
-.proj-name a { color: var(--white); }
+.proj-name a {
+  color: var(--white);
+  padding: 2px 0;
+}
 
 .proj-name a:hover { color: var(--accent); }
+
+.proj-dates { white-space: nowrap; }
 
 .proj-desc {
   font-size: 14px;
   color: var(--muted);
   margin: 0.3em 0 0.4em;
   line-height: 1.45;
-}
-
-.proj-dates {
-  font-family: 'Fira Code', monospace;
-  font-style: normal;
-  font-size: 11px;
-  color: var(--muted);
-  margin: 0;
 }
 
 .proj-tech { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.5rem; }
@@ -535,6 +534,7 @@ figcaption {
   font-family: 'Fira Code', monospace;
   font-style: normal;
   font-size: 13px;
+  margin-bottom: 0;
 }
 
 .proj-links { display: flex; gap: 1rem; font-family: 'Fira Code', monospace; font-style: normal; font-size: 13px; }

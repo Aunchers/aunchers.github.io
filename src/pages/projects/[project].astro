@@ -25,13 +25,13 @@ const { Content } = await render(proj);
 
   <h1 class="page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
   <p class="page-desc">{proj.data.description}</p>
-  {proj.data.dateRange && <p class="proj-dates">{proj.data.dateRange}</p>}
+  <p class="proj-dates">{proj.data.dateRange}</p>
 
   {(proj.data.repo || proj.data.url) && (
     <p class="proj-links-bottom">
-      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
       {proj.data.repo && proj.data.url && <span> · </span>}
-      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
+      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
     </p>
   )}
 
