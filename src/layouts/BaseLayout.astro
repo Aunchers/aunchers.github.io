@@ -19,7 +19,13 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
+  <script is:inline>
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
+  </script>
   <link rel="icon" id="favicon" type="image/svg+xml" href="/defaultlogo.svg" />
+  <link rel="preload" href="/fonts/fira-code-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/fira-code-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
   <script is:inline>
     function updateThemeAssets() {
       const theme = document.documentElement.getAttribute('data-theme') || 'default';
@@ -45,23 +51,11 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
     observer.observe(document.documentElement, { attributes: true });
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet" />
-
   <meta property="og:title" content={title} />
   <meta property="og:type" content={ogType || "website"} />
   <meta property="og:url" content={Astro.url} />
-  <meta property="og:image" content={ogImage ? new URL(ogImage, siteUrl).href : new URL(defaultOgImage, siteUrl).href} />
   <meta property="og:description" content={description || defaultDesc} />
   <meta property="og:site_name" content="CHAIRS" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description || defaultDesc} />
-  <meta name="twitter:image" content={ogImage ? new URL(ogImage, siteUrl).href : new URL(defaultOgImage, siteUrl).href} />
-  <script is:inline>
-    var savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
-  </script>
 </head>
 <body>
   <div class="page">
@@ -86,6 +80,9 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
         });
       });
     });
+  </script>
+  <script>
+    import 'astro:prefetch';
   </script>
 </body>
 </html>
