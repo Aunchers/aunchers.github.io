@@ -230,21 +230,24 @@ del, s { color: var(--muted); }
 .tooltip-trigger::after {
   content: attr(data-tip);
   position: absolute;
-  bottom: 125%;
+  bottom: calc(100% + 3px);
   left: 50%;
   transform: translateX(-50%);
   background: var(--code-bg);
   color: var(--muted);
   border: 1px solid var(--border);
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
   font-size: 11px;
-  padding: 2px 8px;
+  padding: 2px 7px;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s;
 }
 
-.tooltip-trigger:hover::after { opacity: 1; }
+.tooltip-trigger:hover::after,
+.tooltip-trigger:focus-within::after { opacity: 1; }
 
 .home-links {
   display: flex;
@@ -722,6 +725,42 @@ figcaption {
 .proj-body { margin: 1.5rem 0 2rem; }
 
 .proj-body :first-child { margin-top: 0; }
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 767px) {
+  body {
+    padding: 1rem;
+    font-size: 15.5px;
+  }
+
+  .page { padding-top: 12px; }
+
+  .page-title { font-size: clamp(26px, 8vw, 34px); }
+  .post-hero-title { font-size: clamp(24px, 7vw, 32px); }
+
+  .sub-nav { margin-bottom: 1rem; }
+
+  /* blog list rows: date above title, roomier hit area */
+  .post-header { gap: 0.35rem; }
+  .post-title-text a { display: inline-block; padding: 4px 0; line-height: 1.35; }
+
+  .home-links { flex-wrap: wrap; gap: 0.4rem; }
+
+  .intro-line + .intro-line,
+  .intro-line + .intro-line + .intro-line { line-height: 1.45; }
+
+  .proj-hero-meta { gap: 0.5rem; }
+  .proj-foot { align-items: flex-start; flex-direction: column; }
+
+  .post-content pre { font-size: 12px; padding: 0.7em 0.9em; }
+
+  .callout { padding: 0.6em 0.8em; }
+
+  .theme-toggle, .post-nav a, .proj-foot-links a {
+    min-height: 32px;
+  }
+}
 
 /* ---------- print & misc ---------- */
 
