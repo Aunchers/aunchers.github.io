@@ -101,7 +101,7 @@ html { scroll-behavior: smooth; }
 body {
   color: var(--text);
   background: var(--bg);
-  font-family: 'Fira Code', monospace;
+  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
   font-style: italic;
   line-height: 1.6;
   padding: 2rem;
@@ -109,6 +109,15 @@ body {
   min-height: 100vh;
   display: flex;
   justify-content: flex-start;
+}
+
+h1, h2, h3 {
+  margin: 0.5em 0 0 0;
+}
+
+p {
+  line-height: 1.4;
+  margin-top: 0.5em;
 }
 
 .page {
@@ -1088,8 +1097,6 @@ hr {
 
 [data-theme="paper"] body,
 html[data-theme="paper"] body {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
-  line-height: 1.6;
   font-size: 115%;
   margin: 20px auto;
   max-width: 62ch;
@@ -1101,17 +1108,6 @@ html[data-theme="paper"] body {
   max-width: none;
   width: auto;
   padding-top: 0;
-}
-
-html[data-theme="paper"] h1,
-html[data-theme="paper"] h2,
-html[data-theme="paper"] h3 {
-  margin: 0.5em 0 0 0;
-}
-
-html[data-theme="paper"] p {
-  line-height: 1.4;
-  margin-top: 0.5em;
 }
 
 html[data-theme="paper"] a:not([class]) {
@@ -1145,8 +1141,4 @@ html[data-theme="paper"] img {
 
 html[data-theme="paper"] .theme-switcher {
   font-family: 'Fira Code', monospace;
-}
-
-html[data-theme="paper"] body {
-  font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
 }
