@@ -342,6 +342,7 @@ del, s { color: var(--muted); }
 .proj-links a,
 .proj-links-bottom a,
 .post-nav a,
+.home-links a,
 .theme-toggle {
   border: 1px dashed var(--border);
   padding: 1px 7px;
@@ -357,6 +358,7 @@ del, s { color: var(--muted); }
 .proj-links a:hover,
 .proj-links-bottom a:hover,
 .post-nav a:hover,
+.home-links a:hover,
 .theme-toggle:hover {
   border-color: var(--accent);
   color: var(--accent);
