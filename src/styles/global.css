@@ -699,6 +699,7 @@ figcaption {
 
 .status-chip[data-status="active"]::before { background: #2e7d4f; }
 .status-chip[data-status="archived"]::before { background: var(--muted); }
+.status-chip[data-status="dead"]::before { background: #a94442; }
 .status-chip[data-status="hiatus"]::before,
 .status-chip[data-status="wip"]::before { background: #b58900; }
 
