@@ -60,8 +60,9 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
 <body>
   <div class="page">
     <slot />
+    <hr>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐ theme</button>
   </div>
-  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme">◐</button>
   <script is:inline>
     var THEME_ORDER = ['default', 'midnight', 'paper'];
     var THEME_GLYPH = { default: '◐', midnight: '☾', paper: '☀' };
