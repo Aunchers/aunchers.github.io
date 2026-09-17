@@ -780,9 +780,9 @@ figcaption {
   /* thumbs, not cursors: comfortable tap targets on chips */
   .theme-toggle {
     min-width: 44px;
-    min-height: 40px;
-    padding: 8px 14px;
-    font-size: 13px;
+    min-height: 44px;
+    padding: 8px 16px;
+    font-size: 20px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
