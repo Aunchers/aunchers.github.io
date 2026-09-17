@@ -30,9 +30,9 @@ const projects = await getCollection("projects");
         </div>
       )}
       {(proj.data.url || proj.data.repo) && (
-        <div class="proj-links">
-          {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
-          {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
+        <div class="proj-row-actions">
+          {proj.data.repo && <a class="proj-action-btn" href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
+          {proj.data.url && <a class="proj-action-btn" href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
         </div>
       )}
     </div>

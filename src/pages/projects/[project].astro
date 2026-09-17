@@ -12,6 +12,15 @@ export async function getStaticPaths() {
 
 const { proj } = Astro.props;
 const { Content } = await render(proj);
+
+const statusLabels: Record<string, string> = {
+  active: "active",
+  archived: "archived",
+  hiatus: "on hiatus",
+  wip: "work in progress",
+};
+
+const status = statusLabels[proj.data.status || 'active'] || proj.data.status;
 ---
 
 <BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
@@ -19,27 +28,38 @@ const { Content } = await render(proj);
     <a href="/">home</a>
     <span class="sub-nav-sep">/</span>
     <a href="/projects">projects</a>
-    <span class="sub-nav-sep">/</span>
-    <span>{proj.data.name.toLowerCase()}</span>
   </nav>
 
-  <h1 class="page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
-  <p class="page-desc">{proj.data.description}</p>
-  <p class="proj-dates">{proj.data.dateRange}</p>
+  <header class="proj-hero">
+    <h1 class="page-title">{proj.data.name}</h1>
+    <p class="proj-hero-desc">{proj.data.description}</p>
 
-  {(proj.data.repo || proj.data.url) && (
-    <p class="proj-links-bottom">
-      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
-      {proj.data.repo && proj.data.url && <span> · </span>}
-      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
-    </p>
-  )}
+    <div class="proj-hero-meta">
+      {proj.data.dateRange && <span class="meta-date">{proj.data.dateRange}</span>}
+      <span class="status-chip" data-status={proj.data.status || 'active'}>{status}</span>
+    </div>
+
+    {proj.data.tech && proj.data.tech.length > 0 && (
+      <ul class="proj-taglist">
+        {proj.data.tech.map(t => <li class="proj-tech-tag">{t}</li>)}
+      </ul>
+    )}
+
+    {(proj.data.repo || proj.data.url) && (
+      <div class="proj-hero-links">
+        {proj.data.repo && <a class="proj-action-btn" href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
+        {proj.data.url && <a class="proj-action-btn" href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
+      </div>
+    )}
+  </header>
 
   <hr>
 
   <div class="proj-body">
     <Content />
   </div>
+
+  <hr>
 
   <div class="post-nav">
     <a href="/projects">all projects</a>

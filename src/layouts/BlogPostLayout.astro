@@ -86,34 +86,41 @@ const fmtDate = (d: Date) => {
     <div class="post-nav">
       <a href="/blog">all posts</a>
     </div>
-    <div class="theme-switcher" style="position: fixed; bottom: 1rem; right: 1rem; font-size: 10px; color: var(--muted); font-style: normal; opacity: 0.5;">
-      [<a href="#" class="theme-opt" data-theme="default">default</a>][<a href="#" class="theme-opt" data-theme="midnight">midnight</a>][<a href="#" class="theme-opt" data-theme="paper">paper</a>]
-    </div>
   </div>
 
+  <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme">◐</button>
   <script is:inline>
-    function updateThemeAssets() {
-      const theme = document.documentElement.getAttribute('data-theme') || 'default';
-      const badge = document.getElementById('home-badge');
-      if (badge) { badge.src = `/${theme}8831.png`; }
+    var THEME_ORDER = ['default', 'midnight', 'paper'];
+    var THEME_GLYPH = { default: '◐', midnight: '☾', paper: '☀' };
+    function currentTheme() {
+      return document.documentElement.getAttribute('data-theme') || 'default';
     }
+    function updateThemeAssets() {
+      var badge = document.getElementById('home-badge');
+      if (badge) { badge.src = '/' + currentTheme() + '8831.png'; }
+      var btn = document.getElementById('theme-toggle');
+      if (btn) { btn.textContent = THEME_GLYPH[currentTheme()] || '◐'; }
+    }
+
     updateThemeAssets();
     new MutationObserver(updateThemeAssets)
       .observe(document.documentElement, { attributes: true });
 
-    document.querySelectorAll('.theme-opt').forEach(function(link) {
-      link.addEventListener('click', function(e) {
+    var themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        var theme = this.getAttribute('data-theme');
-        if (theme === 'default') {
+        var next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
+        if (next === 'default') {
           document.documentElement.removeAttribute('data-theme');
           localStorage.removeItem('theme');
         } else {
-          document.documentElement.setAttribute('data-theme', theme);
-          localStorage.setItem('theme', theme);
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
         }
+        updateThemeAssets();
       });
-    });
+    }
   </script>
 </body>
 </html>

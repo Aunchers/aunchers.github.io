@@ -123,6 +123,37 @@ del, s { color: var(--muted); }
 
 .sub-nav-sep { color: var(--muted); margin: 0 0.3em; }
 
+/* ---------- theme toggle ---------- */
+
+.theme-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 50;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media print {
+  .theme-toggle { display: none; }
+}
+
 /* ---------- page headings ---------- */
 
 .page-title {
@@ -155,7 +186,31 @@ del, s { color: var(--muted); }
 
 .intro { margin: 1.25rem 0; }
 
-.intro-line { line-height: 1.8; }
+.intro-line {
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 1.35;
+  color: var(--white);
+  margin: 0;
+}
+
+.intro-line a {
+  color: var(--accent);
+}
+
+.intro-line + .intro-line {
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.intro-line + .intro-line + .intro-line {
+  font-size: 17px;
+  font-weight: normal;
+  color: var(--text);
+}
 
 .home-text {
   font-size: 15px;
@@ -303,20 +358,13 @@ del, s { color: var(--muted); }
 .post-nav a,
 .theme-opt {
   border: 1px dashed var(--border);
-  padding: 3px 10px;
+  padding: 1px 7px;
+  font-size: 12px;
   display: inline-block;
   text-decoration: none;
-  color: var(--text);
-  transition: border-color 0.15s, color 0.15s;
-}
-
-.proj-tech-tag,
-.home-links a,
-.proj-links a,
-.proj-links-bottom a,
-.post-nav a,
-.theme-opt:hover {
   color: var(--muted);
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
 }
 
 .proj-tech-tag:hover,
@@ -328,6 +376,7 @@ del, s { color: var(--muted); }
   border-color: var(--accent);
   color: var(--accent);
   text-decoration: none;
+  background: none;
 }
 
 .home-links a { color: var(--accent); border-style: solid; }
@@ -564,12 +613,90 @@ figcaption {
   flex: 1;
 }
 
-.proj-name a {
-  color: var(--white);
-  padding: 2px 0;
-}
+.proj-name a { color: var(--white); padding: 2px 0; }
 
 .proj-name a:hover { color: var(--accent); }
+
+.proj-hero { margin: 0.25rem 0 0; }
+
+.proj-row-actions, .proj-links { display: flex; gap: 0.5rem; }
+
+.proj-action-btn {
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 12px;
+  border: 1px solid var(--text);
+  color: var(--white);
+  padding: 4px 12px;
+  text-decoration: none;
+}
+
+.proj-action-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.proj-hero { margin: 0.25rem 0 0; }
+
+.proj-hero .page-title { margin-top: 0.3em; }
+
+.proj-hero-desc {
+  font-size: 15px;
+  color: var(--muted);
+  margin: 0.2em 0 1em;
+}
+
+.proj-hero-meta {
+  font-family: 'Fira Code', monospace;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.proj-hero-meta .meta-date { color: var(--muted); }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.status-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.status-chip[data-status="active"]::before { background: #2e7d4f; }
+.status-chip[data-status="archived"]::before { background: var(--muted); }
+.status-chip[data-status="hiatus"]::before { background: #b58900; }
+.status-chip[data-status="wip"]::before { background: #b58900; }
+
+.proj-taglist {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.proj-hero-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.proj-body { margin: 1rem 0; }
+
+/* ---------- old project row helpers ---------- */
 
 .proj-dates { white-space: nowrap; }
 
@@ -587,18 +714,10 @@ figcaption {
   font-style: normal;
   font-size: 11px;
   color: var(--muted);
-  border: 1px solid var(--border);
+  border: 1px dashed var(--border);
   padding: 2px 8px;
+  border-radius: 2px;
 }
-
-.proj-links-bottom {
-  font-family: 'Fira Code', monospace;
-  font-style: normal;
-  font-size: 13px;
-  margin-bottom: 0;
-}
-
-.proj-links { display: flex; gap: 1rem; font-family: 'Fira Code', monospace; font-style: normal; font-size: 13px; }
 
 /* ---------- print & misc ---------- */
 
