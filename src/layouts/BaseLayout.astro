@@ -74,7 +74,7 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
       var badge = document.getElementById('home-badge');
       if (badge) { badge.src = '/' + theme + '8831.png'; }
       var btn = document.getElementById('theme-toggle');
-      if (btn) { btn.textContent = (THEME_GLYPH[theme] || '◐') + ' theme'; }
+      if (btn) { btn.textContent = THEME_GLYPH[theme] || '◐'; }
     }
 
     updateThemeAssets();

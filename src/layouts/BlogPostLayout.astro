@@ -1,4 +1,4 @@
-﻿---
+---
 import '../styles/global.css';
 import Callout from '../components/Callout.astro';
 
@@ -50,7 +50,7 @@ const fmtDate = (d: Date) => {
         <span class="sub-nav-sep">/</span>
         <a href="/blog">blog</a>
       </span>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐ theme</button>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
     </nav>
     <hr>
 
@@ -100,7 +100,7 @@ const fmtDate = (d: Date) => {
       var badge = document.getElementById('home-badge');
       if (badge) { badge.src = '/' + currentTheme() + '8831.png'; }
       var btn = document.getElementById('theme-toggle');
-      if (btn) { btn.textContent = (THEME_GLYPH[currentTheme()] || '◐') + ' theme'; }
+      if (btn) { btn.textContent = THEME_GLYPH[currentTheme()] || '◐'; }
     }
 
     updateThemeAssets();

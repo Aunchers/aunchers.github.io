@@ -267,21 +267,6 @@ del, s { color: var(--muted); }
 
 .badge-grid img { display: block; image-rendering: pixelated; }
 
-/* ---------- theme switcher ---------- */
-
-.theme-switcher {
-  font-family: 'Fira Code', monospace;
-  font-style: normal;
-  font-size: 10px;
-  color: var(--muted);
-  text-align: right;
-  margin-top: 2rem;
-}
-
-.theme-opt { color: var(--muted); }
-
-.theme-opt:hover { color: var(--accent); }
-
 /* ---------- blog list ---------- */
 
 .post-list {
@@ -351,11 +336,10 @@ del, s { color: var(--muted); }
 
 /* dashed-border chips — the little buttons */
 .proj-tech-tag,
-.home-links a,
 .proj-links a,
 .proj-links-bottom a,
 .post-nav a,
-.theme-opt {
+.theme-toggle {
   border: 1px dashed var(--border);
   padding: 1px 7px;
   font-size: 12px;
@@ -367,11 +351,10 @@ del, s { color: var(--muted); }
 }
 
 .proj-tech-tag:hover,
-.home-links a:hover,
 .proj-links a:hover,
 .proj-links-bottom a:hover,
 .post-nav a:hover,
-.theme-opt:hover {
+.theme-toggle:hover {
   border-color: var(--accent);
   color: var(--accent);
   text-decoration: none;
