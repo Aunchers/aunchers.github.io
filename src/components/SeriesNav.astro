@@ -1,0 +1,25 @@
+---
+interface Props {
+  current: number;
+  total: number;
+  seriesName: string;
+  prevUrl?: string;
+  nextUrl?: string;
+}
+
+const { current, total, seriesName, prevUrl, nextUrl } = Astro.props;
+---
+
+<div class="series-nav">
+  <div class="series-info">
+    <span class="series-name">{seriesName}</span>
+    <span class="series-count">part {current} of {total}</span>
+  </div>
+  <div class="series-progress">
+    <div class="series-progress-bar" style={`width: ${(current / total) * 100}%;`}></div>
+  </div>
+  <div class="series-links">
+    {prevUrl ? <a href={prevUrl}>← prev</a> : <span class="muted-text">← start</span>}
+    {nextUrl ? <a href={nextUrl}>next →</a> : <span class="muted-text">end →</span>}
+  </div>
+</div>

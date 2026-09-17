@@ -1,0 +1,25 @@
+---
+interface Props {
+  leftTitle?: string;
+  rightTitle?: string;
+  leftLang?: string;
+  rightLang?: string;
+}
+
+const { leftTitle = "before", rightTitle = "after", leftLang = "", rightLang = "" } = Astro.props;
+---
+
+<div class="code-compare">
+  <div class="code-compare-panel">
+    <div class="code-compare-title">{leftTitle}{leftLang && <span class="code-compare-lang">{leftLang}</span>}</div>
+    <div class="code-compare-body">
+      <slot name="left" />
+    </div>
+  </div>
+  <div class="code-compare-panel">
+    <div class="code-compare-title">{rightTitle}{rightLang && <span class="code-compare-lang">{rightLang}</span>}</div>
+    <div class="code-compare-body">
+      <slot name="right" />
+    </div>
+  </div>
+</div>

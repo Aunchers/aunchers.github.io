@@ -1,0 +1,73 @@
+---
+interface Props {
+  title: string;
+  items: { label: string; value: string | string[] }[];
+}
+const { title, items } = Astro.props;
+---
+
+<div class="info-panel">
+  <div class="info-panel-title">{title}</div>
+  {items.map(item => (
+    <div class="info-row">
+      <span class="info-label">{item.label}</span>
+      <span class="info-value">
+        {Array.isArray(item.value) ? (
+          <span class="info-tags">
+            {item.value.map(v => <span class="info-tag">{v}</span>)}
+          </span>
+        ) : (
+          item.value
+        )}
+      </span>
+    </div>
+  ))}
+</div>
+
+<style>
+  .info-panel {
+    border: 1px solid rgba(85, 85, 85, 0.3);
+    padding: 1rem;
+    margin: 1.5rem 0;
+    font-size: 13px;
+  }
+  .info-panel-title {
+    font-weight: 700;
+    font-style: normal;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(85, 85, 85, 0.3);
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.35rem 0;
+    align-items: baseline;
+  }
+  .info-label {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 12px;
+  }
+  .info-value {
+    color: var(--text);
+    font-style: normal;
+    text-align: right;
+  }
+  .info-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    justify-content: flex-end;
+  }
+  .info-tag {
+    font-size: 10px;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid rgba(85, 85, 85, 0.3);
+    color: var(--muted);
+  }
+</style>

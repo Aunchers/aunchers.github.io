@@ -1,0 +1,22 @@
+---
+interface Props {
+  headings?: { text: string; level: number; id: string }[];
+}
+
+const { headings = [] } = Astro.props;
+
+if (headings.length === 0) {
+  return <div class="toc empty"><span class="muted-text">no headings to navigate</span></div>;
+}
+---
+
+<nav class="toc">
+  <div class="toc-header">contents</div>
+  <ol class="toc-list">
+    {headings.map((h) => (
+      <li class={`toc-item toc-level-${h.level}`}>
+        <a href={`#${h.id}`}>{h.text}</a>
+      </li>
+    ))}
+  </ol>
+</nav>

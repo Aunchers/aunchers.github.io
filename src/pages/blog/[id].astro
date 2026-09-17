@@ -1,37 +1,39 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map((post) => ({
     params: { id: post.data.slug },
-    props: { post },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { id } = Astro.params;
+const posts = await getCollection('posts');
+const post = posts.find(p => p.data.slug === id);
 
-const fmtDate = (d: Date) =>
-  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+if (!post) {
+  throw new Error(`Post with slug "${id}" not found`);
+}
+
+let relatedProject = null;
+if (post.data.relatedProject) {
+  const projects = await getCollection('projects');
+  relatedProject = projects.find(p => p.data.name.toLowerCase() === post.data.relatedProject.toLowerCase());
+}
+
+const { Content, headings } = await render(post);
+
+const headingList = (headings || [])
+  .filter(h => h.depth >= 2 && h.depth <= 3)
+  .map(h => ({
+    text: h.text,
+    level: h.depth,
+    slug: h.slug,
+  }));
 ---
 
-<BaseLayout title={`${post.data.title} - Chairs`} description={post.data.description} ogType="article">
-  <nav class="sub-nav">
-    <a href="/">home</a> /
-    <a href="/blog">blog</a>
-  </nav>
-
-  <h1>{post.data.title}</h1>
-  <p class="muted"><em>{fmtDate(post.data.date)}</em></p>
-
-  <hr>
-
-  <article>
-    <Content />
-  </article>
-
-  <hr>
-  <p><a href="/blog">← back to all posts</a></p>
-</BaseLayout>
+<BlogPostLayout frontmatter={post.data} headings={headingList} relatedProject={relatedProject}>
+  <Content />
+</BlogPostLayout>

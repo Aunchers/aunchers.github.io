@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import InfoPanel from '../../components/InfoPanel.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -12,32 +13,43 @@ export async function getStaticPaths() {
 
 const { proj } = Astro.props;
 const { Content } = await render(proj);
+
+const infoItems = [
+  { label: 'timeline', value: proj.data.dateRange || 'unknown' },
+  ...(proj.data.tech ? [{ label: 'stack', value: proj.data.tech }] : []),
+].filter(Boolean);
 ---
 
-<BaseLayout title={`${proj.data.name} - Chairs`} description={proj.data.description} ogType="website">
+<BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
   <nav class="sub-nav">
-    <a href="/">home</a> /
+    <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
     <a href="/projects">projects</a>
+    <span class="sub-nav-sep">/</span>
+    <span>{proj.data.name.toLowerCase()}</span>
   </nav>
 
-  <h1>{proj.data.name}</h1>
-  <p class="muted"><em>{proj.data.description}</em></p>
-  {proj.data.dateRange && <p class="muted">{proj.data.dateRange}</p>}
+  <div class="project-header">
+    <h1 class="proj-page-title"><em>/</em>{proj.data.name.toLowerCase()}</h1>
+    <p class="proj-page-desc">{proj.data.description}</p>
+  </div>
 
-  {(proj.data.repo || proj.data.url) && (
-    <p>
-      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
-      {proj.data.repo && proj.data.url && <span> · </span>}
-      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
-    </p>
+  {infoItems.length > 0 && (
+    <InfoPanel title="info" items={infoItems} />
   )}
 
-  <hr>
+  {(proj.data.repo || proj.data.url) && (
+    <div class="proj-links-bottom">
+      {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source</a>}
+      {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site</a>}
+    </div>
+  )}
 
-  <article>
+  <div class="proj-body">
     <Content />
-  </article>
+  </div>
 
-  <hr>
-  <p><a href="/projects">← back to all projects</a></p>
+  <div class="post-nav">
+    <a href="/projects">all projects</a>
+  </div>
 </BaseLayout>

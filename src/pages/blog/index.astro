@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 
@@ -11,35 +11,45 @@ const postsByYear = visiblePosts.reduce((acc, post) => {
   if (!acc[year]) acc[year] = [];
   acc[year].push(post);
   return acc;
-}, {} as Record<number, typeof visiblePosts>);
+}, {});
 const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
-const fmt = (d: Date) =>
-  `${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}.${d.getFullYear()}`;
+const fmt = (d) => {
+  const date = new Date(d);
+  return String(date.getDate()).padStart(2, "0") + "/" + String(date.getMonth() + 1).padStart(2, "0") + "/" + date.getFullYear();
+};
+
 ---
 
-<BaseLayout title="Blog - Chairs" description="thoughts, logs, and other writings.">
+<BaseLayout title="Blog - CHAIRS" description="thoughts, tutorials, logs, and other writings." ogType="article">
   <nav class="sub-nav">
     <a href="/">home</a>
+    <span class="sub-nav-sep">/</span>
+    <span>blog</span>
   </nav>
+  <hr>
 
-  <h1>Blog</h1>
-  <p>thoughts, logs, and other writings.</p>
+  <h1 class="page-title"><em>/</em>blog</h1>
+  <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
+  <hr>
 
-  {sortedYears.map((year) => (
-    <>
-      <h3>{year}</h3>
-      <ul class="postlist">
-        {postsByYear[Number(year)].map((post) => (
-          <li>
-            <span class="date">{fmt(post.data.date)}</span> —
-            <a href={`/blog/${post.data.slug}`}>{post.data.title}</a>
-          </li>
-        ))}
-      </ul>
-    </>
-  ))}
+  <ul class="post-list">
+    {visiblePosts.map((post) => (
+      <li class="post-item">
+        <div class="post-header">
+          <span class="post-date-inline">{fmt(post.data.date)}</span>
+          <div class="post-title-text">
+            <a href={`/blog/${post.data.slug}`} class:list={[{archived: post.data.status === "archived"}]}>{post.data.title}</a>
+          </div>
+        </div>
+        {post.data.description && <p class="post-preview">{post.data.description}</p>}
+      </li>
+    ))}
+  </ul>
 
   <hr>
-  <p class="muted">{visiblePosts.length} posts · <a href="/rss.xml">rss</a></p>
+  <div class="flex-between" style="font-size:13px;">
+    <span class="muted-text">{visiblePosts.length} posts</span>
+    <a href="/rss.xml">rss</a>
+  </div>
 </BaseLayout>

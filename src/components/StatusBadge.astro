@@ -1,0 +1,16 @@
+---
+interface Props {
+  status: "published" | "draft" | "wip" | "archived";
+}
+
+const { status } = Astro.props;
+
+const labels: Record<string, string> = {
+  published: "published",
+  draft: "draft",
+  wip: "work in progress",
+  archived: "archived",
+};
+---
+
+<span class={`status-badge status-${status}`}>{labels[status]}</span>
