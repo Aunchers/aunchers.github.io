@@ -8,10 +8,22 @@ const { images, columns = 2 } = Astro.props;
 ---
 
 <div class="gallery" style={`--gallery-columns: ${columns};`}>
-  {images.map((img) => (
-    <figure class="gallery-item">
-      <img src={img.src} alt={img.alt} loading="lazy" decoding="async" width={img.width} height={img.height} style="width:100%;height:auto;" />
-      {img.caption && <figcaption class="gallery-caption">{img.caption}</figcaption>}
-    </figure>
-  ))}
+  {
+    images.map((img) => (
+      <figure class="gallery-item">
+        <img
+          src={img.src}
+          alt={img.alt}
+          loading="lazy"
+          decoding="async"
+          width={img.width}
+          height={img.height}
+          style="width:100%;height:auto;"
+        />
+        {img.caption && (
+          <figcaption class="gallery-caption">{img.caption}</figcaption>
+        )}
+      </figure>
+    ))
+  }
 </div>

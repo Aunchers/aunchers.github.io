@@ -79,8 +79,6 @@ body {
 @media (max-width: 767px) {
   body { padding: 1.25rem; hyphens: auto; }
 
-  .blog-index-heading { margin: 2rem 0 1.5rem; }
-
   .post-header { align-items: flex-start; gap: 0.75rem; }
 
   .post-date-inline { min-width: 3.8rem; }
@@ -90,6 +88,8 @@ body {
   .post-preview { margin-left: 4.55rem; }
 
   .post-hero { margin: 2rem 0 1.5rem; padding-left: 0.9rem; }
+
+  .timeline-item { grid-template-columns: 1fr; gap: 0.15rem; }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -313,26 +313,6 @@ del, s { color: var(--muted); }
 
 /* ---------- blog list ---------- */
 
-.blog-index-heading { margin: 2.5rem 0 2rem; }
-
-.eyebrow {
-  color: var(--accent);
-  font-family: 'Fira Code', monospace;
-  font-size: 11px;
-  font-style: normal;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.8rem;
-  text-transform: lowercase;
-}
-
-.blog-index-heading .page-title { margin-top: 0; }
-
-.blog-index-heading .page-desc {
-  font-size: 15px;
-  margin-top: 0.8rem;
-  max-width: 36rem;
-}
-
 .post-list {
   list-style: none;
   padding: 0;
@@ -380,9 +360,7 @@ del, s { color: var(--muted); }
 /* ---------- blog post ---------- */
 
 .post-hero {
-  border-left: 2px solid var(--accent);
   margin: 2.5rem 0 2rem;
-  padding-left: 1.1rem;
 }
 
 .post-hero-title {
@@ -398,11 +376,12 @@ del, s { color: var(--muted); }
 .post-hero-title a:hover { color: var(--accent); }
 
 .post-meta-top {
+  display: block;
   font-family: 'Fira Code', monospace;
   font-style: normal;
   font-size: 12px;
   color: var(--muted);
-  margin-bottom: 0.75rem;
+  margin: 0.65rem 0 0;
 }
 
 .meta-date { margin: 0; }
@@ -441,7 +420,7 @@ del, s { color: var(--muted); }
 .post-subtitle {
   font-size: 17px;
   color: var(--muted);
-  margin: 0.65rem 0 0;
+  margin: 0.45rem 0 0;
   max-width: 34rem;
 }
 
@@ -478,7 +457,7 @@ del, s { color: var(--muted); }
 
 .post-content {
   max-width: 38rem;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .post-content h2, .proj-body h2 { font-size: 22px; margin-top: 1.2em; }
@@ -553,10 +532,9 @@ del, s { color: var(--muted); }
 /* ---------- callout ---------- */
 
 .callout {
-  border: 1px solid var(--border);
   border-left: 2px solid var(--accent);
-  padding: 0.75em 1em;
-  margin: 1.25em 0;
+  margin: 1.75em 0;
+  padding: 0.1em 0 0.1em 1em;
 }
 
 .callout.callout-warning { border-left-color: #b58900; }
@@ -567,38 +545,77 @@ del, s { color: var(--muted); }
 .callout-header {
   display: flex;
   align-items: center;
-  gap: 0.4em;
+  gap: 0.5em;
   font-family: 'Fira Code', monospace;
   font-style: normal;
   font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 0.35em;
+  color: var(--white);
+  margin-bottom: 0.45em;
 }
 
-.callout-content { font-size: 15px; }
+.callout-icon {
+  color: var(--accent);
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.callout.callout-warning .callout-icon { color: #b58900; }
+.callout.callout-tip .callout-icon,
+.callout.callout-info .callout-icon { color: #265caa; }
+.callout.callout-danger .callout-icon { color: #b03535; }
+
+.callout-content {
+  color: var(--text);
+  font-size: 15px;
+}
 
 /* ---------- collapsible ---------- */
 
 .collapsible {
-  border: 1px solid var(--border);
-  margin: 1.25em 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 1.75em 0;
 }
 
 .collapsible-trigger {
   font-family: 'Fira Code', monospace;
   font-style: normal;
   font-size: 13px;
-  padding: 0.65em 1em;
+  padding: 0.65em 0;
   cursor: pointer;
   color: var(--white);
+  list-style: none;
 }
 
+.collapsible-trigger::-webkit-details-marker { display: none; }
+.collapsible-trigger::before { content: '+ '; color: var(--accent); }
+.collapsible[open] .collapsible-trigger::before { content: '- '; }
 .collapsible-trigger:hover { color: var(--accent); }
 
 .collapsible-content {
-  padding: 0.25em 1em 0.75em;
+  padding: 0.25em 0 0.8em 1.1em;
   border-top: 1px solid var(--border);
 }
+
+.timeline { margin: 0.25rem 0; }
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  font-size: 15px;
+}
+
+.timeline-date {
+  color: var(--accent);
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: normal;
+  padding-top: 0.2em;
+}
+
+.timeline-text { color: var(--text); }
 
 /* ---------- gallery ---------- */
 
@@ -606,7 +623,7 @@ del, s { color: var(--muted); }
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(var(--gallery-columns, 2), 1fr);
-  margin: 1.25rem 0;
+  margin: 1.75rem 0;
 }
 
 @media (max-width: 767px) {
@@ -615,7 +632,7 @@ del, s { color: var(--muted); }
 
 .gallery-item { margin: 0; }
 
-.gallery-item img { display: block; width: 100%; }
+.gallery-item img { display: block; width: 100%; border: 1px solid var(--border); }
 
 .gallery-caption {
   font-family: 'Fira Code', monospace;
@@ -642,12 +659,14 @@ figcaption {
   font-size: 14px;
   color: var(--muted);
   margin: 0.75em 0;
+  padding-left: 0.25em;
 }
 
 .footnote-num {
   font-family: 'Fira Code', monospace;
   font-style: normal;
   color: var(--accent);
+  min-width: 1.25em;
 }
 
 /* ---------- projects ---------- */

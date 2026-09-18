@@ -14,144 +14,108 @@ difficulty: "beginner"
 author: "aunchers"
 ---
 
-import Callout from '../../components/Callout.astro';
-import Collapsible from '../../components/Collapsible.astro';
-import Footnote from '../../components/Footnote.astro';
+import Callout from "../../components/Callout.astro";
+import Collapsible from "../../components/Collapsible.astro";
+import Footnote from "../../components/Footnote.astro";
+import Timeline from "../../components/Timeline.astro";
 
-Back in late 2023, I had a lot of projects that I wanted to make. One of them was
-a VR game that ended up going nowhere. It needed an AI API, and being the person I
-was, broke af, I needed a free one.
-
-A brief bit of Googling led me to a Discord server under the name
-**zukijourney**.
-
-I didn't really know what I had found at the time. Zukijourney was an API that
-gave people access to a bunch of different AI models through an OpenAI-compatible
-format. It also had image, audio, and roleplay endpoints. The project had an open-source API
-[repository](https://github.com/zukijourney/api-oss),
-[documentation](https://github.com/zukijourney/api-docs), and a collection of
-bots. The Discord server was where most of the actual community and support
-happened.
-
-The [public documentation](https://github.com/zukijourney/bots-docs) says that the
-project started around March 2023, with the `zuki.gm` bot coming first. By
-November, the project's own README was claiming over 200 million requests and
-around 2,500 concurrent users. The bot documentation claimed that `zuki.gm` had
-been used by more than 31,000 people across over 1,600 servers.<sup>1</sup>
-
-I don't know how accurate every number was, but it was clearly much bigger than I
-understood it to be when I joined. I thought I was joining a server to get an API
-key. I ended up staying because I kept talking to the people there. That became
-more important than the API itself.
-
-<Callout type="note" title="A note on the history">
-The public numbers and dates here come from Zukijourney's own repositories and
-documentation. They are useful for showing the scale of the project, but they are
-not an independent audit. The parts about the raid are my own account of what I
-saw and what we understood at the time.
+<Callout type="note" title="disclaimer">
+  This is based on my own experience and perspective. It does not represent the
+  opinions of the other people involved, and it should not be taken as a
+  statement of the project's current or official status.
 </Callout>
 
-<Collapsible title="The public timeline">
-- **March 2023:** the project begins with the `zuki.gm` bot.
-- **Late 2023:** the API is public and the project reports its first 200 million requests.
-- **2024-2025:** the API code, documentation, tests, and several related projects are published on [GitHub](https://github.com/zukijourney).
-- **February 2025:** the v4 API code is revealed in the public repository.
-- **November/December 2025:** the raid happens.
-- **2026:** most of the executives leave, and the project becomes quiet.
+Back in late 2023, I was trying to build a **VR game**. It went absolutely nowhere, but at the time, I needed an AI API for it. Since I was completely broke, it had to be free. A quick Google search brought me to a Discord server called **Zukijourney**.
+
+I didn't really get what it was at first. It was basically a **free service** that let people access different AI models using an OpenAI-compatible format, along with endpoints for images, audio, and roleplay bots. I originally just joined to grab an API key and leave, but I ended up sticking around because the chat was active and the people were cool.
+
+I didn't realize until much later how massive the project actually was. According to their own documentation, the project started in March 2023. By the end of that year, they were claiming **over 200 million requests** and thousands of daily users. Whether those numbers were perfectly accurate or slightly inflated, it was way bigger than the small-scale project I thought I'd stumbled into.<sup>1</sup>
+
+<Collapsible title="Timeline" open>
+  <Timeline
+    items={[
+      { date: "March 2023", text: "The project begins with the zuki.gm bot." },
+      {
+        date: "Late 2023",
+        text: "The API goes public and the project reports its first 200 million requests.",
+      },
+      {
+        date: "2024-2025",
+        text: "The API code, documentation, tests, and related projects are published on GitHub.",
+      },
+      {
+        date: "February 2025",
+        text: "The v4 API code is revealed in the public repository.",
+      },
+      {
+        date: "November/December 2025",
+        text: "The raid happens and the group loses access to the codebase.",
+      },
+      {
+        date: "2026",
+        text: "Most of the executives leave and the project goes quiet.",
+      },
+    ]}
+  />
 </Collapsible>
 
-## Working on the project
+## Getting involved
 
-The friends I made on the server happened to be the creators of **zukijourney**:
-Kashi, Leander, Lukinhas, and a few others. After I finished making a Python
-wrapper for the API (random project tbh), I became close enough with them that I
-started working on the API itself.
+Eventually, I became good friends with the creators, including **Kashi, Leander, and Lukinhas**. After I built a random Python wrapper for the API just for fun, they invited me into their inner circle, and I started helping out with the actual backend.
 
-The work was varied. A lot of it was finding new sources that the API could use,
-and sometimes I worked on small troubleshooting things, like provider IDs. Most
-of the time, though, it was just us in a group chat talking about random things
-that could be related to **zukijourney**.
+My contributions were pretty basic: finding new endpoints to scrape, fixing provider IDs, and troubleshooting minor bugs. A lot of the time we just hung out in our group chat, talking about random ideas. Over time, I stopped coding and shifted over to support and IT stuff for the Discord server.
 
-After I stopped programming, I moved on to support and IT work for the server. At
-some point, everyone in the group chat became known as an executive. This meant
-that we were the people who worked on the API, handled support, and generally
-tried to stop everything from breaking.
+We eventually started calling everyone in that chat an "executive," which was just a fancy term for the handful of us who handled support tickets and tried to keep the API from crashing.
 
-My old username, Launchers, is in the credits of the API docs. It is
-a bit odd to look at that now. I, in hindsight, wasn't actually doing much for the project, yet in (atleast my eyes) 
-a massive project with thousands of users, I was a main contributor. 
+My old username, **Launchers**, is still credited in the docs. It is weird to look at now. Honestly, I did not do that much in the grand scheme of things, but seeing my name listed as a main contributor on a project serving thousands of users felt like a huge deal back then.
 
 ## The G4F community
 
-Zukijourney had rivals. The wider community around free and reverse-proxied AI
-services was usually referred to as G4F.<sup>2</sup> There were a lot of different
-APIs, servers, and people involved, and there was always some kind of controversy
-going on.
+Zukijourney wasn't the only project doing this. There was a whole ecosystem of free, reverse-proxied AI services, usually referred to as the **G4F (GPT4Free) community**. It was a deeply chronically online space, constantly fueled by weird rivalries, petty drama, and people jumping between competing servers.<sup>2</sup>
 
-I never paid enough attention to understand all of the rivalries, and honestly I
-still don't. There would be arguments between projects, people moving from one
-server to another, and the occasional accusation. It was weird, but it was also
-normal for that community. Zukijourney even had an [archive](https://github.com/zukijourney/archives)
-of incidents from the wider G4F scene. That should probably tell you how normal
-this sort of thing was.
+I never really kept up with who was fighting who. People were constantly accusing each other of stealing scrapers or leaking code, and the drama never stopped. Zukijourney actually kept a written [archive](https://github.com/zukijourney/archives) of incidents in the scene, which tells you how absurdly common it was.
 
-That changed in the winter of 2025.
+Then in **winter 2025**, that drama finally caught up to us.
 
 ## The raid
 
-In November or December 2025, everyone suddenly lost access to the codebase. It
-happened overnight. Lukinhas, who was second-in-command and a good friend to all
-of us, was kicked from the group chat. After that, most of the executives were
-banned from the main server.
+Around November or December of 2025, everything fell apart overnight.
 
-Then the server was defaced.
+Suddenly, none of us could access the codebase. Lukinhas, who was basically second-in-command and a close friend, was abruptly kicked from the group chat. Right after that, most of the staff got banned from the Discord server, and the server itself was completely defaced.
 
-It took a while for us to understand what had happened. Eventually, we came to
-the conclusion that Lukinhas had been friends with one of the rival APIs for most
-of the time he had been working with us. From our perspective, he had then worked
-with them to destroy nearly two years of work.
+It took us a while to figure out what happened. From our perspective, it looked like Lukinhas had been working behind our backs with a rival API group and helped them trash almost two years of our work.
 
-I don't know what happened from Lukinhas' side. I only know what was happening in
-our group chat and what we understood from it. There was a lot of confusion, and
-there was never a clean, official explanation that I saw.
+I only saw what went down from our side of the chat, so I don't know his side of the story. There was never any real closure or official explanation. We didn't lose the actual code forever since we could always find new sources, but the trust we had built was completely gone.
 
-<Callout type="warning" title="What was actually lost">
-The code was not lost. We could find new sources. What we could not really
-replace was the trust between people who had been working together for so long.
-</Callout>
+The code was not lost forever. What we could not replace was the **trust** between
+people who had been working together for so long.
 
-## The fall
+## The aftermath
 
-After the attack, we were disorganized. The friend group came back together,
-albeit missing one person, and access to the codebase was restricted to Kashi. It
-was basically back to how the project had been before the rest of us started
-working on it.
+After the raid, the momentum was just **dead**. The core friend group got back together, minus Lukinhas, but access to the code was locked down entirely to Kashi. The project basically went back to being a solo effort, just like how it started.
 
-The server became quiet. We still talked in the group chat, but less often. The
-project was still there, and the API may still work, but the group that made it
-feel alive was not really working on it anymore.
+The Discord server went quiet. We still talked in our group chat, but way less than before. The API was still technically running, but the spark that made working on it fun had completely evaporated.
 
 ## Today
 
-It has been nearly a year since everything happened. Since then, nearly all of the
-executives have privately resigned from the project, mostly because there was no
-longer much interest in working on it. Kashi, as far as I know, has also stopped
-working on it to focus on real life.
+It's been almost a year since then. Most of the old staff have quietly moved on, mostly because the motivation just isn't there anymore. As far as I know, Kashi stopped working on it too to focus on real-life stuff.
 
-I don't know if the API is technically still online. It might be. That doesn't
-really change what I mean by the end of Zukijourney. The project, and the group of
-people behind it, is over as far as I am concerned.
+I don't even know if the API is still online right now. It might be, but **the project is dead to me**.
 
-Zukijourney was a big part of my life. I made friends there. I learned things
-there. I spent a lot of time talking, coding, troubleshooting, and sharing stories
-with people who I would not have met anywhere else.
+Zukijourney was a massive part of my life for a couple of years. I learned how to build things, dealt with weird technical headaches, and made genuine friends with people I never would have met otherwise. **It was a good run while it lasted.**
 
-It was fun whilst it lasted, but as far as I can tell, it is over.
-
-> All's well that ends well. - Captain Haddock, *The Adventures of Tintin: Red Rackham's Treasure*
+> "And so our great adventure comes to an end."
+>
+> - Tintin, _The Adventures of Tintin: Red Rackham's Treasure_
 
 ---
 
-<Footnote number="1" text="These figures are from Zukijourney's own API README and bot documentation. The API README reported more than 200 million requests and 2,500 concurrent users; the bot documentation reported more than 31,000 users and 1,600 servers for zuki.gm." />
+<Footnote
+  number="1"
+  text="These figures and dates come from Zukijourney's own API README, bot documentation, and public repositories. They may not be fully accurate because they were self-reported and are not independently verified."
+/>
 
-<Footnote number="2" text="G4F is short for GPT4Free. In this context, it refers to the wider community of free AI services and reverse proxies, not just one specific project." />
+<Footnote
+  number="2"
+  text="G4F is short for GPT4Free. In this context, it refers to the wider community of free AI services and reverse proxies, not just one specific project."
+/>

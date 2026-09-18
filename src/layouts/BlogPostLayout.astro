@@ -98,8 +98,10 @@ const fmtDate = (d: Date) => {
       }
 
       <header class="post-hero">
-        <p class="eyebrow">field notes / {fmtDate(frontmatter.date)}</p>
         <h1 class="post-hero-title">{frontmatter.title}</h1>
+        <time class="post-meta-top" datetime={frontmatter.date.toISOString()}
+          >{fmtDate(frontmatter.date)}</time
+        >
         <p class="post-subtitle">{frontmatter.description}</p>
       </header>
 
