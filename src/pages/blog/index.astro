@@ -21,40 +21,67 @@ const fmt = (d) => {
 
 ---
 
-<BaseLayout title="Blog - CHAIRS" description="thoughts, tutorials, logs, and other writings." ogType="article">
+<BaseLayout
+  title="Blog - CHAIRS"
+  description="thoughts, tutorials, logs, and other writings."
+  ogType="article"
+>
   <nav class="sub-nav">
     <span class="sub-nav-links">
       <a href="/">home</a>
       <span class="sub-nav-sep">/</span>
       <span>blog</span>
     </span>
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
+    <button
+      id="theme-toggle"
+      class="theme-toggle"
+      type="button"
+      aria-label="switch theme"
+      title="switch theme">◐</button
+    >
   </nav>
-  <hr>
+  <hr />
 
-  <h1 class="page-title"><em>/</em>blog</h1>
-  <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
-  <hr>
+  <header class="blog-index-heading">
+    <p class="eyebrow">a small notebook on the internet</p>
+    <h1 class="page-title"><em>/</em>blog</h1>
+    <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
+  </header>
+  <hr />
 
-  {visiblePosts.length === 0 ? (
-    <p>no posts right now. they'll show up here when there are some.</p>
-  ) : (
-    <ul class="post-list">
-      {visiblePosts.map((post) => (
-        <li class="post-item">
-          <div class="post-header">
-            <span class="post-date-inline">{fmt(post.data.date)}</span>
-            <div class="post-title-text">
-              <a href={`/blog/${post.data.slug}`} class:list={[{archived: post.data.status === "archived"}]}>{post.data.title}</a>
+  {
+    visiblePosts.length === 0 ? (
+      <p>no posts right now. they'll show up here when there are some.</p>
+    ) : (
+      <ul class="post-list">
+        {visiblePosts.map((post) => (
+          <li class="post-item">
+            <div class="post-header">
+              <time
+                class="post-date-inline"
+                datetime={post.data.date.toISOString()}
+              >
+                {fmt(post.data.date)}
+              </time>
+              <div class="post-title-text">
+                <a
+                  href={`/blog/${post.data.slug}`}
+                  class:list={[{ archived: post.data.status === "archived" }]}
+                >
+                  {post.data.title}
+                </a>
+              </div>
             </div>
-          </div>
-          {post.data.description && <p class="post-preview">{post.data.description}</p>}
-        </li>
-      ))}
-    </ul>
-  )}
+            {post.data.description && (
+              <p class="post-preview">{post.data.description}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
-  <hr>
+  <hr />
   <div class="flex-between" style="font-size:13px;">
     <span class="muted-text">{visiblePosts.length} posts</span>
     <a href="/rss.xml">rss</a>

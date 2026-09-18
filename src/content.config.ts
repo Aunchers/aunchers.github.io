@@ -1,5 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { projectStatuses } from "./project-status";
 
 const posts = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/posts" }),
@@ -18,7 +19,7 @@ const projects = defineCollection({
   schema: z.object({
     name: z.string(),
     description: z.string(),
-    status: z.string().optional().default("active"),
+    status: z.enum(projectStatuses).optional().default("active"),
     dateRange: z.string().optional(),
     url: z.string().optional(),
     repo: z.string().optional(),

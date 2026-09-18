@@ -38,111 +38,157 @@ const fmtDate = (d: Date) => {
 ---
 
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{frontmatter.title}</title>
-  <script is:inline>
-    var savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
-  </script>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preload" href="/fonts/fira-code-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{frontmatter.title}</title>
+    <script is:inline>
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/fira-code-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-  <meta property="og:title" content={frontmatter.title} />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content={Astro.url} />
-  <meta property="og:description" content={frontmatter.description} />
-  <meta property="og:site_name" content="CHAIRS" />
-</head>
-<body>
-  <div class="page">
-    <nav class="sub-nav">
-      <span class="sub-nav-links">
-        <a href="/">home</a>
-        <span class="sub-nav-sep">/</span>
-        <a href="/blog">blog</a>
-      </span>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
-    </nav>
-    <hr>
+    <meta property="og:title" content={frontmatter.title} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:description" content={frontmatter.description} />
+    <meta property="og:site_name" content="CHAIRS" />
+  </head>
+  <body>
+    <div class="page">
+      <nav class="sub-nav">
+        <span class="sub-nav-links">
+          <a href="/">home</a>
+          <span class="sub-nav-sep">/</span>
+          <a href="/blog">blog</a>
+        </span>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="switch theme"
+          title="switch theme">◐</button
+        >
+      </nav>
+      <hr />
 
-    {frontmatter.status === "archived" && (
-      <Callout type="warning" title="archived">
-        This post is older and may contain outdated information.
-      </Callout>
-    )}
+      {
+        frontmatter.status === "archived" && (
+          <Callout type="warning" title="archived">
+            This post is older and may contain outdated information.
+          </Callout>
+        )
+      }
 
-    {frontmatter.status === "wip" && (
-      <div class="wip-line">
-        <span class="muted-label">work in progress</span>
+      {
+        frontmatter.status === "wip" && (
+          <div class="wip-line">
+            <span class="muted-label">work in progress</span>
+          </div>
+        )
+      }
+
+      <header class="post-hero">
+        <p class="eyebrow">field notes / {fmtDate(frontmatter.date)}</p>
+        <h1 class="post-hero-title">{frontmatter.title}</h1>
+        <p class="post-subtitle">{frontmatter.description}</p>
+      </header>
+
+      {
+        frontmatter.cover && (
+          <figure class="cover-image">
+            <img
+              src={frontmatter.cover}
+              alt={frontmatter.coverAlt || frontmatter.title}
+            />
+            {frontmatter.coverAlt && (
+              <figcaption>{frontmatter.coverAlt}</figcaption>
+            )}
+          </figure>
+        )
+      }
+
+      <article class="post-content">
+        <slot />
+      </article>
+      <hr />
+
+      <div class="post-nav">
+        <a href="/blog">all posts</a>
       </div>
-    )}
 
-    <h1 class="post-hero-title">{frontmatter.title}</h1>
-
-    <div class="post-meta-top">
-      <span class="meta-date">{fmtDate(frontmatter.date)}</span>
-    </div>
-
-    <p class="post-subtitle">{frontmatter.description}</p>
-
-    {frontmatter.cover && (
-      <figure class="cover-image">
-        <img src={frontmatter.cover} alt={frontmatter.coverAlt || frontmatter.title} />
-        {frontmatter.coverAlt && <figcaption>{frontmatter.coverAlt}</figcaption>}
-      </figure>
-    )}
-
-    <article class="post-content">
-      <slot />
-    </article>
-    <hr>
-
-    <div class="post-nav">
-      <a href="/blog">all posts</a>
-    </div>
-
-    <footer class="site-footer">
-      {lastCommit && (
-        <p>
-          made with love by aunchers<span class="muted-text"> · last commit<sup class="footnote-ref"><a href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}>{lastCommit.hash}</a></sup> · {lastCommit.date}</span>
-        </p>
-      )}
-    </footer>
-  </div>
-  <script is:inline>
-    var THEME_ORDER = ['default', 'midnight', 'paper'];
-    var THEME_GLYPH = { default: '◐', midnight: '☾', paper: '☀' };
-    function currentTheme() {
-      return document.documentElement.getAttribute('data-theme') || 'default';
-    }
-    function updateThemeAssets() {
-      var badge = document.getElementById('home-badge');
-      if (badge) { badge.src = '/' + currentTheme() + '8831.png'; }
-      var btn = document.getElementById('theme-toggle');
-      if (btn) { btn.textContent = THEME_GLYPH[currentTheme()] || '◐'; }
-    }
-
-    updateThemeAssets();
-    new MutationObserver(updateThemeAssets)
-      .observe(document.documentElement, { attributes: true });
-
-    var themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
-        if (next === 'default') {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.removeItem('theme');
-        } else {
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
+      <footer class="site-footer">
+        {
+          lastCommit && (
+            <p>
+              made with love by aunchers
+              <span class="muted-text">
+                {" "}
+                · last commit
+                <sup class="footnote-ref">
+                  <a
+                    href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}
+                  >
+                    {lastCommit.hash}
+                  </a>
+                </sup>{" "}
+                · {lastCommit.date}
+              </span>
+            </p>
+          )
         }
-        updateThemeAssets();
-      });
-    }
-  </script>
-</body>
+      </footer>
+    </div>
+    <script is:inline>
+      var THEME_ORDER = ["default", "midnight", "paper"];
+      var THEME_GLYPH = { default: "◐", midnight: "☾", paper: "☀" };
+      function currentTheme() {
+        return document.documentElement.getAttribute("data-theme") || "default";
+      }
+      function updateThemeAssets() {
+        var badge = document.getElementById("home-badge");
+        if (badge) {
+          badge.src = "/" + currentTheme() + "8831.png";
+        }
+        var btn = document.getElementById("theme-toggle");
+        if (btn) {
+          btn.textContent = THEME_GLYPH[currentTheme()] || "◐";
+        }
+      }
+
+      updateThemeAssets();
+      new MutationObserver(updateThemeAssets).observe(
+        document.documentElement,
+        { attributes: true },
+      );
+
+      var themeBtn = document.getElementById("theme-toggle");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          var next =
+            THEME_ORDER[
+              (THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length
+            ];
+          if (next === "default") {
+            document.documentElement.removeAttribute("data-theme");
+            localStorage.removeItem("theme");
+          } else {
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+          }
+          updateThemeAssets();
+        });
+      }
+    </script>
+  </body>
 </html>

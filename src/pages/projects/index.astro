@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
+import { projectStatusLabels } from '../../project-status';
 
 const projects = await getCollection("projects");
 ---
@@ -33,7 +34,7 @@ const projects = await getCollection("projects");
         </ul>
       )}
       <div class="proj-foot">
-        <span class="status-chip" data-status={proj.data.status || 'active'}>{proj.data.status || 'active'}</span>
+        <span class="status-chip" data-status={proj.data.status || 'active'}>{projectStatusLabels[proj.data.status || 'active']}</span>
         <span class="proj-foot-links">
           {proj.data.repo && <a href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
           {proj.data.url && <a href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
