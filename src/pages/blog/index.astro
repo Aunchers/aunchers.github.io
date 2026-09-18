@@ -78,9 +78,10 @@ const fmt = (d) => {
     )
   }
 
-  <hr />
-  <div class="flex-between" style="font-size:13px;">
-    <span class="muted-text">{visiblePosts.length} posts</span>
-    <a href="/rss.xml">rss</a>
-  </div>
+  <span slot="footer-meta" class="muted-text">
+    {visiblePosts.length} posts · <span class="footnote-ref"
+      ><a href="/rss.xml">rss</a></span
+    >
+    {" · "}
+  </span>
 </BaseLayout>

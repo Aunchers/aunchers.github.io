@@ -28,97 +28,120 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
 ---
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <script is:inline>
-    var savedTheme = localStorage.getItem('theme');
-    if (savedTheme) { document.documentElement.setAttribute('data-theme', savedTheme); }
-  </script>
-  <link rel="icon" id="favicon" type="image/svg+xml" href="/defaultlogo.svg" />
-  <link rel="preload" href="/fonts/fira-code-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/fonts/fira-code-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
-  <script is:inline>
-    function updateThemeAssets() {
-      const theme = document.documentElement.getAttribute('data-theme') || 'default';
-      const favicon = document.getElementById('favicon');
-      if (favicon) {
-        favicon.href = `/${theme}logo.svg`;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <script is:inline>
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
       }
-      const badge = document.getElementById('home-badge');
-      if (badge) {
-        badge.src = `/${theme}8831.png`;
-      }
-    }
+    </script>
+    <link
+      rel="icon"
+      id="favicon"
+      type="image/svg+xml"
+      href="/defaultlogo.svg"
+    />
+    <link
+      rel="preload"
+      href="/fonts/fira-code-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/fira-code-latin-ext.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
-    updateThemeAssets();
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          updateThemeAssets();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-  </script>
-
-  <meta property="og:title" content={title} />
-  <meta property="og:type" content={ogType || "website"} />
-  <meta property="og:url" content={Astro.url} />
-  <meta property="og:description" content={description || defaultDesc} />
-  <meta property="og:site_name" content="CHAIRS" />
-</head>
-<body>
-  <div class="page">
-    <slot />
-    <footer class="site-footer">
-      {lastCommit && (
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content={ogType || "website"} />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:description" content={description || defaultDesc} />
+    <meta property="og:site_name" content="CHAIRS" />
+  </head>
+  <body>
+    <div class="page">
+      <slot />
+      <footer class="site-footer">
         <p>
-          made with love by aunchers<span class="muted-text"> · last commit<sup class="footnote-ref"><a href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}>{lastCommit.hash}</a></sup> · {lastCommit.date}</span>
+          <slot name="footer-meta" />
+          {
+            lastCommit && (
+              <span class="muted-text">
+                made with love by aunchers
+                <span class="muted-text">
+                  {" "}
+                  · last commit
+                  <sup class="footnote-ref">
+                    <a
+                      href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}
+                    >
+                      {lastCommit.hash}
+                    </a>
+                  </sup>{" "}
+                  · {lastCommit.date}
+                </span>
+              </span>
+            )
+          }
         </p>
-      )}
-    </footer>
-  </div>
-  <script is:inline>
-    var THEME_ORDER = ['default', 'midnight', 'paper'];
-    var THEME_GLYPH = { default: '◐', midnight: '☾', paper: '☀' };
-    function currentTheme() {
-      return document.documentElement.getAttribute('data-theme') || 'default';
-    }
-    function updateThemeAssets() {
-      var theme = currentTheme();
-      var favicon = document.getElementById('favicon');
-      if (favicon) { favicon.href = '/' + theme + 'logo.svg'; }
-      var badge = document.getElementById('home-badge');
-      if (badge) { badge.src = '/' + theme + '8831.png'; }
-      var btn = document.getElementById('theme-toggle');
-      if (btn) { btn.textContent = THEME_GLYPH[theme] || '◐'; }
-    }
-
-    updateThemeAssets();
-    new MutationObserver(updateThemeAssets)
-      .observe(document.documentElement, { attributes: true });
-
-    var themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
-        if (next === 'default') {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.removeItem('theme');
-        } else {
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('theme', next);
+      </footer>
+    </div>
+    <script is:inline>
+      var THEME_ORDER = ["default", "midnight", "paper"];
+      var THEME_GLYPH = { default: "◐", midnight: "☾", paper: "☀" };
+      function currentTheme() {
+        return document.documentElement.getAttribute("data-theme") || "default";
+      }
+      function updateThemeAssets() {
+        var theme = currentTheme();
+        var favicon = document.getElementById("favicon");
+        if (favicon) {
+          favicon.href = "/" + theme + "logo.svg";
         }
-        updateThemeAssets();
-      });
-    }
-  </script>
-  <script>
-    import 'astro:prefetch';
-  </script>
-</body>
+        var badge = document.getElementById("home-badge");
+        if (badge) {
+          badge.src = "/" + theme + "8831.png";
+        }
+        var btn = document.getElementById("theme-toggle");
+        if (btn) {
+          btn.textContent = THEME_GLYPH[theme] || "◐";
+        }
+      }
+
+      updateThemeAssets();
+      new MutationObserver(updateThemeAssets).observe(
+        document.documentElement,
+        { attributes: true },
+      );
+
+      var themeBtn = document.getElementById("theme-toggle");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          var next =
+            THEME_ORDER[
+              (THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length
+            ];
+          if (next === "default") {
+            document.documentElement.removeAttribute("data-theme");
+            localStorage.removeItem("theme");
+          } else {
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("theme", next);
+          }
+          updateThemeAssets();
+        });
+      }
+    </script>
+    <script>
+      import "astro:prefetch";
+    </script>
+  </body>
 </html>

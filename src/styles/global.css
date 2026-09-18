@@ -44,14 +44,17 @@
 }
 
 [data-theme="paper"] {
-  --bg: #fffcf0;
+  --bg: #fff5dc;
   --text: #100f0f;
-  --accent: #b5104e;
+  --accent: #D90166;
+  --accent-soft: #e73582;
   --muted: #6f6a60;
   --border: #d8d2c4;
   --code-bg: #f2ede0;
   --white: #2e2e2e;
 }
+
+:root, [data-theme="midnight"] { --accent-soft: #ee3b88; }
 
 /* ---------- base ---------- */
 
@@ -79,13 +82,11 @@ body {
 @media (max-width: 767px) {
   body { padding: 1.25rem; hyphens: auto; }
 
-  .post-header { align-items: flex-start; gap: 0.75rem; }
+  .post-item { grid-template-columns: 5.2rem 1fr; column-gap: 0.75rem; }
 
-  .post-date-inline { min-width: 3.8rem; }
+  .post-title-text { font-size: 17px; }
 
-  .post-title-text a { font-size: 17px; }
-
-  .post-preview { margin-left: 4.55rem; }
+  .post-preview { font-size: 14px; }
 
   .post-hero { margin: 2rem 0 1.5rem; padding-left: 0.9rem; }
 
@@ -316,11 +317,11 @@ del, s { color: var(--muted); }
 .post-list {
   list-style: none;
   padding: 0;
-  margin: 2rem 0;
+  margin: 1.25rem 0;
 }
 
 .post-item {
-  padding: 1.1rem 0 1.25rem;
+  padding: 0.85rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -335,13 +336,18 @@ del, s { color: var(--muted); }
 .post-date-inline {
   font-family: 'Fira Code', monospace;
   font-style: normal;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
   white-space: nowrap;
 }
 
-.post-title-text a {
+.post-title-text {
+  margin: 0;
   font-size: 19px;
+  line-height: 1.25;
+}
+
+.post-title-text a {
   color: var(--white);
   font-style: normal;
   text-decoration-thickness: 1px;
@@ -353,7 +359,7 @@ del, s { color: var(--muted); }
 .post-preview {
   font-size: 14.5px;
   color: var(--muted);
-  margin: 0.45em 0 0 5.25rem;
+  margin: 0.45em 0 0;
   max-width: 34rem;
 }
 
@@ -376,15 +382,26 @@ del, s { color: var(--muted); }
 .post-hero-title a:hover { color: var(--accent); }
 
 .post-meta-top {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
   font-family: 'Fira Code', monospace;
   font-style: normal;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  margin: 0.65rem 0 0;
+  margin: 1rem 0 0;
 }
 
 .meta-date { margin: 0; }
+
+.post-edited-date {
+  color: var(--muted);
+}
+
+.post-edited-date::before { content: '· '; color: var(--border); }
+
+[data-theme="paper"] .post-edited-date,
+[data-theme="paper"] .post-date-inline { color: var(--accent-soft); }
 
 /* dashed-border chips — the little buttons */
 .proj-tech-tag,
@@ -886,7 +903,8 @@ figcaption {
     font-size: 18px;
     width: 100%;
   }
-  .post-preview { margin-bottom: 0.55rem; }
+  .post-date-inline { min-width: 3.8rem; }
+  .post-preview { margin: 0.45em 0 0; margin-bottom: 0.55rem; }
 
   .home-links {
     flex-wrap: wrap;

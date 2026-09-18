@@ -20,6 +20,7 @@ interface Props {
     title: string;
     description: string;
     date: Date;
+    updatedDate?: Date;
     status?: string;
     externalUrl?: string;
     cover?: string;
@@ -48,7 +49,12 @@ const fmtDate = (d: Date) => {
         document.documentElement.setAttribute("data-theme", savedTheme);
       }
     </script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="icon"
+      id="favicon"
+      type="image/svg+xml"
+      href="/defaultlogo.svg"
+    />
     <link
       rel="preload"
       href="/fonts/fira-code-latin.woff2"
@@ -99,10 +105,22 @@ const fmtDate = (d: Date) => {
 
       <header class="post-hero">
         <h1 class="post-hero-title">{frontmatter.title}</h1>
-        <time class="post-meta-top" datetime={frontmatter.date.toISOString()}
-          >{fmtDate(frontmatter.date)}</time
-        >
         <p class="post-subtitle">{frontmatter.description}</p>
+        <div class="post-meta-top">
+          <time datetime={frontmatter.date.toISOString()}>
+            published {fmtDate(frontmatter.date)}
+          </time>
+          {
+            frontmatter.updatedDate && (
+              <time
+                class="post-edited-date"
+                datetime={frontmatter.updatedDate.toISOString()}
+              >
+                edited {fmtDate(frontmatter.updatedDate)}
+              </time>
+            )
+          }
+        </div>
       </header>
 
       {
@@ -157,6 +175,10 @@ const fmtDate = (d: Date) => {
         return document.documentElement.getAttribute("data-theme") || "default";
       }
       function updateThemeAssets() {
+        var favicon = document.getElementById("favicon");
+        if (favicon) {
+          favicon.href = "/" + currentTheme() + "logo.svg";
+        }
         var badge = document.getElementById("home-badge");
         if (badge) {
           badge.src = "/" + currentTheme() + "8831.png";
