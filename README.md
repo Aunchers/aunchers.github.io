@@ -10,6 +10,7 @@ posts, images, and design are all rights reserved.
 
 ## badges (88x32)
 [![aunchers](public/default8831.png)](https://aunchers.org)
+[![aunchers](public/paper8831.png)](https://aunchers.org)
 
 ---
 
