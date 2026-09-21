@@ -1,47 +1,54 @@
-# Astro Starter Kit: Minimal
+# chairs
 
-```sh
-pnpm create astro@latest -- --template minimal
+my personal site. lives at [aunchers.org](https://aunchers.org).
+
+static html and css, built with [astro](https://astro.build). no framework runtime, no hydration, no bundle. posts and projects are mdx content collections, everything else is just pages.
+
+## stack
+
+- astro, static output
+- mdx for posts and projects
+- plain css (no tailwind)
+- fira code, self-hosted
+- built and deployed with bun via github actions to github pages
+
+## structure
+
 ```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
 ├── public/
 ├── src/
+│   ├── components/
+│   ├── content/
+│   │   ├── posts/
+│   │   └── projects/
+│   ├── layouts/
 │   └── pages/
-│       └── index.astro
-└── package.json
+└── astro.config.mjs
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+posts go in `src/content/posts/`, projects in `src/content/projects/`. frontmatter is validated with zod at build time, so typos fail the build instead of silently breaking something.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## commands
 
-Any static assets, like images, can be placed in the `public/` directory.
+run from the root:
 
-## 🧞 Commands
+| Command         | Action                                      |
+| :-------------- | :------------------------------------------ |
+| `bun install`   | install dependencies                        |
+| `bun run dev`   | local dev server at `localhost:4321`        |
+| `bun run build` | build production site to `./dist/`          |
+| `bun run preview` | preview the build locally                 |
 
-All commands are run from the root of the project, from a terminal:
+## deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+push to `main` and github actions builds and deploys it. that's it.
 
-## 👀 Want to learn more?
+## license
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+code is [MIT](https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE).
+posts, images, and design are all rights reserved.
+
+---
+
+*made with love by aunchers*
