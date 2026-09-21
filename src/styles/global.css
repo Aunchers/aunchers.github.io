@@ -389,10 +389,52 @@ del, s { color: var(--muted); }
   font-style: normal;
   font-size: 11px;
   color: var(--muted);
-  margin: 1rem 0 0;
+  margin: 0.5rem 0 0;
 }
 
+.post-meta-top + .post-subtitle { margin-top: 0.35rem; }
+
 .meta-date { margin: 0; }
+
+/* "last updated" line with a ?-badge that pops the publish date
+   and the commit-history link; box aligns to the left edge */
+.meta-note {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  outline: none;
+}
+
+.meta-note .tooltip-pop {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 0;
+  align-items: center;
+  gap: 0.75em;
+  background: var(--code-bg);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 11px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  z-index: 40;
+}
+
+.meta-note:hover .tooltip-pop { display: inline-flex; }
+
+/* the whole "last updated <date>" phrase is the history link; the
+   ↗ hangs off its top-right corner. hover/click pops the publish
+   date box, left-aligned with the start of the phrase. */
+.meta-link {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.meta-link:hover { color: var(--accent); }
+
+.tooltip-pop a { color: var(--accent); }
 
 .post-edited-date {
   color: var(--muted);
@@ -676,14 +718,45 @@ figcaption {
   font-size: 14px;
   color: var(--muted);
   margin: 0.75em 0;
-  padding-left: 0.25em;
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+  scroll-margin-top: 2.5rem;
+  border-left: 2px solid transparent;
+  transition: background-color 0.4s, border-color 0.4s;
+}
+
+/* jump-to-citation target: flash pink, then settle into a quiet tint */
+.footnote:target,
+.footnote:target .footnote-text {
+  animation: cite-flash 1.8s ease-out forwards;
+}
+
+@keyframes cite-flash {
+  0% { background-color: var(--accent); border-left-color: var(--accent); color: #fff; }
+  35% { background-color: rgba(217, 1, 102, 0.18); border-left-color: var(--accent); }
+  100% { background-color: rgba(217, 1, 102, 0.06); border-left-color: var(--accent); color: var(--muted); }
 }
 
 .footnote-num {
   font-family: 'Fira Code', monospace;
   font-style: normal;
   color: var(--accent);
-  min-width: 1.25em;
+}
+
+sup.footnote-ref {
+  font-size: 70%;
+  line-height: 0;
+}
+
+sup.footnote-ref a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent);
+  padding: 0 1px;
+}
+
+sup.footnote-ref a:hover {
+  border-bottom-style: solid;
 }
 
 /* ---------- projects ---------- */

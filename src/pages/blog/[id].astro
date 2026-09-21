@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { postLastUpdated } from '../../lib/git-latest';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -14,8 +15,9 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const lastCommit = postLastUpdated(post.data.slug);
 ---
 
-<BlogPostLayout frontmatter={post.data}>
+<BlogPostLayout frontmatter={post.data} lastCommit={lastCommit}>
   <Content />
 </BlogPostLayout>

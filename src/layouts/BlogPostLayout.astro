@@ -13,7 +13,7 @@ function getLastCommit() {
   }
 }
 
-const lastCommit = getLastCommit();
+const siteCommit = getLastCommit();
 
 interface Props {
   frontmatter: {
@@ -21,14 +21,16 @@ interface Props {
     description: string;
     date: Date;
     updatedDate?: Date;
+    slug?: string;
     status?: string;
     externalUrl?: string;
     cover?: string;
     coverAlt?: string;
   };
+  lastCommit?: { hash: string; date: string } | null;
 }
 
-const { frontmatter } = Astro.props;
+const { frontmatter, lastCommit } = Astro.props;
 
 const fmtDate = (d: Date) => {
   const mo = String(d.getMonth() + 1).padStart(2, "0");
@@ -36,6 +38,13 @@ const fmtDate = (d: Date) => {
   const yr = d.getFullYear();
   return `${mo}.${dy}.${yr}`;
 };
+
+const publishedISO = frontmatter.date.toISOString().slice(0, 10);
+// git reads the file's commit history at build time; the page is static
+// after that — nothing runs in the browser to work this out
+const historyUrl = frontmatter.slug
+  ? `https://github.com/Aunchers/aunchers.github.io/commits/main/src/content/posts/${frontmatter.slug}.mdx`
+  : null;
 ---
 
 <html lang="en">
@@ -107,19 +116,22 @@ const fmtDate = (d: Date) => {
         <h1 class="post-hero-title">{frontmatter.title}</h1>
         <p class="post-subtitle">{frontmatter.description}</p>
         <div class="post-meta-top">
-          <time datetime={frontmatter.date.toISOString()}>
-            published {fmtDate(frontmatter.date)}
-          </time>
-          {
-            frontmatter.updatedDate && (
-              <time
-                class="post-edited-date"
-                datetime={frontmatter.updatedDate.toISOString()}
-              >
-                edited {fmtDate(frontmatter.updatedDate)}
-              </time>
-            )
-          }
+          <span class="meta-note">
+            <time datetime={publishedISO}>
+              {historyUrl ? (
+                <a class="meta-link" href={historyUrl} target="_blank" rel="noopener" title="edit history">
+                  last updated {lastCommit ? lastCommit.date : publishedISO}
+                </a>
+              ) : (
+                <>
+                  last updated {lastCommit ? lastCommit.date : publishedISO}
+                </>
+              )}
+            </time>
+            <span class="tooltip-pop">
+              <span>published {publishedISO}</span>
+            </span>
+          </span>
         </div>
       </header>
 
@@ -148,7 +160,7 @@ const fmtDate = (d: Date) => {
 
       <footer class="site-footer">
         {
-          lastCommit && (
+          siteCommit && (
             <p>
               made with love by aunchers
               <span class="muted-text">
@@ -156,12 +168,12 @@ const fmtDate = (d: Date) => {
                 · last commit
                 <sup class="footnote-ref">
                   <a
-                    href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}
+                    href={`https://github.com/aunchers/aunchers.github.io/commit/${siteCommit.hash}`}
                   >
-                    {lastCommit.hash}
+                    {siteCommit.hash}
                   </a>
                 </sup>{" "}
-                · {lastCommit.date}
+                · {siteCommit.date}
               </span>
             </p>
           )

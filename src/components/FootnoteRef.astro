@@ -1,0 +1,15 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  n: string;
+  text?: string;
+}
+
+const { n, text } = Astro.props;
+const target = `#fn-${text ? text.toLowerCase().replace(/[^a-z0-9]+/g, "-") : n}`;
+---
+
+<sup class="footnote-ref">
+  <a href={target} aria-label={`jump to citation ${n}`}>{text ? `[${n}]` : n}</a>
+</sup>
