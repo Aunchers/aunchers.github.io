@@ -2,6 +2,8 @@
 
 my personal site. lives at [aunchers.org](https://aunchers.org).
 
+[![aunchers](public/default8831.png)](https://aunchers.org)
+
 static html and css, built with [astro](https://astro.build).
 
 ## license
