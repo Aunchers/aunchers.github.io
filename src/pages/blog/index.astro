@@ -3,8 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from "astro:content";
 
 const allPosts = await getCollection("posts");
-const visiblePosts = allPosts.filter(p => p.data.status !== "draft");
-visiblePosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const listedPosts = allPosts
+  .filter((p) => p.data.status !== "draft")
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const visiblePosts = listedPosts.filter((p) => !p.data.accessPassword);
 
 const postsByYear = visiblePosts.reduce((acc, post) => {
   const year = post.data.date.getFullYear();
@@ -51,8 +53,13 @@ const fmt = (d) => {
       <p>no posts right now. they'll show up here when there are some.</p>
     ) : (
       <ul class="post-list">
-        {visiblePosts.map((post) => (
-          <li class="post-item">
+          {listedPosts.map((post) => (
+          <li
+            class="post-item"
+            class:list={{ "private-post-listing": post.data.accessPassword }}
+            data-private-slug={post.data.accessPassword ? post.data.slug : undefined}
+            hidden={Boolean(post.data.accessPassword)}
+          >
             <div class="post-header">
               <time
                 class="post-date-inline"
@@ -72,9 +79,9 @@ const fmt = (d) => {
             {post.data.description && (
               <p class="post-preview">{post.data.description}</p>
             )}
-          </li>
-        ))}
-      </ul>
+            </li>
+          ))}
+        </ul>
     )
   }
 
@@ -85,3 +92,12 @@ const fmt = (d) => {
     {" · "}
   </span>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll('[data-private-slug]').forEach((post) => {
+    const slug = post.dataset.privateSlug;
+    if (slug && localStorage.getItem(`post-access:${slug}`) === 'granted') {
+      post.hidden = false;
+    }
+  });
+</script>

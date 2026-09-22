@@ -19,5 +19,32 @@ const lastCommit = postLastUpdated(post.data.slug);
 ---
 
 <BlogPostLayout frontmatter={post.data} lastCommit={lastCommit}>
-  <Content />
+  {post.data.accessPassword ? (
+    <div class="private-post" data-password={post.data.accessPassword}>
+      <div class="private-post-gate">
+        <p>checking access...</p>
+      </div>
+      <div class="private-post-content" hidden>
+        <Content />
+      </div>
+    </div>
+  ) : (
+    <Content />
+  )}
 </BlogPostLayout>
+
+{post.data.accessPassword && (
+  <script>
+    const post = document.querySelector('.private-post');
+    const gate = post?.querySelector('.private-post-gate');
+    const content = post?.querySelector('.private-post-content');
+    const queryPassword = new URLSearchParams(location.search).get('pwd');
+    if (queryPassword !== post.dataset.password) {
+      location.replace('/404');
+    } else {
+      localStorage.setItem(`post-access:${location.pathname.split('/').pop()}`, 'granted');
+      gate.hidden = true;
+      content.hidden = false;
+    }
+  </script>
+)}

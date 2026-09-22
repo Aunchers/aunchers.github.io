@@ -1,0 +1,205 @@
+---
+title: "Propositions and Logic Gates"
+description: "notes on propositions, connectives, and truth tables"
+date: 2026-09-22
+slug: propositions
+categories: ["discrete math", "logic"]
+readTime: "~6 min"
+num: "06"
+status: "active"
+accessPassword: "uni"
+---
+
+For my discrete math lecture, I've decided that the
+best way to take notes was to turn them into a blog post. seems slightly less
+boring that way, i guess.
+
+this is a quick introduction to propositions, logical connectives, truth tables,
+and implication. it is also a useful starting point for understanding logic
+gates.
+
+## 1. propositions
+
+a **proposition** is a declarative statement that is either true or false, but
+not both.
+
+> a pair of six-sided dice has 42 dots.
+
+this is a proposition, and it is true. each die has 21 dots, so together they
+have 42.
+
+questions, commands, and incomplete phrases are not propositions. for example,
+"why am i here?" has no truth value, so it is not a proposition.
+
+## 2. compound propositions
+
+a **compound proposition** combines one or more simple propositions using a
+logical connective.
+
+suppose:
+
+- `p`: canada won silver
+- `q`: china won silver
+- `r`: korea won gold
+- `s`: france won a medal
+
+we can combine them like this:
+
+| Compound proposition | Symbol |
+| --- | --- |
+| canada won silver and korea won gold | `p ∧ r` |
+| china did not win silver | `¬q` |
+| france won a medal or china won silver | `s ∨ q` |
+| either canada won silver or korea won gold, but not both | `p ⊕ r` |
+
+the letters are shorthand for propositions. lowercase letters such as `p`,
+`q`, and `r` are commonly used this way.
+
+## 3. basic connectives
+
+| Name | Symbol | Meaning |
+| --- | --- | --- |
+| Negation | `¬` | not |
+| Conjunction | `∧` | and |
+| Disjunction | `∨` | or |
+| Exclusive or | `⊕` | exactly one, but not both |
+
+for example, let:
+
+- `p`: it is snowing today
+- `q`: today is monday
+- `r`: i love discrete math
+
+then:
+
+| English | Symbol |
+| --- | --- |
+| today is monday and i love discrete math | `q ∧ r` |
+| it is snowing today or today is monday | `p ∨ q` |
+| it is not snowing today | `¬p` |
+
+in formal logic, `or` usually means **inclusive or**. `p ∨ q` is true when
+either proposition is true, including when both are true.
+
+## 4. truth tables
+
+a **truth table** lists the result of a compound proposition for every possible
+combination of truth values. here, `1` means true and `0` means false.
+
+### negation
+
+`¬p` reverses the truth value of `p`.
+
+| `p` | `¬p` |
+| --- | --- |
+| 0 | 1 |
+| 1 | 0 |
+
+result string: `10`
+
+### conjunction
+
+`p ∧ q` is true only when both propositions are true.
+
+| `p` | `q` | `p ∧ q` |
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+result string: `0001`
+
+### inclusive or
+
+`p ∨ q` is true when at least one proposition is true.
+
+| `p` | `q` | `p ∨ q` |
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+result string: `0111`
+
+### exclusive or
+
+`p ⊕ q` is true when exactly one proposition is true.
+
+| `p` | `q` | `p ⊕ q` |
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+result string: `0110`
+
+the only difference between `∨` and `⊕` is the final row. inclusive or is
+true when both propositions are true. exclusive or is false in that case.
+
+## 5. evaluating compound propositions
+
+to evaluate a compound proposition, assign a truth value to each variable and
+then apply the connectives in order.
+
+the usual order is:
+
+1. negation, `¬`
+2. conjunction, `∧`
+3. disjunction, `∨`
+4. exclusive or, `⊕`
+
+parentheses override this order. when connectives have the same precedence,
+evaluate from left to right.
+
+for `p = 1`, `q = 0`, and `r = 1`:
+
+| Expression | Evaluation | Result |
+| --- | --- | --- |
+| `¬p ∨ q` | `0 ∨ 0` | `0` |
+| `¬p ∨ ¬q` | `0 ∨ 1` | `1` |
+| `¬(p ∨ q)` | `¬1` | `0` |
+| `p ∨ q ∧ r` | `1 ∨ (0 ∧ 1)` | `1` |
+| `(p ∨ q) ∧ r` | `(1 ∨ 0) ∧ 1` | `1` |
+
+`¬p ∨ q` means `(¬p) ∨ q`. the negation applies to `p`, not to the entire
+expression. use parentheses when the intended meaning is not obvious.
+
+for a compound proposition with `n` variables, the truth table has `2ⁿ` rows.
+two variables require four rows, while three variables require eight.
+
+## 6. implication
+
+the **conditional**, or **implication**, is written `p → q` and read as "if p,
+then q".
+
+- `p` is the hypothesis
+- `q` is the conclusion
+
+for example:
+
+> if you get 100 on the final, then you will pass the course.
+
+`p` means you get 100 on the final, and `q` means you pass the course. the
+statement is `p → q`.
+
+### truth table for implication
+
+`p → q` is false only when `p` is true and `q` is false. that is the only case
+where the statement's promise is broken.
+
+| `p` | `q` | `p → q` |
+| --- | --- | --- |
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+result string: `1101`
+
+this may feel strange at first. if the hypothesis is false, the conditional
+has not made a promise about what happens, so it is considered true. if the
+hypothesis is true, the conditional is true only when the conclusion is also
+true.
