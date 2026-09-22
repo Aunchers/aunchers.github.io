@@ -16,10 +16,10 @@ author: "aunchers"
 # todo: fix imports to use dynamic paths
 ---
 
-import Callout from '../../components/Callout.astro';
-import Gallery from '../../components/Gallery.astro';
-import Collapsible from '../../components/Collapsible.astro';
-import Footnote from '../../components/Footnote.astro';
+import Callout from '@/components/Callout.astro';
+import Gallery from '@/components/Gallery.astro';
+import Collapsible from '@/components/Collapsible.astro';
+import Footnote from '@/components/Footnote.astro';
 
 the old blog was dead simple. content collection, glob loader pulling `.mdx` files out of `src/content/posts/`, a layout that dumped the rendered content into a div, and that was it. it worked because there wasn't much to break.
 
@@ -157,7 +157,7 @@ each component is a standalone `.astro` file in `src/components/`. they export a
 ---
 title: "my post"
 ---
-import Callout from '../../components/Callout.astro';
+import Callout from '@/components/Callout.astro';
 
 <Callout type="warning">
 this will break if you do it wrong
