@@ -65,8 +65,7 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     addEventListener('scroll', onScroll, { passive: true });
 
-    // scroll to the clicked section instead of jumping, so the sticky header
-    // never lands on top of the heading
+    // smooth scroll, clears the sticky header
     links.forEach((a, id) => {
       a.addEventListener('click', (event) => {
         const target = document.getElementById(id);

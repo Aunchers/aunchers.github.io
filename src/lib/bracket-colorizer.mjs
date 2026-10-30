@@ -1,15 +1,11 @@
-// Build-time Shiki transformer: color nested bracket pairs by depth.
-// Runs during `astro build`, never in the browser, so it costs nothing at
-// request time. Palette is anchored to the site's pink accent and stays
-// muted enough to sit alongside the github-dark token colors.
+// shiki transformer: colors nested bracket pairs by depth.
 
 const OPEN = new Set(["(", "[", "{"]);
 const CLOSE = new Set([")", "]", "}"]);
 
 const isBracket = (ch) => OPEN.has(ch) || CLOSE.has(ch);
 
-// Split a token so each bracket character becomes its own token, keeping
-// offsets correct (mirrors shiki's `splitToken` but filters empty pieces).
+// split a token at each bracket, keeping offsets intact.
 function splitTokenAt(token, breakpoints) {
   const offsets = [...new Set(breakpoints)]
     .filter((o) => o > 0 && o < token.content.length)
@@ -51,8 +47,7 @@ export function bracketColorizer(colors = DEFAULT_COLORS) {
         const out = [];
         for (const token of line) {
           const { content } = token;
-          // Leave comments (1), strings (2), and regex (3) alone; only real
-          // bracket structure gets recolored.
+          // skip comments, strings and regexes
           if (
             !content ||
             token.type === 1 ||
@@ -73,7 +68,7 @@ export function bracketColorizer(colors = DEFAULT_COLORS) {
               if (OPEN.has(ch)) {
                 depth += 1;
               } else if (depth === 0) {
-                // Unbalanced closing bracket: leave its original color.
+                // unbalanced closing bracket, leave its color alone
                 out.push(part);
                 continue;
               }

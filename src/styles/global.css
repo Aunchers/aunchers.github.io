@@ -1,7 +1,5 @@
 /* =========================================================================
-   AUNCHERS · flat surfaces, hairline rules, DM Sans + Fira Code
-   flat surfaces, hairline rules, lavender links, pink accents.
-   DM Sans for prose, Fira Code for meta and code.
+   aunchers
    ========================================================================= */
 
 @import "katex/dist/katex.min.css";
@@ -385,7 +383,7 @@ del, s {
   transform: translate(1px, -1px);
 }
 
-/* temporarily closed: resume */
+/* locked card (resume) */
 
 .card-locked {
   position: relative;
@@ -1272,7 +1270,7 @@ figcaption {
   font-size: 13px;
 }
 
-/* sticky side rail once there is room outside the column */
+/* side rail */
 @media (min-width: 1180px) {
   .post-shell {
     position: relative;

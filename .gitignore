@@ -23,14 +23,14 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# drafts stay local, like any other ignored file
+# drafts
 src/content/posts/drafts/
 
-# resume is on hold: keep the source local, out of the repo
+# resume
 src/pages/resume.astro
 public/resume.pdf
 
-# local screenshots from design passes
+# screenshots
 shots/
 
 dev*.log

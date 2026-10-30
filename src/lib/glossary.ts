@@ -1,10 +1,4 @@
-// Shared glossary for the `<Def>` component.
-//
-// Add a term here once, then reference it from any post (this one or a
-// later one) with `<Def term="proposition" />`. Hovering the rendered word
-// shows the definition plus, if you set `href`, a "more details" link.
-//
-// Keys are matched case-insensitively. Keep them lowercase here.
+// terms for <Def>. keys are lowercase, matching is case-insensitive.
 
 export interface GlossaryEntry {
   definition: string;
@@ -15,7 +9,6 @@ export const glossary: Record<string, GlossaryEntry> = {
   proposition: {
     definition:
       "a declarative statement that is either true or false, but not both.",
-    // href: "https://en.wikipedia.org/wiki/Proposition",
   },
   "compound proposition": {
     definition:

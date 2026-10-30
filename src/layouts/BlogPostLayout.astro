@@ -22,8 +22,7 @@ interface Props {
 const { frontmatter, lastCommit, headings } = Astro.props;
 
 const publishedISO = frontmatter.date.toISOString().slice(0, 10);
-// git reads the file's commit history at build time; the page is static
-// after that, nothing runs in the browser to work this out
+// link to this file's commit history in the repo
 const historyUrl = frontmatter.slug
   ? `https://github.com/Aunchers/aunchers.github.io/commits/main/src/content/posts/${frontmatter.slug}.mdx`
   : null;
