@@ -19,6 +19,7 @@ import Collapsible from "@/components/Collapsible.astro";
 import Footnote from "@/components/Footnote.astro";
 import Timeline from "@/components/Timeline.astro";
 import FootnoteRef from "@/components/FootnoteRef.astro";
+import Pfp from "@/components/Pfp.astro";
 
 <Callout type="note" title="disclaimer">
   This is based on my own experience and perspective. It does not represent the
@@ -34,7 +35,7 @@ I didn't really get what it was at first. It was basically a **free service** th
 
 I didn't realize until much later how massive the project actually was. According to their own documentation, the project started in March 2023. By the end of that year, they were claiming **over 200 million requests** and thousands of daily users. Whether those numbers were perfectly accurate or slightly inflated, it was way bigger than the small-scale project I thought I'd stumbled into.<FootnoteRef n="1" />
 
-<Collapsible title="Timeline">
+
   <Timeline
     items={[
       { date: "March 2023", text: "The project begins with the zuki.gm bot." },
@@ -60,11 +61,11 @@ I didn't realize until much later how massive the project actually was. Accordin
       },
     ]}
   />
-</Collapsible>
+
 
 ## Getting involved
 
-Eventually, I became good friends with the creators, including **Kashi, Leander, and Lukinhas**. After I built a random Python wrapper for the API just for fun, they invited me into their inner circle, and I started helping out with the actual backend.
+Eventually, I became good friends with the creators, including <Pfp user="zukixa" name="Kashi" /> **Kashi**, Leander, and <Pfp user="lukinhas" name="Lukinhas" /> **Lukinhas**. After I built a random Python wrapper for the API just for fun, they invited me into their inner circle, and I started helping out with the actual backend.
 
 My contributions were pretty basic: finding new endpoints to scrape, fixing provider IDs, and troubleshooting minor bugs. A lot of the time we just hung out in our group chat, talking about random ideas. Over time, I stopped coding and shifted over to support and IT stuff for the Discord server.
 

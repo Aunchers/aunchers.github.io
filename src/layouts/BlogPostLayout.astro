@@ -1,19 +1,7 @@
 ---
-import '@/styles/global.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import Callout from '@/components/Callout.astro';
-import { execSync } from 'node:child_process';
-
-function getLastCommit() {
-  try {
-    const hash = execSync('git rev-parse --short=7 HEAD', { encoding: 'utf8' }).trim();
-    const date = execSync('git log -1 --format=%as', { encoding: 'utf8' }).trim();
-    return { hash, date };
-  } catch {
-    return null;
-  }
-}
-
-const siteCommit = getLastCommit();
+import Toc from '@/components/Toc.astro';
 
 interface Props {
   frontmatter: {
@@ -28,203 +16,88 @@ interface Props {
     coverAlt?: string;
   };
   lastCommit?: { hash: string; date: string } | null;
+  headings?: { depth: number; slug: string; text: string }[];
 }
 
-const { frontmatter, lastCommit } = Astro.props;
-
-const fmtDate = (d: Date) => {
-  const mo = String(d.getMonth() + 1).padStart(2, "0");
-  const dy = String(d.getDate()).padStart(2, "0");
-  const yr = d.getFullYear();
-  return `${mo}.${dy}.${yr}`;
-};
+const { frontmatter, lastCommit, headings } = Astro.props;
 
 const publishedISO = frontmatter.date.toISOString().slice(0, 10);
 // git reads the file's commit history at build time; the page is static
-// after that — nothing runs in the browser to work this out
+// after that, nothing runs in the browser to work this out
 const historyUrl = frontmatter.slug
   ? `https://github.com/Aunchers/aunchers.github.io/commits/main/src/content/posts/${frontmatter.slug}.mdx`
   : null;
+
+const updatedISO = lastCommit ? lastCommit.date : publishedISO;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{frontmatter.title}</title>
-    <script is:inline>
-      var savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      }
-    </script>
-    <link
-      rel="icon"
-      id="favicon"
-      type="image/svg+xml"
-      href="/defaultlogo.svg"
-    />
-    <link
-      rel="preload"
-      href="/fonts/fira-code-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+<BaseLayout
+  title={`${frontmatter.title} - aunchers`}
+  description={frontmatter.description}
+  ogType="article"
+  section="post"
+>
+  {
+    frontmatter.status === "archived" && (
+      <Callout type="warning" title="archived">
+        This post is older and may contain outdated information.
+      </Callout>
+    )
+  }
 
-    <meta property="og:title" content={frontmatter.title} />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:description" content={frontmatter.description} />
-    <meta property="og:site_name" content="CHAIRS" />
-  </head>
-  <body>
-    <div class="page">
-      <nav class="sub-nav">
-        <span class="sub-nav-links">
-          <a href="/">home</a>
-          <span class="sub-nav-sep">/</span>
-          <a href="/blog">blog</a>
-        </span>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="switch theme"
-          title="switch theme">◐</button
-        >
-      </nav>
-      <hr />
-
-      {
-        frontmatter.status === "archived" && (
-          <Callout type="warning" title="archived">
-            This post is older and may contain outdated information.
-          </Callout>
-        )
-      }
-
-      {
-        frontmatter.status === "wip" && (
-          <div class="wip-line">
-            <span class="muted-label">work in progress</span>
-          </div>
-        )
-      }
-
-      <header class="post-hero">
-        <h1 class="post-hero-title">{frontmatter.title}</h1>
-        <p class="post-subtitle">{frontmatter.description}</p>
-        <div class="post-meta-top">
-          <span class="meta-note">
-            <time datetime={publishedISO}>
-              {historyUrl ? (
-                <a class="meta-link" href={historyUrl} target="_blank" rel="noopener" title="edit history">
-                  last updated {lastCommit ? lastCommit.date : publishedISO}
-                </a>
-              ) : (
-                <>
-                  last updated {lastCommit ? lastCommit.date : publishedISO}
-                </>
-              )}
-            </time>
-            <span class="tooltip-pop">
-              <span>published {publishedISO}</span>
-            </span>
-          </span>
-        </div>
-      </header>
-
-      {
-        frontmatter.cover && (
-          <figure class="cover-image">
-            <img
-              src={frontmatter.cover}
-              alt={frontmatter.coverAlt || frontmatter.title}
-            />
-            {frontmatter.coverAlt && (
-              <figcaption>{frontmatter.coverAlt}</figcaption>
-            )}
-          </figure>
-        )
-      }
-
-      <article class="post-content">
-        <slot />
-      </article>
-      <hr />
-
-      <div class="post-nav">
-        <a href="/blog">all posts</a>
+  {
+    frontmatter.status === "wip" && (
+      <div class="wip-line">
+        <span>work in progress</span>
       </div>
+    )
+  }
 
-      <footer class="site-footer">
+  <header class="post-hero">
+    <h1 class="post-hero-title">{frontmatter.title}</h1>
+    <p class="post-subtitle">{frontmatter.description}</p>
+    <div class="meta-row">
+      <span>
+        <span class="meta-key">published</span>
+        <time datetime={publishedISO}>{publishedISO}</time>
+      </span>
+      <span class="meta-sep">·</span>
+      <span>
+        <span class="meta-key">updated</span>
         {
-          siteCommit && (
-            <p>
-              made with love by aunchers
-              <span class="muted-text">
-                {" "}
-                · last commit
-                <sup class="footnote-ref">
-                  <a
-                    href={`https://github.com/aunchers/aunchers.github.io/commit/${siteCommit.hash}`}
-                  >
-                    {siteCommit.hash}
-                  </a>
-                </sup>{" "}
-                · {siteCommit.date}
-              </span>
-            </p>
+          historyUrl ? (
+            <a href={historyUrl} target="_blank" rel="noopener" title="edit history">
+              {updatedISO}
+            </a>
+          ) : (
+            updatedISO
           )
         }
-      </footer>
+      </span>
     </div>
-    <script is:inline>
-      var THEME_ORDER = ["default", "midnight", "paper"];
-      var THEME_GLYPH = { default: "◐", midnight: "☾", paper: "☀" };
-      function currentTheme() {
-        return document.documentElement.getAttribute("data-theme") || "default";
-      }
-      function updateThemeAssets() {
-        var favicon = document.getElementById("favicon");
-        if (favicon) {
-          favicon.href = "/" + currentTheme() + "logo.svg";
-        }
-        var badge = document.getElementById("home-badge");
-        if (badge) {
-          badge.src = "/" + currentTheme() + "8831.png";
-        }
-        var btn = document.getElementById("theme-toggle");
-        if (btn) {
-          btn.textContent = THEME_GLYPH[currentTheme()] || "◐";
-        }
-      }
+  </header>
 
-      updateThemeAssets();
-      new MutationObserver(updateThemeAssets).observe(
-        document.documentElement,
-        { attributes: true },
-      );
+  {
+    frontmatter.cover && (
+      <figure class="cover-image">
+        <img
+          src={frontmatter.cover}
+          alt={frontmatter.coverAlt || frontmatter.title}
+        />
+        {frontmatter.coverAlt && <figcaption>{frontmatter.coverAlt}</figcaption>}
+      </figure>
+    )
+  }
 
-      var themeBtn = document.getElementById("theme-toggle");
-      if (themeBtn) {
-        themeBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          var next =
-            THEME_ORDER[
-              (THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length
-            ];
-          if (next === "default") {
-            document.documentElement.removeAttribute("data-theme");
-            localStorage.removeItem("theme");
-          } else {
-            document.documentElement.setAttribute("data-theme", next);
-            localStorage.setItem("theme", next);
-          }
-          updateThemeAssets();
-        });
-      }
-    </script>
-  </body>
-</html>
+  <div class="post-shell">
+    {headings && <Toc headings={headings} />}
+
+    <article class="post-content">
+      <slot />
+    </article>
+  </div>
+
+  <nav class="post-nav">
+    <a href="/blog">← all posts</a>
+  </nav>
+</BaseLayout>

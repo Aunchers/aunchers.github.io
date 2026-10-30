@@ -1,0 +1,25 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  user: string;
+  name: string;
+}
+
+const { user, name } = Astro.props;
+
+const exts = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+const dir = path.join(process.cwd(), 'public', 'pfp');
+const ext = exts.find((e) => fs.existsSync(path.join(dir, `${user}.${e}`))) ?? 'png';
+---
+
+<img
+  class="mention-pfp"
+  src={`/pfp/${user}.${ext}`}
+  alt={`${name}'s profile picture`}
+  width="20"
+  height="20"
+  loading="lazy"
+  decoding="async"
+/>

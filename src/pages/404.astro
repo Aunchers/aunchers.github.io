@@ -2,22 +2,26 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="404 - CHAIRS" description="page not found">
-  <nav class="sub-nav">
-    <span class="sub-nav-links">
+<BaseLayout title="404 - aunchers" description="page not found" section="404">
+  <div class="notfound">
+    <img
+      class="notfound-img"
+      src="/404.jpg"
+      alt="a cat hiding under a pile of papers, captioned 404 not found"
+      width="750"
+      height="600"
+      loading="eager"
+      decoding="async"
+    />
+
+    <h1 class="notfound-code">404</h1>
+
+    <p class="notfound-msg">the page you were looking for doesn't exist.</p>
+
+    <p class="link-row">
       <a href="/">home</a>
-    </span>
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
-  </nav>
-
-  <h1 class="page-title">404</h1>
-  <p class="page-desc">the page you were looking for doesn't exist.</p>
-
-  <hr>
-
-  <p>
-    <a href="/">home</a> ·
-    <a href="/blog">blog</a> ·
-    <a href="/projects">projects</a>
-  </p>
+      <a href="/blog">blog</a>
+      <a href="/projects">projects</a>
+    </p>
+  </div>
 </BaseLayout>

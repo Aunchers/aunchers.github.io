@@ -7,12 +7,14 @@ const { items } = Astro.props;
 ---
 
 <div class="timeline">
-  {
-    items.map((item) => (
-      <div class="timeline-item">
-        <strong class="timeline-date">{item.date}</strong>
-        <span class="timeline-text">{item.text}</span>
-      </div>
-    ))
-  }
+  <ol class="timeline-list">
+    {
+      items.map((item) => (
+        <li class="timeline-item">
+          <span class="timeline-date">{item.date}</span>
+          <span class="timeline-text">{item.text}</span>
+        </li>
+      ))
+    }
+  </ol>
 </div>

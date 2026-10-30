@@ -1,45 +1,150 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { projectStatusLabels } from '@/project-status';
+
+const done = (await getCollection('projects'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name))
+  .slice(0, 3);
 ---
 
-<BaseLayout title="CHAIRS">
-  <nav class="sub-nav">
-    <span class="sub-nav-links">
-      <a href="/">home</a>
-    </span>
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
-  </nav>
-  <hr>
+<BaseLayout
+  title="aunchers"
+  description="hi. i'm aunchers. i live in canada and i love computers."
+  section="home"
+>
+  <header class="home-hero">
+    <a
+      class="hero-pfp"
+      href="https://github.com/aunchers"
+      target="_blank"
+      rel="noopener"
+      aria-label="aunchers on github"
+    >
+      <img src="/avatar.png" alt="aunchers" width="64" height="64" />
+    </a>
 
-  <div class="intro">
-    <div class="intro-line">Hi. I'm <span class="tooltip-trigger" data-tip="aka aunchers"><a href="/blog">Chairs</a>.</span></div>
-    <div class="intro-line" style="padding-left: 2ch;">I live in <span class="tooltip-trigger" data-tip="cold, vast, maple syrup"><a href="#">Canada</a></span></div>
-    <div class="intro-line" style="padding-left: 4ch;">and I love computers</div>
-  </div>
-  <hr>
-  <div class="home-text">you might be here for my <a href="/blog">blog</a> <br>
-or you want to see some of my <a href="/projects">projects</a></div>
-  <hr>
-  <div class="home-text">questions? here's my: <br>
-Matrix: <a href="https://matrix.to/#/#home:matrix.aunchers.org">#home:matrix.aunchers.org</a> <br>
-Fluxer: <a href="#">aunchers</a> <br>
-GitHub: <a href="https://github.com/aunchers">aunchers</a> <br>
-Email: <a href="mailto:1_aunchers@proton.me">1_aunchers@proton.me</a></div>
-  <hr>
+    <div class="hero-text">
+      <h1 class="home-name">
+        hi. i'm <a href="/blog">aunchers</a>.
+      </h1>
+      <p class="home-bio">
+        I live in <img
+          class="flag"
+          src="/canada.svg"
+          alt="Canada"
+          width="20"
+          height="10"
+        /> and I love computers.
+      </p>
+    </div>
+  </header>
 
-  <div class="home-links">
-    <a href="/aunchers.asc" class="home-link">pgp key</a>
-    <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE" class="home-link" target="_blank">license</a>
-    <a href="https://github.com/aunchers/aunchers.github.io" class="home-link" target="_blank">source</a>
-  </div>
-
-  <div class="badge-section">
-    <span class="badge-title">badges (88x31)</span>
-    <div class="badge-grid">
-      <!-- my badge -->
-      <a href="https://aunchers.org" class="unstyled">
-        <img src="/default8831.png" id="home-badge" alt="aunchers">
-      </a>
+  <div class="card-grid">
+    <a class="card" href="/blog">
+      <span class="card-title">blog</span>
+      <span class="card-desc">thoughts, tutorials, logs, and other writings.</span>
+    </a>
+    <div class="card card-locked" aria-disabled="true" aria-label="resume, closed for now">
+      <span class="card-title">resume</span>
+      <span class="card-desc">work, writing and the short version of me.</span>
     </div>
   </div>
+
+  <section class="block">
+    <h2 class="block-label">stuff i've done</h2>
+    <div class="block-body">
+      <ul class="done-list">
+        {
+          done.map((proj) => (
+            <li>
+              <a
+                class="done-link"
+                href={`/projects/${proj.data.name.toLowerCase()}`}
+              >
+                <span class="done-name">{proj.data.name}</span>
+                <span class="done-meta">
+                  {proj.data.dateRange ||
+                    projectStatusLabels[proj.data.status || 'active']}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="block-more"><a href="/projects">more →</a></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block-label">elsewhere</h2>
+    <div class="block-body">
+      <div class="links-list">
+        <a
+          class="link-item"
+          href="https://matrix.to/#/#home:matrix.aunchers.org"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="link-key">matrix</span>
+          <span class="link-val">#home:matrix.aunchers.org</span>
+        </a>
+        <a class="link-item" href="#">
+          <span class="link-key">fluxer</span>
+          <span class="link-val">aunchers</span>
+        </a>
+        <a
+          class="link-item"
+          href="https://github.com/aunchers"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="link-key">github</span>
+          <span class="link-val">aunchers</span>
+        </a>
+        <a class="link-item" href="mailto:1_aunchers@proton.me">
+          <span class="link-key">email</span>
+          <span class="link-val">1_aunchers@proton.me</span>
+        </a>
+      </div>
+
+      <p class="link-row links-extra">
+        <a href="/aunchers.asc">pgp key</a>
+        <a
+          href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE"
+          target="_blank"
+          rel="noopener">license</a
+        >
+        <a
+          href="https://github.com/aunchers/aunchers.github.io"
+          target="_blank"
+          rel="noopener">source</a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block-label">badges</h2>
+    <div class="block-body">
+      <div class="badge-row">
+        <a href="https://aunchers.org">
+          <img
+            src="/badges/aunchers.png"
+            alt="aunchers"
+            width="88"
+            height="31"
+          />
+        </a>
+        <a href="https://astro.build">
+          <img
+            src="/badges/astro.png"
+            alt="built with astro"
+            width="88"
+            height="31"
+          />
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

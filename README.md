@@ -1,17 +1,17 @@
-# chairs
+# aunchers · design pass
 
-my personal site. lives at [aunchers.org](https://aunchers.org).
-static html and css, built with [astro](https://astro.build).
+a visual experiment: the content and collections of [aunx](../aunx) with a
+different design language.
 
-## license
+flat surfaces, hairline rules, no gradients, lavender links and pink accents.
+DM Sans for prose, Fira Code for meta and code.
 
-code is [MIT](https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE).
-posts, images, and design are all rights reserved.
+same collections, posts, projects, three themes (bat, midnight, paper), theme
+toggle, private-post gating, badges and commit footer.
 
-## badges (88x32)
-[![aunchers](public/default8831.png)](https://aunchers.org)
-[![aunchers](public/paper8831.png)](https://aunchers.org)
+```bash
+bun install
+bun run dev
+```
 
----
-
-*made with love by aunchers/chairs*
+nothing here is published; this is a look, not a migration.

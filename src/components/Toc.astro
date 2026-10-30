@@ -1,0 +1,82 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length > 1 && (
+    <div class="toc-rail">
+      <details class="toc" data-toc open>
+      <summary class="toc-title">contents</summary>
+      <div class="toc-sticky">
+        <span class="toc-rail-title">contents</span>
+        <nav aria-label="contents">
+          <ol class="toc-list">
+            {items.map((h) => (
+              <li class:list={['toc-item', `toc-depth-${h.depth}`]}>
+                <a href={`#${h.slug}`} data-toc-link={h.slug}>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+      </details>
+    </div>
+  )
+}
+
+<script>
+  const toc = document.querySelector<HTMLElement>('[data-toc]');
+  if (toc) {
+    const links = new Map<string, HTMLAnchorElement>();
+    toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]').forEach((a) => {
+      links.set(a.dataset.tocLink!, a);
+    });
+
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('.post-content h2[id], .post-content h3[id]')
+    );
+
+    let queued = false;
+    const sync = () => {
+      queued = false;
+      let active = '';
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top <= 140) active = h.id;
+      }
+      links.forEach((a, id) => {
+        if (id === active) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    };
+
+    const onScroll = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(sync);
+      }
+    };
+
+    addEventListener('scroll', onScroll, { passive: true });
+
+    // scroll to the clicked section instead of jumping, so the sticky header
+    // never lands on top of the heading
+    links.forEach((a, id) => {
+      a.addEventListener('click', (event) => {
+        const target = document.getElementById(id);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${id}`);
+      });
+    });
+
+    sync();
+  }
+</script>

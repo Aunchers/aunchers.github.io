@@ -6,98 +6,76 @@ const allPosts = await getCollection("posts");
 const listedPosts = allPosts
   .filter((p) => p.data.status !== "draft")
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const visiblePosts = listedPosts.filter((p) => !p.data.accessPassword);
+const postsByYear = listedPosts.reduce(
+  (acc, post) => {
+    const year = post.data.date.getFullYear();
+    (acc[year] ||= []).push(post);
+    return acc;
+  },
+  {} as Record<number, typeof listedPosts>,
+);
+const sortedYears = Object.keys(postsByYear).sort(
+  (a, b) => Number(b) - Number(a),
+);
 
-const postsByYear = visiblePosts.reduce((acc, post) => {
-  const year = post.data.date.getFullYear();
-  if (!acc[year]) acc[year] = [];
-  acc[year].push(post);
-  return acc;
-}, {});
-const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
-
-const fmt = (d) => {
-  const date = new Date(d);
-  return String(date.getDate()).padStart(2, "0") + "/" + String(date.getMonth() + 1).padStart(2, "0") + "/" + date.getFullYear();
-};
-
+const iso = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <BaseLayout
-  title="Blog - CHAIRS"
-  description="thoughts, tutorials, logs, and other writings."
+  title="blog - aunchers"
+  description="ramblings of a canadaian guy who likes computers."
   ogType="article"
+  section="blog"
 >
-  <nav class="sub-nav">
-    <span class="sub-nav-links">
-      <a href="/">home</a>
-      <span class="sub-nav-sep">/</span>
-      <span>blog</span>
-    </span>
-    <button
-      id="theme-toggle"
-      class="theme-toggle"
-      type="button"
-      aria-label="switch theme"
-      title="switch theme">◐</button
-    >
-  </nav>
-  <hr />
-
-  <h1 class="page-title"><em>/</em>blog</h1>
+  <h1 class="page-title">blog</h1>
   <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
-  <hr />
 
   {
-    visiblePosts.length === 0 ? (
-      <p>no posts right now. they'll show up here when there are some.</p>
+    listedPosts.length === 0 ? (
+      <p class="empty-note">
+        no posts right now. they'll show up here when there are some.
+      </p>
     ) : (
-      <ul class="post-list">
-          {listedPosts.map((post) => (
-          <li
-            class="post-item"
-            class:list={{ "private-post-listing": post.data.accessPassword }}
-            data-private-slug={post.data.accessPassword ? post.data.slug : undefined}
-            hidden={Boolean(post.data.accessPassword)}
-          >
-            <div class="post-header">
-              <time
-                class="post-date-inline"
-                datetime={post.data.date.toISOString()}
+      sortedYears.map((year) => (
+        <section class="year-block">
+          <h2 class="year-label">{year}</h2>
+          <ul class="post-list">
+            {postsByYear[Number(year)].map((post) => (
+              <li
+                class="post-item"
+                data-private-slug={
+                  post.data.accessPassword ? post.data.slug : undefined
+                }
+                hidden={Boolean(post.data.accessPassword)}
               >
-                {fmt(post.data.date)}
-              </time>
-              <div class="post-title-text">
                 <a
+                  class="post-link"
+                  class:list={{ archived: post.data.status === "archived" }}
                   href={`/blog/${post.data.slug}`}
-                  class:list={[{ archived: post.data.status === "archived" }]}
                 >
-                  {post.data.title}
+                  <time class="post-date" datetime={post.data.date.toISOString()}>
+                    {iso(post.data.date)}
+                  </time>
+                  <span class="post-title">{post.data.title}</span>
                 </a>
-              </div>
-            </div>
-            {post.data.description && (
-              <p class="post-preview">{post.data.description}</p>
-            )}
-            </li>
-          ))}
-        </ul>
+                {post.data.description && (
+                  <p class="post-preview">{post.data.description}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
     )
   }
 
-  <span slot="footer-meta" class="muted-text">
-    {visiblePosts.length} posts · <span class="footnote-ref"
-      ><a href="/rss.xml">rss</a></span
-    >
-    {" · "}
-  </span>
 </BaseLayout>
 
 <script>
-  document.querySelectorAll('[data-private-slug]').forEach((post) => {
-    const slug = post.dataset.privateSlug;
-    if (slug && localStorage.getItem(`post-access:${slug}`) === 'granted') {
-      post.hidden = false;
+  document.querySelectorAll("[data-private-slug]").forEach((post) => {
+    const slug = (post as HTMLElement).dataset.privateSlug;
+    if (slug && localStorage.getItem(`post-access:${slug}`) === "granted") {
+      (post as HTMLElement).hidden = false;
     }
   });
 </script>

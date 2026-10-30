@@ -14,11 +14,11 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const lastCommit = postLastUpdated(post.data.slug);
 ---
 
-<BlogPostLayout frontmatter={post.data} lastCommit={lastCommit}>
+<BlogPostLayout frontmatter={post.data} lastCommit={lastCommit} headings={headings}>
   {post.data.accessPassword ? (
     <div class="private-post" data-password={post.data.accessPassword}>
       <div class="private-post-gate">
@@ -39,12 +39,12 @@ const lastCommit = postLastUpdated(post.data.slug);
     const gate = post?.querySelector('.private-post-gate');
     const content = post?.querySelector('.private-post-content');
     const queryPassword = new URLSearchParams(location.search).get('pwd');
-    if (queryPassword !== post.dataset.password) {
+    if (queryPassword !== (post as HTMLElement).dataset.password) {
       location.replace('/404');
     } else {
       localStorage.setItem(`post-access:${location.pathname.split('/').pop()}`, 'granted');
-      gate.hidden = true;
-      content.hidden = false;
+      (gate as HTMLElement).hidden = true;
+      (content as HTMLElement).hidden = false;
     }
   </script>
 )}

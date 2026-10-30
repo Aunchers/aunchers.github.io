@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process';
 
 /**
  * Last-modified info for a source file, read from git at build time.
- * Nothing runs in the browser or on any server at request time —
+ * Nothing runs in the browser or on any server at request time;
  * the date is baked into the static HTML, so it costs nothing on
  * the client and keeps working if GitHub is unreachable.
  *

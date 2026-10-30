@@ -17,48 +17,45 @@ const { Content } = await render(proj);
 const status = projectStatusLabels[proj.data.status || 'active'];
 ---
 
-<BaseLayout title={`${proj.data.name} - CHAIRS`} description={proj.data.description} ogType="website">
-  <nav class="sub-nav">
-    <span class="sub-nav-links">
-      <a href="/">home</a>
-      <span class="sub-nav-sep">/</span>
-      <a href="/projects">projects</a>
-    </span>
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="switch theme" title="switch theme">◐</button>
-  </nav>
-
+<BaseLayout
+  title={`${proj.data.name} - aunchers`}
+  description={proj.data.description}
+  section="projects"
+>
   <header class="proj-hero">
     <h1 class="page-title">{proj.data.name}</h1>
     <p class="proj-hero-desc">{proj.data.description}</p>
 
     <div class="proj-hero-meta">
       {proj.data.dateRange && <span class="meta-date">{proj.data.dateRange}</span>}
-      <span class="status-chip" data-status={proj.data.status || 'active'}>{status}</span>
+      <span class="status-chip" data-status={proj.data.status || 'active'}>
+        {status}
+      </span>
     </div>
 
     {proj.data.tech && proj.data.tech.length > 0 && (
-      <ul class="proj-taglist">
-        {proj.data.tech.map(t => <li class="proj-tech-tag">{t}</li>)}
+      <ul class="proj-taglist" style="margin-bottom: 0.9rem;">
+        {proj.data.tech.map((t) => <li class="proj-tech-tag">{t}</li>)}
       </ul>
     )}
 
     {(proj.data.repo || proj.data.url) && (
       <div class="proj-hero-links">
-        {proj.data.repo && <a class="proj-action-btn" href={proj.data.repo} target="_blank" rel="noopener">source ↗</a>}
-        {proj.data.url && <a class="proj-action-btn" href={proj.data.url} target="_blank" rel="noopener">site ↗</a>}
+        {proj.data.repo && (
+          <a href={proj.data.repo} target="_blank" rel="noopener">source</a>
+        )}
+        {proj.data.url && (
+          <a href={proj.data.url} target="_blank" rel="noopener">site</a>
+        )}
       </div>
     )}
   </header>
-
-  <hr>
 
   <div class="proj-body">
     <Content />
   </div>
 
-  <hr>
-
-  <div class="post-nav">
-    <a href="/projects">all projects</a>
-  </div>
+  <nav class="post-nav">
+    <a href="/projects">← all projects</a>
+  </nav>
 </BaseLayout>

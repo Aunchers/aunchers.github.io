@@ -3,7 +3,12 @@ import { glob } from "astro/loaders";
 import { projectStatuses } from "@/project-status";
 
 const posts = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/posts" }),
+  loader: glob({
+    // drafts stay outside the build the way they stay outside the repo:
+    // the folder is gitignored, and skipped here in case it exists locally
+    pattern: ["**/*.{md,mdx}", "!**/drafts/**"],
+    base: "./src/content/posts",
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
