@@ -754,17 +754,6 @@ del, s {
   color: var(--accent);
 }
 
-@media (max-width: 560px) {
-  .block {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-
-  .block-label {
-    margin: 0;
-  }
-}
-
 /* ---------- blog list ---------- */
 
 .year-label {
@@ -1398,55 +1387,49 @@ sup.footnote-ref a:hover {
   border-bottom-style: solid;
 }
 
-/* ---------- glossary popover ---------- */
+/* ---------- abbreviations ---------- */
 
-.def {
+abbr[data-def] {
   position: relative;
-  color: var(--link);
-  border-bottom: 1px dotted var(--muted);
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 3px;
+  text-transform: none;
+  letter-spacing: normal;
   cursor: help;
 }
 
-.def:hover,
-.def:focus {
-  border-bottom-color: var(--link);
+abbr[data-def]:hover,
+abbr[data-def]:focus {
+  text-decoration-color: var(--link);
 }
 
-.def-pop {
-  display: none;
+abbr[data-def]:hover::after,
+abbr[data-def]:focus::after {
+  content: attr(data-def);
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 0.55rem);
   left: 50%;
   transform: translateX(-50%);
+  z-index: 40;
   width: max-content;
-  max-width: 18rem;
+  max-width: min(18rem, calc(100vw - 2.5rem));
   padding: 0.45rem 0.65rem;
   font-family: var(--sans);
   font-size: 12.5px;
+  font-weight: 400;
+  font-style: normal;
   line-height: 1.5;
-  white-space: normal;
   color: var(--fg);
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: 0 8px 24px -12px #000;
-  z-index: 50;
-}
-
-.def:hover .def-pop,
-.def:focus .def-pop,
-.def:focus-within .def-pop {
-  display: block;
-}
-
-.def-link {
-  display: block;
-  margin-top: 3px;
-  color: var(--link);
-}
-
-.def-link:hover {
-  text-decoration: underline;
+  pointer-events: none;
 }
 
 /* ---------- projects ---------- */
@@ -1910,35 +1893,49 @@ sup.footnote-ref a:hover {
 
 /* ---------- responsive ---------- */
 
-@media (max-width: 643px) {
+@media (max-width: 760px) {
   .wrap {
-    padding: 1.4rem 1.1rem 2.25rem;
+    padding: 1.5rem 1.15rem 2.5rem;
   }
 
   .topbar-inner {
-    padding: 0 1.1rem;
-    gap: 0.6rem;
+    height: 54px;
+    padding: 0 1.15rem;
+    gap: 0.75rem;
   }
 
   .brand {
-    font-size: 14.5px;
+    font-size: 15px;
   }
 
   .nav {
-    gap: 0.8rem;
-    font-size: 13px;
+    gap: 1rem;
+    font-size: 13.5px;
   }
 
   .nav a {
-    padding: 0.6rem 0;
+    display: inline-block;
+    padding: 0.8rem 0;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
   }
 
   .home-hero {
-    margin-bottom: 1.5rem;
+    gap: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-pfp img {
+    width: 54px;
+    height: 54px;
   }
 
   .home-name {
-    font-size: 1.9rem;
+    font-size: 1.85rem;
+    line-height: 1.12;
   }
 
   .home-bio {
@@ -1946,69 +1943,72 @@ sup.footnote-ref a:hover {
   }
 
   .card-grid {
+    grid-template-columns: 1fr;
     gap: 0.6rem;
   }
 
   .card {
-    padding: 0.9rem 1rem;
+    padding: 0.95rem 1rem;
   }
 
   .block {
-    margin-top: 1.35rem;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+    margin-top: 1.75rem;
     padding-top: 1rem;
   }
 
-  .recent-link {
-    padding: 0.45rem 0;
+  .block-label {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.02em;
   }
 
-  .link-item {
-    padding: 0.5rem;
-  }
-
-  .links-extra {
-    font-size: 13px;
-  }
-
-  .links-extra a {
-    padding: 0.35rem 0;
-  }
-
-  .badge-row {
-    gap: 0.4rem;
-  }
-
-  .theme-toggle {
-    width: 30px;
-    height: 30px;
-  }
-
-  .nav-rss {
-    display: none;
-  }
-
-  .card-grid {
-    grid-template-columns: 1fr;
+  .done-link {
+    padding: 0.55rem 0;
   }
 
   .link-item {
     grid-template-columns: 4.6rem minmax(0, 1fr);
     gap: 0.75rem;
+    padding: 0.6rem 0.5rem;
+  }
+
+  .link-val {
+    font-size: 14px;
   }
 
   .links-extra {
     margin-top: 1rem;
+    font-size: 13px;
   }
 
+  .links-extra a {
+    display: inline-block;
+    padding: 0.55rem 0;
+  }
+
+  .badge-row {
+    gap: 0.45rem;
+  }
 
   .post-link {
     grid-template-columns: 1fr;
-    gap: 0.05rem;
-    padding: 0.6rem 0.15rem 0.15rem;
+    gap: 0.2rem;
+    padding: 0.75rem 0;
+  }
+
+  .post-date {
+    font-size: 11px;
+  }
+
+  .post-title {
+    font-size: 16px;
   }
 
   .post-preview {
-    padding-left: 0.15rem;
+    margin-bottom: 0.8rem;
+    padding-left: 0;
   }
 
   .proj-grid {
@@ -2017,7 +2017,7 @@ sup.footnote-ref a:hover {
 
   .timeline-item {
     grid-template-columns: 1fr;
-    gap: 0.1rem;
+    gap: 0.15rem;
     padding-bottom: 1rem;
   }
 
@@ -2025,34 +2025,22 @@ sup.footnote-ref a:hover {
     padding-top: 0;
   }
 
-  .home-name {
-    font-size: 2rem;
-  }
-
-  .home-hero {
-    gap: 1rem;
-  }
-
-  .hero-pfp img {
-    width: 56px;
-    height: 56px;
-  }
-
   .gallery {
     grid-template-columns: 1fr;
   }
 
   .post-content pre {
-    font-size: 11.75px;
+    font-size: 12px;
     padding: 0.8rem 0.85rem;
   }
 
   .post-content table {
-    font-size: 13px;
+    font-size: 13.5px;
   }
 
   .footer-inner {
-    padding: 1rem 1.1rem 1.25rem;
+    gap: 0.5rem 1.5rem;
+    padding: 1rem 1.15rem 1.25rem;
     flex-direction: column;
     align-items: flex-start;
   }
