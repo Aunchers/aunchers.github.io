@@ -4,7 +4,7 @@ import { projectStatuses } from "@/project-status";
 
 const posts = defineCollection({
   loader: glob({
-    // gitignored, but skip it in case it's here locally
+    // drafts are gitignored, skip them anyway
     pattern: ["**/*.{md,mdx}", "!**/drafts/**"],
     base: "./src/content/posts",
   }),

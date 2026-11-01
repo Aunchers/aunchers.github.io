@@ -65,7 +65,7 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     addEventListener('scroll', onScroll, { passive: true });
 
-    // smooth scroll, clears the sticky header
+    // smooth scroll
     links.forEach((a, id) => {
       a.addEventListener('click', (event) => {
         const target = document.getElementById(id);
