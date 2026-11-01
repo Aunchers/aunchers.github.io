@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { seriesInfo, seriesPosts, seriesSlugs } from '@/lib/series';
+
+export function getStaticPaths() {
+  return seriesSlugs.map((slug) => ({ params: { series: slug } }));
+}
+
+const { series } = Astro.params;
+const info = seriesInfo[series!];
+const posts = await getCollection('posts');
+const parts = seriesPosts(posts, series!);
+const rows = parts.map((post, i) => ({ post, num: post.data.part ?? i + 1 }));
+---
+
+<BaseLayout
+  title={`${info.name} - aunchers`}
+  description={info.description}
+  ogType="article"
+  section="blog"
+>
+  <header class="post-hero">
+    <h1 class="post-hero-title">{info.name}</h1>
+    <p class="post-subtitle">{info.description}</p>
+    <div class="meta-row">
+      <span>
+        <span class="meta-key">parts</span>{parts.length}
+      </span>
+    </div>
+  </header>
+
+  <ul class="post-list">
+    {
+      rows.map((row) => (
+        <li class="post-item">
+          <a class="post-link" href={`/blog/${row.post.data.slug}`}>
+            <span class="part-num">part {row.num}</span>
+            <span class="post-title">{row.post.data.title}</span>
+          </a>
+          <p class="post-preview">{row.post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <nav class="post-nav">
+    <a href="/series">← all series</a>
+  </nav>
+</BaseLayout>

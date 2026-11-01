@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
+import MathStyles from '@/components/MathStyles.astro';
 import { postLastUpdated } from '@/lib/git-latest';
+import { placeInSeries } from '@/lib/series';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -16,35 +18,17 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const lastCommit = postLastUpdated(post.data.slug);
+
+const allPosts = await getCollection('posts');
+const series = placeInSeries(allPosts, post);
 ---
 
-<BlogPostLayout frontmatter={post.data} lastCommit={lastCommit} headings={headings}>
-  {post.data.accessPassword ? (
-    <div class="private-post" data-password={post.data.accessPassword}>
-      <div class="private-post-gate">
-        <p>checking access...</p>
-      </div>
-      <div class="private-post-content" hidden>
-        <Content />
-      </div>
-    </div>
-  ) : (
-    <Content />
-  )}
+<BlogPostLayout
+  frontmatter={post.data}
+  lastCommit={lastCommit}
+  headings={headings}
+  series={series}
+>
+  <MathStyles />
+  <Content />
 </BlogPostLayout>
-
-{post.data.accessPassword && (
-  <script>
-    const post = document.querySelector('.private-post');
-    const gate = post?.querySelector('.private-post-gate');
-    const content = post?.querySelector('.private-post-content');
-    const queryPassword = new URLSearchParams(location.search).get('pwd');
-    if (queryPassword !== (post as HTMLElement).dataset.password) {
-      location.replace('/404');
-    } else {
-      localStorage.setItem(`post-access:${location.pathname.split('/').pop()}`, 'granted');
-      (gate as HTMLElement).hidden = true;
-      (content as HTMLElement).hidden = false;
-    }
-  </script>
-)}

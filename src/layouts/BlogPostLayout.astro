@@ -17,9 +17,10 @@ interface Props {
   };
   lastCommit?: { hash: string; date: string } | null;
   headings?: { depth: number; slug: string; text: string }[];
+  series?: { slug: string; name: string; part: number; total: number } | null;
 }
 
-const { frontmatter, lastCommit, headings } = Astro.props;
+const { frontmatter, lastCommit, headings, series } = Astro.props;
 
 const publishedISO = frontmatter.date.toISOString().slice(0, 10);
 // link to this file's commit history in the repo
@@ -92,6 +93,14 @@ const updatedISO = lastCommit ? lastCommit.date : publishedISO;
     {headings && <Toc headings={headings} />}
 
     <article class="post-content">
+      {
+        series && (
+          <p class="series-note">
+            this is part {series.part} of {series.total} in my{" "}
+            <a href={`/series/${series.slug}`}>{series.name} series →</a>
+          </p>
+        )
+      }
       <slot />
     </article>
   </div>

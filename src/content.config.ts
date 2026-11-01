@@ -16,7 +16,8 @@ const posts = defineCollection({
     slug: z.string(),
     externalUrl: z.string().optional(),
     status: z.string().optional().default("published"),
-    accessPassword: z.string().optional(),
+    series: z.string().optional(),
+    part: z.number().optional(),
   }),
 });
 

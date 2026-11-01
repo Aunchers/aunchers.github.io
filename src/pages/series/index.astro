@@ -1,0 +1,37 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { seriesInfo, seriesPosts } from '@/lib/series';
+
+const posts = await getCollection('posts');
+const groups = Object.entries(seriesInfo)
+  .map(([slug, info]) => ({ slug, info, parts: seriesPosts(posts, slug) }))
+  .filter((g) => g.parts.length > 0);
+---
+
+<BaseLayout
+  title="series - aunchers"
+  description="the longer things, read in order."
+  section="blog"
+>
+  <h1 class="page-title">series</h1>
+  <p class="page-desc">things that only make sense read in order.</p>
+
+  {
+    groups.length === 0 ? (
+      <p class="empty-note">nothing in a series right now.</p>
+    ) : (
+      <ul class="post-list">
+        {groups.map((g) => (
+          <li class="post-item">
+            <a class="post-link" href={`/series/${g.slug}`}>
+              <span class="part-num">{g.parts.length} posts</span>
+              <span class="post-title">{g.info.name}</span>
+            </a>
+            <p class="post-preview">{g.info.description}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>

@@ -2,14 +2,12 @@
    aunchers
    ========================================================================= */
 
-@import "katex/dist/katex.min.css";
-
 @font-face {
   font-family: 'DM Sans';
   font-style: normal;
-  font-weight: 100 1000;
+  font-weight: 400 700;
   font-display: swap;
-  src: url('/fonts/dm-sans.woff2') format('woff2-variations');
+  src: url('/fonts/dm-sans.woff2') format('woff2');
 }
 
 /* self-hosted Fira Code (variable, latin subsets) */
@@ -216,12 +214,23 @@ del, s {
 
 .skip:focus {
   left: 1rem;
-  top: 0.75rem;
+  top: 0.7rem;
   z-index: 100;
-  padding: 0.35rem 0.7rem;
-  color: var(--bg);
-  background: var(--accent);
+  padding: 0.25rem 0.65rem;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 4px;
+  text-decoration: none;
+}
+
+.skip:focus:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
 }
 
 /* ---------- topbar ---------- */
@@ -605,7 +614,7 @@ del, s {
 .mention {
   display: inline-flex;
   align-items: center;
-  gap: 0;
+  gap: 0.3em;
   white-space: nowrap;
   text-decoration: none;
   vertical-align: -0.32em;
@@ -794,7 +803,8 @@ del, s {
   text-decoration: none;
 }
 
-.post-date {
+.post-date,
+.part-num {
   font-family: var(--mono);
   font-size: 11.5px;
   color: var(--muted);
@@ -824,6 +834,15 @@ del, s {
 }
 
 .empty-note {
+  color: var(--muted);
+}
+
+/* ---------- series ---------- */
+
+.post-content .series-note {
+  margin: 0 0 1rem;
+  font-size: 13.5px;
+  line-height: 1.45;
   color: var(--muted);
 }
 
@@ -1811,21 +1830,6 @@ abbr[data-def]:focus::after {
 
 .notfound .link-row {
   justify-content: center;
-}
-
-/* ---------- private posts ---------- */
-
-.private-post-gate {
-  padding: 1rem 1.1rem;
-  font-size: 14px;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.private-post-gate p {
-  margin: 0;
 }
 
 /* ---------- footer ---------- */

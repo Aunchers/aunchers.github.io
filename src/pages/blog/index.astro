@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-const allPosts = await getCollection("posts");
+const allPosts = await getCollection('posts');
 const listedPosts = allPosts
-  .filter((p) => p.data.status !== "draft")
+  .filter((p) => p.data.status !== 'draft')
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const postsByYear = listedPosts.reduce(
   (acc, post) => {
@@ -41,16 +41,10 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
           <h2 class="year-label">{year}</h2>
           <ul class="post-list">
             {postsByYear[Number(year)].map((post) => (
-              <li
-                class="post-item"
-                data-private-slug={
-                  post.data.accessPassword ? post.data.slug : undefined
-                }
-                hidden={Boolean(post.data.accessPassword)}
-              >
+              <li class="post-item">
                 <a
                   class="post-link"
-                  class:list={{ archived: post.data.status === "archived" }}
+                  class:list={{ archived: post.data.status === 'archived' }}
                   href={`/blog/${post.data.slug}`}
                 >
                   <time class="post-date" datetime={post.data.date.toISOString()}>
@@ -70,12 +64,3 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
   }
 
 </BaseLayout>
-
-<script>
-  document.querySelectorAll("[data-private-slug]").forEach((post) => {
-    const slug = (post as HTMLElement).dataset.privateSlug;
-    if (slug && localStorage.getItem(`post-access:${slug}`) === "granted") {
-      (post as HTMLElement).hidden = false;
-    }
-  });
-</script>
