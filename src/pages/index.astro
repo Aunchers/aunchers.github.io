@@ -85,48 +85,61 @@ const done = (await getCollection('projects'))
   <section class="block">
     <h2 class="block-label">elsewhere</h2>
     <div class="block-body">
-      <div class="links-list">
-        <a
-          class="link-item"
-          href="https://matrix.to/#/#home:matrix.aunchers.org"
-          target="_blank"
-          rel="noopener"
-        >
-          <span class="link-key">matrix</span>
-          <span class="link-val">#home:matrix.aunchers.org</span>
-        </a>
-        <a class="link-item" href="#">
-          <span class="link-key">fluxer</span>
-          <span class="link-val">aunchers</span>
-        </a>
-        <a
-          class="link-item"
-          href="https://github.com/aunchers"
-          target="_blank"
-          rel="noopener"
-        >
-          <span class="link-key">github</span>
-          <span class="link-val">aunchers</span>
-        </a>
-        <a class="link-item" href="mailto:1_aunchers@proton.me">
-          <span class="link-key">email</span>
-          <span class="link-val">1_aunchers@proton.me</span>
-        </a>
-      </div>
+      <ul class="links-list">
+        <li class="social-item">
+          <span class="dead-name">matrix</span><abbr
+            class="social-help"
+            data-def="fully dead for now, nothing i can do about it"
+            tabindex="0">(?)</abbr
+          >
+          <span class="social-handle dead-handle"
+            >#home:matrix.aunchers.org</span
+          >
+        </li>
+        <li class="social-item">
+          <button
+            class="social-name"
+            type="button"
+            data-copy="aunchers">discord</button
+          ><abbr
+            class="social-help"
+            data-def="use almost every day. friends or important things only"
+            tabindex="0">(?)</abbr
+          >
+          <span class="social-handle">aunchers</span>
+        </li>
+        <li class="social-item">
+          <button
+            class="social-name"
+            type="button"
+            data-copy="aunchers">fluxer</button
+          ><abbr class="social-help" data-def="barely use" tabindex="0"
+            >(?)</abbr
+          >
+          <span class="social-handle">aunchers</span>
+        </li>
+        <li class="social-item">
+          <a
+            class="social-name"
+            href="https://github.com/aunchers"
+            target="_blank"
+            rel="noopener">github</a
+          ><abbr
+            class="social-help"
+            data-def="mainly for personal projects"
+            tabindex="0">(?)</abbr
+          >
+          <span class="social-handle">aunchers</span>
+        </li>
+        <li class="social-item">
+          <a class="social-name" href="mailto:1_aunchers@proton.me">email</a
+          ><abbr class="social-help" data-def="don't check often." tabindex="0"
+            >(?)</abbr
+          >
+          <span class="social-handle">1_aunchers@proton.me</span>
+        </li>
+      </ul>
 
-      <p class="link-row links-extra">
-        <a href="/aunchers.asc">pgp key</a>
-        <a
-          href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE"
-          target="_blank"
-          rel="noopener">license</a
-        >
-        <a
-          href="https://github.com/aunchers/aunchers.github.io"
-          target="_blank"
-          rel="noopener">source</a
-        >
-      </p>
     </div>
   </section>
 
@@ -153,4 +166,40 @@ const done = (await getCollection('projects'))
       </div>
     </div>
   </section>
+
+  <span slot="footer-meta">
+    <a href="/aunchers.asc">pgp key</a>
+    <a
+      href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE"
+      target="_blank"
+      rel="noopener">license</a
+    >
+    <a
+      href="https://github.com/aunchers/aunchers.github.io"
+      target="_blank"
+      rel="noopener">source</a
+    >
+  </span>
 </BaseLayout>
+
+<script is:inline>
+  // discord and fluxer have no profile url, so copy the handle instead
+  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+    var label = btn.textContent;
+    var timer;
+    btn.addEventListener("click", function () {
+      var value = btn.getAttribute("data-copy");
+      if (!value || !navigator.clipboard) return;
+      navigator.clipboard.writeText(value).then(
+        function () {
+          clearTimeout(timer);
+          btn.textContent = "Copied!";
+          timer = setTimeout(function () {
+            btn.textContent = label;
+          }, 1200);
+        },
+        function () {},
+      );
+    });
+  });
+</script>

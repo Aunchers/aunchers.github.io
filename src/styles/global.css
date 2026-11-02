@@ -504,45 +504,70 @@ del, s {
 .links-list {
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.link-item {
-  display: grid;
-  grid-template-columns: 5.5rem 1fr;
-  gap: 1rem;
+.social-item {
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  margin: 0 -0.5rem;
-  padding: 0.4rem 0.5rem;
-  border-radius: 4px;
+  gap: 0.15rem 0.45rem;
+  padding: 0.42rem 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.social-item + .social-item {
+  border-top: 1px solid var(--border-soft);
+}
+
+/* links and copy-buttons should read the same */
+.social-name {
+  padding: 0;
+  font: inherit;
+  color: var(--link);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.social-name:hover,
+.social-name:focus-visible {
+  color: var(--accent);
   text-decoration: none;
 }
 
-.link-item:hover {
-  background: var(--surface);
-  text-decoration: none;
+/* the "(?)" reuses the blog's abbr tooltip */
+.social-help {
+  font-size: 11.5px;
+  color: var(--muted);
+  opacity: 0.7;
 }
 
-.link-key {
+/* right-aligned handle keeps the row from ending in dead space */
+.social-handle {
+  margin-left: auto;
   font-family: var(--mono);
   font-size: 11.5px;
   color: var(--muted);
 }
 
-.link-val {
-  font-size: 14.5px;
-  color: var(--link);
-  overflow-wrap: anywhere;
+/* the dead entry's address gets the same crossout as its name */
+.dead-handle {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
 
-.link-item:hover .link-val {
-  color: var(--accent);
+/* matrix is down: crossed out and not clickable */
+.dead-name {
+  color: var(--muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
 }
-
-.links-extra {
-  margin-top: 1.4rem;
-  font-size: 13px;
-}
-
 /* inline link row */
 .link-row {
   display: flex;
@@ -564,7 +589,6 @@ del, s {
 .badge-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
   align-items: center;
 }
 
@@ -1991,8 +2015,26 @@ abbr[data-def]:focus::after {
 
 .footer-meta {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.footer-meta > span {
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.footer-meta > span > a + a {
+  margin-left: 0.55rem;
+  padding-left: 0.55rem;
+  border-left: 1px solid var(--border);
 }
 
 .footer-meta:empty {
@@ -2073,37 +2115,60 @@ abbr[data-def]:focus::after {
   }
 
   .done-link {
+    flex-wrap: wrap;
+    gap: 0.1rem 0.6rem;
+    padding: 0.7rem 0;
+  }
+
+  .done-meta {
+    font-size: 10.5px;
+  }
+
+  /* touch: one line per row, whole row tappable, 46px rows */
+  .social-item {
+    position: relative;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 46px;
+    padding: 0.3rem 0;
+  }
+
+  .social-name,
+  .dead-name {
     padding: 0.55rem 0;
   }
 
-  .link-item {
-    grid-template-columns: 4.6rem minmax(0, 1fr);
-    gap: 0.75rem;
-    padding: 0.6rem 0.5rem;
+  /* stretch the name's hit area across the row, behind the (?) */
+  .social-name::after {
+    content: '';
+    position: absolute;
+    inset: 0;
   }
 
-  .link-val {
-    font-size: 14px;
+  .social-help {
+    position: relative;
+    z-index: 1;
+    padding: 0.55rem 0.15rem;
   }
 
-  .links-extra {
-    margin-top: 1rem;
-    font-size: 13px;
+  .social-handle {
+    width: auto;
+    min-width: 0;
+    margin-left: auto;
+    padding-left: 0;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .links-extra a {
-    display: inline-block;
-    padding: 0.55rem 0;
-  }
 
-  .badge-row {
-    gap: 0.45rem;
-  }
 
   .post-link {
     grid-template-columns: 1fr;
-    gap: 0.2rem;
-    padding: 0.75rem 0;
+    gap: 0.15rem;
+    padding: 0.7rem 0 0.2rem;
   }
 
   .post-date {
@@ -2157,8 +2222,63 @@ abbr[data-def]:focus::after {
     padding: 0.8rem 0.85rem;
   }
 
-  .post-content table {
+  .post-content table,
+  .proj-body table {
+    display: block;
+    overflow-x: auto;
     font-size: 13.5px;
+  }
+
+  .post-hero-title {
+    font-size: 1.6rem;
+  }
+
+  .post-subtitle {
+    font-size: 14.5px;
+  }
+
+  /* the dot separator wraps badly inside a stacked meta row */
+  .meta-sep {
+    display: none;
+  }
+
+  /* toc becomes a boxed, tappable disclosure instead of a bare list */
+  .toc {
+    margin-bottom: 1.5rem;
+    padding: 0 0.85rem 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .toc-title {
+    padding: 0.65rem 0;
+    font-size: 11px;
+  }
+
+  .post-nav a,
+  .block-more a {
+    display: inline-block;
+    padding: 0.45rem 0;
+  }
+
+  .proj-card {
+    padding: 0.95rem 1rem;
+  }
+
+  .proj-hero-meta {
+    gap: 0.5rem 0.9rem;
+  }
+
+  .proj-foot-links a,
+  .proj-hero-links a {
+    display: inline-block;
+    padding: 0.35rem 0;
+  }
+
+  .resume-head {
+    flex-direction: column;
+    gap: 0.7rem;
   }
 
   .footer-inner {
@@ -2166,6 +2286,19 @@ abbr[data-def]:focus::after {
     padding: 1rem 1.15rem 1.25rem;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .footer-meta {
+    align-items: flex-start;
+  }
+
+  .footer-meta > span {
+    justify-content: flex-start;
+  }
+
+  .footer-inner a {
+    display: inline-block;
+    padding: 0.25rem 0;
   }
 }
 
