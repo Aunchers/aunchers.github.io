@@ -63,10 +63,15 @@ const updatedISO = lastCommit ? lastCommit.date : publishedISO;
       </span>
       <span class="meta-sep">·</span>
       <span>
-        <span class="meta-key">updated</span>
+        <span class="meta-key">last updated</span>
         {
           historyUrl ? (
-            <a href={historyUrl} target="_blank" rel="noopener" title="edit history">
+            <a
+              href={historyUrl}
+              target="_blank"
+              rel="noopener"
+              title="edit history"
+            >
               {updatedISO}
             </a>
           ) : (
@@ -84,7 +89,9 @@ const updatedISO = lastCommit ? lastCommit.date : publishedISO;
           src={frontmatter.cover}
           alt={frontmatter.coverAlt || frontmatter.title}
         />
-        {frontmatter.coverAlt && <figcaption>{frontmatter.coverAlt}</figcaption>}
+        {frontmatter.coverAlt && (
+          <figcaption>{frontmatter.coverAlt}</figcaption>
+        )}
       </figure>
     )
   }
