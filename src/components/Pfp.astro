@@ -1,31 +1,50 @@
 ---
 import fs from 'node:fs';
 import path from 'node:path';
+import pfps from '@/data/pfps.json';
 
 interface Props {
   user: string;
   name: string;
   href?: string;
+  src?: string;
 }
 
-const { user, name, href } = Astro.props;
+const { user, name, href, src } = Astro.props;
 
-const exts = ['webp', 'png', 'jpg', 'jpeg', 'gif'];
+const people = Object.entries(pfps as Record<string, { href?: string }>);
+const person = people.find(([key]) => key.toLowerCase() === user.toLowerCase())?.[1];
+
 const dir = path.join(process.cwd(), 'public', 'pfp');
-const ext = exts.find((e) => fs.existsSync(path.join(dir, `${user}.${e}`))) ?? 'webp';
+const files = fs.existsSync(dir) ? fs.readdirSync(dir) : [];
+const local = ['webp', 'png', 'jpg', 'gif']
+  .map((ext) => `${user.toLowerCase()}.${ext}`)
+  .find((file) => files.includes(file));
+
+const image = local ? `/pfp/${local}` : src;
+const link = href ?? person?.href;
+
+if (!image) {
+  console.warn(`pfp: ${user} has no image, drop a webp in public/pfp or pass src`);
+}
+
+const Tag = link ? 'a' : 'span';
+const attrs = link ? { href: link, target: '_blank', rel: 'noopener' } : {};
 ---
 
-<a
-  class="mention"
-  href={href || `https://github.com/${user}`}
-  target="_blank"
-  rel="noopener"
-><img
-    class="mention-pfp"
-    src={`/pfp/${user}.${ext}`}
-    alt=""
-    width="20"
-    height="20"
-    loading="lazy"
-    decoding="async"
-  /><span class="mention-name">{name}</span></a>
+<Tag class="mention" {...attrs}>
+  {
+    image && (
+      <img
+        class="mention-pfp"
+        src={image}
+        alt=""
+        width="20"
+        height="20"
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  <span class="mention-name">{name}</span>
+</Tag>
