@@ -21,14 +21,14 @@ const groups = Object.entries(seriesInfo)
     groups.length === 0 ? (
       <p class="empty-note">nothing in a series right now.</p>
     ) : (
-      <ul class="post-list">
+      <ul class="series-list">
         {groups.map((g) => (
-          <li class="post-item">
-            <a class="post-link" href={`/series/${g.slug}`}>
-              <span class="part-num">{g.parts.length} posts</span>
-              <span class="post-title">{g.info.name}</span>
+          <li class="series-item">
+            <a class="series-link" href={`/blog/series/${g.slug}`}>
+              <span class="series-title">{g.info.name}</span>
+              <span class="series-count">- {g.parts.length}</span>
             </a>
-            <p class="post-preview">{g.info.description}</p>
+            <p class="series-preview">{g.info.description}</p>
           </li>
         ))}
       </ul>

@@ -20,31 +20,24 @@ const rows = parts.map((post, i) => ({ post, num: post.data.part ?? i + 1 }));
   ogType="article"
   section="blog"
 >
-  <header class="post-hero">
-    <h1 class="post-hero-title">{info.name}</h1>
-    <p class="post-subtitle">{info.description}</p>
-    <div class="meta-row">
-      <span>
-        <span class="meta-key">parts</span>{parts.length}
-      </span>
-    </div>
-  </header>
+  <h1 class="page-title">{info.name}</h1>
+  <p class="page-desc">{info.description}</p>
 
-  <ul class="post-list">
+  <ul class="part-list">
     {
       rows.map((row) => (
-        <li class="post-item">
-          <a class="post-link" href={`/blog/${row.post.data.slug}`}>
-            <span class="part-num">part {row.num}</span>
-            <span class="post-title">{row.post.data.title}</span>
+        <li class="part-item">
+          <a class="part-link" href={`/blog/${row.post.data.slug}`}>
+            <span class="part-num">{String(row.num).padStart(2, '0')}</span>
+            <span class="part-title">{row.post.data.title}</span>
           </a>
-          <p class="post-preview">{row.post.data.description}</p>
+          <p class="part-preview">{row.post.data.description}</p>
         </li>
       ))
     }
   </ul>
 
-  <nav class="post-nav">
-    <a href="/series">← all series</a>
+  <nav class="post-nav post-nav-flat">
+    <a href="/blog/series">← all series</a>
   </nav>
 </BaseLayout>

@@ -839,6 +839,104 @@ del, s {
 
 /* ---------- series ---------- */
 
+.part-list,
+.series-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.part-list {
+  border-top: 1px solid var(--border-soft);
+}
+
+.part-item {
+  position: relative;
+}
+
+.part-item + .part-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--border-soft);
+  opacity: 0.5;
+}
+
+.part-link {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+  padding: 0.95rem 0.15rem 0.2rem;
+  text-decoration: none;
+}
+
+.part-list .part-num {
+  font-size: 14px;
+}
+
+.part-title {
+  font-size: 16.5px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.part-link:hover,
+.series-link:hover {
+  text-decoration: none;
+}
+
+.part-link:hover .part-title,
+.series-link:hover .series-title {
+  color: var(--link);
+}
+
+.part-link:hover .part-num {
+  color: var(--accent);
+}
+
+.part-preview {
+  margin: 0.2rem 0 0.95rem;
+  padding-left: 3.4rem;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.series-item {
+  padding: 1.1rem 0;
+}
+
+.series-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.series-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.series-count {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.series-preview {
+  margin: 0.3rem 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
 .post-content .series-note {
   margin: 0 0 1rem;
   font-size: 13.5px;
@@ -940,6 +1038,12 @@ figcaption {
   margin: 2.5rem 0 0;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
+}
+
+.post-nav-flat {
+  margin-top: 1.75rem;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .post-nav a {
@@ -2012,6 +2116,21 @@ abbr[data-def]:focus::after {
 
   .post-preview {
     margin-bottom: 0.8rem;
+    padding-left: 0;
+  }
+
+  .part-link {
+    grid-template-columns: 2.2rem 1fr;
+    gap: 0.6rem;
+    padding: 0.85rem 0 0.15rem;
+  }
+
+  .part-list .part-num {
+    font-size: 13px;
+  }
+
+  .part-preview {
+    margin-bottom: 0.9rem;
     padding-left: 0;
   }
 

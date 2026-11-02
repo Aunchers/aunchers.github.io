@@ -10,9 +10,9 @@ interface Props {
 
 const { user, name, href } = Astro.props;
 
-const exts = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+const exts = ['webp', 'png', 'jpg', 'jpeg', 'gif'];
 const dir = path.join(process.cwd(), 'public', 'pfp');
-const ext = exts.find((e) => fs.existsSync(path.join(dir, `${user}.${e}`))) ?? 'png';
+const ext = exts.find((e) => fs.existsSync(path.join(dir, `${user}.${e}`))) ?? 'webp';
 ---
 
 <a
