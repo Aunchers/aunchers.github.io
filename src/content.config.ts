@@ -17,6 +17,7 @@ const posts = defineCollection({
     status: z.string().optional().default("published"),
     series: z.string().optional(),
     chapter: z.string().optional(),
+    topic: z.string().optional(),
     part: z.number().optional(),
   }),
 });

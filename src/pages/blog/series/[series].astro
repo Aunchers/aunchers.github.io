@@ -12,8 +12,8 @@ const info = seriesInfo[series!];
 const posts = await getCollection('posts');
 const chapters = seriesChapters(posts, series!);
 const groups = chapters.filter((chapter) => chapter.slug);
-const loose = chapters.find((chapter) => chapter.slug === '')?.rows ?? [];
-const total = chapters.reduce((n, chapter) => n + chapter.rows.length, 0);
+const loose = chapters.find((chapter) => chapter.slug === '')?.loose ?? [];
+const total = chapters.reduce((n, chapter) => n + chapter.count, 0);
 ---
 
 <BaseLayout
@@ -39,7 +39,7 @@ const total = chapters.reduce((n, chapter) => n + chapter.rows.length, 0);
                   href={`/blog/series/${series}/${chapter.slug}`}
                 >
                   <span class="series-title">{chapter.name}</span>
-                  <span class="series-count">· {chapter.rows.length}</span>
+                  <span class="series-count">· {chapter.count}</span>
                 </a>
               </li>
             ))}

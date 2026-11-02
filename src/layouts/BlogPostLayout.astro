@@ -21,6 +21,8 @@ interface Props {
     name: string;
     chapter: string | null;
     chapterSlug: string | null;
+    topic: string | null;
+    topicSlug: string | null;
     part: number;
     total: number;
   } | null;
@@ -130,16 +132,33 @@ const postPath = frontmatter.slug
         series && (
           <p class="series-note">
             this is part {series.part} of {series.total}
-            {series.chapter && series.chapterSlug ? (
+            {series.topic && series.topicSlug ? (
+              <>
+                {" in "}
+                <a
+                  href={`/blog/series/${series.slug}/${series.chapterSlug}/${series.topicSlug}`}
+                >
+                  {series.topic}
+                </a>
+                {series.chapter && series.chapterSlug ? (
+                  <>
+                    {", part of the "}
+                    <a
+                      href={`/blog/series/${series.slug}/${series.chapterSlug}`}
+                    >
+                      {series.chapter}
+                    </a>{" chapter"}
+                  </>
+                ) : null}
+              </>
+            ) : series.chapter && series.chapterSlug ? (
               <>
                 {" of the "}
                 <a href={`/blog/series/${series.slug}/${series.chapterSlug}`}>
                   {series.chapter}
                 </a>{" chapter"}
               </>
-            ) : (
-              ""
-            )}{" "}
+            ) : null}{" "}
             in my{" "}
             <a href={`/blog/series/${series.slug}`}>{series.name} series →</a>
           </p>
