@@ -1,0 +1,58 @@
+---
+title: "Git and Emails"
+description: "Git is an email?"
+date: 2026-09-17
+slug: "git-and-patches"
+status: "active"
+categories: ["git", "osint", "privacy"]
+readTime: "~2 min"
+articleType: "explainer"
+difficulty: "beginner"
+author: "aunchers"
+---
+
+a few years ago when I was just getting into **<abbr data-def="Open source intelligence - info collection from publicly available information" tabindex="0">osint</abbr>**, i found something rather peculiar.
+
+take any commit url, add `.patch` at the end, and you could get the commit author's email (as well as some other info).
+
+I, frankly, had no clue why this worked. I didn't understand the inner workings of git, and I wasn't about to spend some time reading up on it, so I just used this. As I went along doing <abbr data-def="Finding what's public about someone, then telling them what's risky." tabindex="0">footprint audits</abbr>, I kept noticing that my clients, junior to senior programmers, didn't know of the patch leaks either.
+
+eventually I kept seeing "patch" pop up in github docs, and on reddit someone offhandedly described git as "basically an email system for code". I started to actually think about what patch and git actually were.
+
+Here's what a patch page actually looks like:
+```
+From <commit id> Mon Sep 17 00:00:00 2001
+From: Some Dev <their.real@email.com>
+Date: Tue, 3 Mar 2020 14:22:08 -0500
+Subject: [PATCH] fix off-by-one in parser
+```
+It does look like the raw data of an email.
+
+## where it came from
+
+So why does this page exist, what's the meaning behind it all?
+
+From my research, git was built around the kernel's email workflow.
+back in 2005, when **<abbr data-def="Creator of Linux and git" tabindex="0">Linus Torvalds</abbr>** was maintaining Linux, he needed a source control to manage the sheer size and complexity of the ever so complicated Linux kernel.
+He designed the system around people mailing code edits, referred to as patches, to each other.
+The core system worked something like this:
+  - `git format-patch` turns code changes into emails
+  - `git send-email` mails them
+  - `git am` (apply mailbox) takes emailed code changes and applies them to a codebase
+
+The ".patch" url, is just github formatting the commit into an email form (similar to `format-patch`).
+
+## so why is my email there?
+
+to put it simply, each commit stores an author name, an author email and a timestamp inside the commit itself. they come from `user.name` and `user.email` in your git config, which you set yourself the first time you used git. Git never leaks anything, it's just showing the "email" you set in your config when you made your code change.
+
+## how do i not leak my email
+
+In this case with most anonymous devs, where you don't want your personal email leaking in every commit,
+here's some things you can do:
+  - github, somewhere in user settings, gives you a private email address, it's formatted something like `ID+username@users.noreply.github.com`
+  - on your computer, change `user.email` to be this email.
+  - on github settings, turn on `keep my email addresses private` and `block command line pushes that expose my email`
+
+There are similar changes you can do on other git based services.
+This only works for **new** commits, for any older commits, consider rebasing, or in dire cases, making the repo private or starting a fresh one.
