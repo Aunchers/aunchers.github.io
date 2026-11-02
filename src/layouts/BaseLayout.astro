@@ -287,6 +287,18 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
           .catch(function () {});
       })();
     </script>
+    {
+      // no service worker in dev, so hot reload never fights a stale cache
+      import.meta.env.PROD && (
+        <script is:inline>
+          if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function () {
+              navigator.serviceWorker.register("/sw.js").catch(function () {});
+            });
+          }
+        </script>
+      )
+    }
     <script>
       import "astro:prefetch";
     </script>

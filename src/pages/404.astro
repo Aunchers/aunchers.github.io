@@ -1,20 +1,29 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// mochi, the unimpressed home office cat. public domain, art by dabnotu
+const cat = {
+  src: '/img/mochi.png',
+  alt: 'a flat beige cat head with a tired expression',
+  artist: 'dabnotu',
+  artistUrl: 'https://openclipart.org/artist/dabnotu',
+  license: 'public domain',
+};
 ---
 
 <BaseLayout title="404 - aunchers" description="page not found" section="404">
   <div class="notfound">
     <img
       class="notfound-img"
-      src="/404.jpg"
-      alt="a cat hiding under a pile of papers, captioned 404 not found"
-      width="750"
-      height="600"
+      src={cat.src}
+      alt={cat.alt}
+      width="880"
+      height="662"
       loading="eager"
       decoding="async"
     />
 
-    <h1 class="notfound-code">404</h1>
+    <h1 class="notfound-code">4<span>0</span>4</h1>
 
     <p class="notfound-msg">the page you were looking for doesn't exist.</p>
 
@@ -22,6 +31,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <a href="/">home</a>
       <a href="/blog">blog</a>
       <a href="/projects">projects</a>
+    </p>
+
+    <p class="notfound-credit">
+      cat illustration by{" "}
+      <a href={cat.artistUrl} target="_blank" rel="noopener">{cat.artist}</a>,{" "}
+      {cat.license}
     </p>
   </div>
 </BaseLayout>

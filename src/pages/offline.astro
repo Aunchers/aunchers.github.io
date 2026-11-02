@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="offline - aunchers"
+  description="no connection, so this page has to come from the cache."
+  section="404"
+>
+  <div class="notfound">
+    <h1 class="offline-code">off<span>line</span></h1>
+
+    <p class="notfound-msg">
+      the connection dropped and this page wasn't cached, so there's nothing to
+      show. pages you've already visited should still open.
+    </p>
+
+    <p class="link-row">
+      <a href="/">home</a>
+      <a href="/blog">blog</a>
+      <a href="/projects">projects</a>
+    </p>
+  </div>
+</BaseLayout>

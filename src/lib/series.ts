@@ -30,7 +30,7 @@ interface SeriesMeta {
 export const seriesInfo: Record<string, SeriesMeta> = {
   "discrete-math": {
     name: "discrete math",
-    description: "my CIS1910 notes",
+    description: "My CIS1910 notes",
     chapters: {
       logic: { name: "logic" },
     },
