@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+        with:
+          # full history so `git log` can date each post's last real edit
+          fetch-depth: 0
 
       # Setup Bun
       - name: Setup Bun

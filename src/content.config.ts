@@ -12,11 +12,11 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.date(),
-    updatedDate: z.date().optional(),
     slug: z.string(),
     externalUrl: z.string().optional(),
     status: z.string().optional().default("published"),
     series: z.string().optional(),
+    chapter: z.string().optional(),
     part: z.number().optional(),
   }),
 });

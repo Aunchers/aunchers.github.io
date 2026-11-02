@@ -155,11 +155,15 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
               <p class="footer-commit">
                 commit{" "}
                 <a
+                  id="footer-commit-link"
                   href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}
                 >
-                  {lastCommit.hash}
+                  <span id="footer-commit-hash">{lastCommit.hash}</span>
                 </a>{" "}
-                · {lastCommit.date}
+                ·{" "}
+                <span id="footer-commit-date" title={lastCommit.date}>
+                  {lastCommit.date}
+                </span>
               </p>
             )
           }
@@ -208,6 +212,80 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
           updateThemeAssets();
         });
       }
+    </script>
+    <script is:inline>
+      // the footer should name the newest commit, even on a stale build
+      (function () {
+        var link = document.getElementById("footer-commit-link");
+        var hashEl = document.getElementById("footer-commit-hash");
+        var dateEl = document.getElementById("footer-commit-date");
+        if (!link || !hashEl || !dateEl || !window.fetch) return;
+
+        // "3 days ago", with the exact date kept in the title
+        function ago(iso) {
+          var days = Math.floor(
+            (Date.now() - new Date(iso + "T00:00:00Z").getTime()) / 86400000,
+          );
+          if (days <= 0) return "today";
+          if (days === 1) return "yesterday";
+          if (days < 30) return days + " days ago";
+          var months = Math.floor(days / 30);
+          if (months < 12) {
+            return months + (months === 1 ? " month ago" : " months ago");
+          }
+          var years = Math.floor(days / 365);
+          return years + (years === 1 ? " year ago" : " years ago");
+        }
+
+        function show(sha, iso) {
+          hashEl.textContent = sha.slice(0, 7);
+          link.href =
+            "https://github.com/aunchers/aunchers.github.io/commit/" + sha;
+          dateEl.textContent = ago(iso);
+          dateEl.title = iso;
+        }
+
+        // if this page was built from the commit we already know is the
+        // newest, there is nothing to correct, so don't ask github at all
+        var key = "updated:repo";
+        var build = hashEl.textContent.trim();
+        try {
+          var cached = JSON.parse(localStorage.getItem(key) || "null");
+          if (cached) {
+            if (cached.sha.slice(0, 7) === build) {
+              show(cached.sha, cached.date);
+              return;
+            }
+            if (Date.now() - cached.at < 21600000) {
+              show(cached.sha, cached.date);
+              return;
+            }
+          }
+        } catch (e) {}
+
+        if (!navigator.onLine) return;
+
+        fetch(
+          "https://api.github.com/repos/Aunchers/aunchers.github.io/commits?per_page=1",
+          { headers: { Accept: "application/vnd.github+json" } },
+        )
+          .then(function (res) {
+            return res.ok ? res.json() : null;
+          })
+          .then(function (data) {
+            if (!data || !data[0] || !data[0].commit) return;
+            var sha = data[0].sha;
+            var iso = data[0].commit.committer.date.slice(0, 10);
+            show(sha, iso);
+            try {
+              localStorage.setItem(
+                key,
+                JSON.stringify({ sha: sha, date: iso, at: Date.now() }),
+              );
+            } catch (e) {}
+          })
+          .catch(function () {});
+      })();
     </script>
     <script>
       import "astro:prefetch";

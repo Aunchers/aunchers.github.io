@@ -1,0 +1,52 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { seriesChapters, seriesInfo, seriesSlugs } from '@/lib/series';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+
+  return seriesSlugs.flatMap((series) =>
+    seriesChapters(posts, series)
+      .filter((chapter) => chapter.slug)
+      .map((chapter) => ({
+        params: { series, chapter: chapter.slug },
+      })),
+  );
+}
+
+const { series, chapter } = Astro.params;
+const info = seriesInfo[series!];
+const posts = await getCollection('posts');
+const chapters = seriesChapters(posts, series!);
+const current = chapters.find((c) => c.slug === chapter);
+
+if (!current) throw new Error(`unknown chapter ${chapter} in ${series}`);
+---
+
+<BaseLayout
+  title={`${current.name} - ${info.name} - aunchers`}
+  description={`${current.name}, part of my ${info.name} series.`}
+  ogType="article"
+  section="blog"
+>
+  <h1 class="page-title">{current.name}</h1>
+  <p class="page-desc">part of my {info.name} series.</p>
+
+  <ul class="part-list">
+    {
+      current.rows.map((row) => (
+        <li class="part-item">
+          <a class="part-link" href={`/blog/${row.post.data.slug}`}>
+            <span class="part-title">{row.post.data.title}</span>
+          </a>
+          <p class="part-preview">{row.post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <nav class="post-nav post-nav-flat">
+    <a href={`/blog/series/${series}`}>← {info.name}</a>
+  </nav>
+</BaseLayout>

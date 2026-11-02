@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { seriesInfo, seriesPosts, seriesSlugs } from '@/lib/series';
+import { seriesChapters, seriesInfo, seriesSlugs } from '@/lib/series';
 
 export function getStaticPaths() {
   return seriesSlugs.map((slug) => ({ params: { series: slug } }));
@@ -10,8 +10,10 @@ export function getStaticPaths() {
 const { series } = Astro.params;
 const info = seriesInfo[series!];
 const posts = await getCollection('posts');
-const parts = seriesPosts(posts, series!);
-const rows = parts.map((post, i) => ({ post, num: post.data.part ?? i + 1 }));
+const chapters = seriesChapters(posts, series!);
+const groups = chapters.filter((chapter) => chapter.slug);
+const loose = chapters.find((chapter) => chapter.slug === '')?.rows ?? [];
+const total = chapters.reduce((n, chapter) => n + chapter.rows.length, 0);
 ---
 
 <BaseLayout
@@ -23,19 +25,42 @@ const rows = parts.map((post, i) => ({ post, num: post.data.part ?? i + 1 }));
   <h1 class="page-title">{info.name}</h1>
   <p class="page-desc">{info.description}</p>
 
-  <ul class="part-list">
-    {
-      rows.map((row) => (
-        <li class="part-item">
-          <a class="part-link" href={`/blog/${row.post.data.slug}`}>
-            <span class="part-num">{String(row.num).padStart(2, '0')}</span>
-            <span class="part-title">{row.post.data.title}</span>
-          </a>
-          <p class="part-preview">{row.post.data.description}</p>
-        </li>
-      ))
-    }
-  </ul>
+  {
+    total === 0 ? (
+      <p class="empty-note">nothing here yet.</p>
+    ) : (
+      <>
+        {groups.length > 0 && (
+          <ul class="series-list">
+            {groups.map((chapter) => (
+              <li class="series-item">
+                <a
+                  class="series-link"
+                  href={`/blog/series/${series}/${chapter.slug}`}
+                >
+                  <span class="series-title">{chapter.name}</span>
+                  <span class="series-count">· {chapter.rows.length}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {loose.length > 0 && (
+          <ul class="part-list">
+            {loose.map((row) => (
+              <li class="part-item">
+                <a class="part-link" href={`/blog/${row.post.data.slug}`}>
+                  <span class="part-title">{row.post.data.title}</span>
+                </a>
+                <p class="part-preview">{row.post.data.description}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </>
+    )
+  }
 
   <nav class="post-nav post-nav-flat">
     <a href="/blog/series">← all series</a>
