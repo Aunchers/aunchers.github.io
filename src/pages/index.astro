@@ -43,11 +43,17 @@ const done = (await getCollection('projects'))
   <div class="card-grid">
     <a class="card" href="/blog">
       <span class="card-title">blog</span>
-      <span class="card-desc">thoughts, tutorials, logs, and other writings.</span>
+      <span class="card-desc"
+        >thoughts, tutorials, journalism, and other writings.</span
+      >
     </a>
-    <div class="card card-locked" aria-disabled="true" aria-label="resume, closed for now">
+    <div
+      class="card card-locked"
+      aria-disabled="true"
+      aria-label="resume, closed for now"
+    >
       <span class="card-title">resume</span>
-      <span class="card-desc">work, writing and the short version of me.</span>
+      <span class="card-desc">for applying to stuff.</span>
     </div>
   </div>
 
@@ -65,7 +71,7 @@ const done = (await getCollection('projects'))
                 <span class="done-name">{proj.data.name}</span>
                 <span class="done-meta">
                   {proj.data.dateRange ||
-                    projectStatusLabels[proj.data.status || 'active']}
+                    projectStatusLabels[proj.data.status || "active"]}
                 </span>
               </a>
             </li>

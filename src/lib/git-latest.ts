@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 
-// last commit that touched a file, null if git isn't there
+// last commit that touched a file, null if git doesnt exist
 export function gitLastUpdated(relPath: string): { hash: string; date: string } | null {
   try {
     // '/' so cmd.exe doesn't read it as a pipe

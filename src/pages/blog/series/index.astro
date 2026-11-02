@@ -9,13 +9,9 @@ const groups = Object.entries(seriesInfo)
   .filter((g) => g.parts.length > 0);
 ---
 
-<BaseLayout
-  title="series - aunchers"
-  description="the longer things, read in order."
-  section="blog"
->
+<BaseLayout title="series - aunchers" description="" section="blog">
   <h1 class="page-title">series</h1>
-  <p class="page-desc">things that only make sense read in order.</p>
+  <p class="page-desc">things in multiple parts.</p>
 
   {
     groups.length === 0 ? (

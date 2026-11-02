@@ -6,7 +6,7 @@ export const seriesInfo: Record<string, { name: string; description: string }> =
   "discrete-math": {
     name: "discrete math",
     description:
-      "my CIS1910 notes, rewritten so they're actually readable instead of six pages of handwriting.",
+      "my CIS1910 notes",
   },
 };
 

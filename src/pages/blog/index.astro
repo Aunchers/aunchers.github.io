@@ -28,7 +28,7 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
   section="blog"
 >
   <h1 class="page-title">blog</h1>
-  <p class="page-desc">thoughts, tutorials, logs, and other writings.</p>
+  <p class="page-desc">thoughts, tutorials, journalism, and other writings.</p>
 
   {
     listedPosts.length === 0 ? (
@@ -44,10 +44,13 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
               <li class="post-item">
                 <a
                   class="post-link"
-                  class:list={{ archived: post.data.status === 'archived' }}
+                  class:list={{ archived: post.data.status === "archived" }}
                   href={`/blog/${post.data.slug}`}
                 >
-                  <time class="post-date" datetime={post.data.date.toISOString()}>
+                  <time
+                    class="post-date"
+                    datetime={post.data.date.toISOString()}
+                  >
                     {iso(post.data.date)}
                   </time>
                   <span class="post-title">{post.data.title}</span>
