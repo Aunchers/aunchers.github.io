@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Pfp from "@/components/Pfp.astro";
+import InlineImage from "@/components/InlineImage.astro";
 // Add a ring once its membership links are available.
 const webrings: { name: string; url: string; previous: string; next: string }[] = [];
 ---
@@ -30,9 +30,9 @@ const webrings: { name: string; url: string; previous: string; next: string }[] 
         and I like making things with friends.
       </p>
       <p class="home-bio home-interests">
-        I created <Pfp
-          user="equine"
-          name="Equine Browser"
+        I created <InlineImage
+          src="/pfp/equine.webp"
+          label="Equine Browser"
           href="https://github.com/aunchers/equine"
         />, a FOSS alternative to a certain four-legged browser. I previously
         worked at

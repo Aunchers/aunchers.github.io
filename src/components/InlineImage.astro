@@ -1,0 +1,28 @@
+---
+interface Props {
+  src: string;
+  label: string;
+  href?: string;
+}
+
+const { src, label, href } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  class="mention"
+  href={href}
+  target={href ? "_blank" : undefined}
+  rel={href ? "noopener" : undefined}
+>
+  <img
+    class="mention-image"
+    src={src}
+    alt=""
+    width="20"
+    height="20"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="mention-name">{label}</span>
+</Tag>
