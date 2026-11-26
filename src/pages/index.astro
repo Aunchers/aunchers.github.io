@@ -1,11 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import { projectStatusLabels } from '@/project-status';
-
-const done = (await getCollection('projects'))
-  .sort((a, b) => a.data.name.localeCompare(b.data.name))
-  .slice(0, 3);
+import InlineImage from "@/components/InlineImage.astro";
+// Add a ring once its membership links are available.
+const webrings: { name: string; url: string; previous: string; next: string }[] = [];
 ---
 
 <BaseLayout
@@ -14,192 +11,180 @@ const done = (await getCollection('projects'))
   section="home"
 >
   <header class="home-hero">
-    <a
-      class="hero-pfp"
-      href="https://github.com/aunchers"
-      target="_blank"
-      rel="noopener"
-      aria-label="aunchers on github"
-    >
-      <img src="/avatar.png" alt="aunchers" width="64" height="64" />
-    </a>
+    <div class="hero-pfp">
+      <img src="/assets/brand/avatar.png" alt="" width="64" height="64" />
+    </div>
 
     <div class="hero-text">
-      <h1 class="home-name">
-        hi. i'm <a href="/blog">aunchers</a>.
+      <h1 class="home-name" id="home-title">
+        hi. i'm <span>aunchers</span>.
       </h1>
       <p class="home-bio">
         I live in <img
           class="flag"
-          src="/canada.svg"
-          alt="Canada"
+          src="/assets/brand/canada.svg"
+          alt=""
           width="20"
           height="10"
-        /> and I love computers.
+        /> and I like making things with friends.
       </p>
+      <p class="home-bio home-interests">
+        I created <InlineImage
+          src="/assets/people/equine.webp"
+          label="Equine Browser"
+          href="https://github.com/aunchers/equine"
+        />, a FOSS alternative to a certain four-legged browser. I previously
+        worked at
+        <a href="https://github.com/zukijourney"> ZukiJourney</a>, one of the
+        largest free AI APIs, and I'm currently studying Computer Science at the
+        <a href="https://www.uguelph.ca/"> University of Guelph</a>.
+      </p>
+      <div class="home-contact">
+        <div
+          class="social-icons"
+          role="group"
+          aria-label="Social links and contact"
+        >
+          <a
+            href="https://github.com/aunchers"
+            aria-label="GitHub"
+            title="GitHub"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill-rule="evenodd"
+                d="M12 1a11 11 0 0 0-3.5 21.4c.6.1.8-.2.8-.5v-2c-3.1.6-3.8-1.3-3.8-1.3-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.6 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3 0 0 1-.3 3.1 1.1a11 11 0 0 1 5.5 0c2.1-1.4 3.1-1.1 3.1-1.1.6 1.5.2 2.7.1 3 .7.8 1.1 1.8 1.1 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2v3c0 .3.2.6.8.5A11 11 0 0 0 12 1Z"
+              ></path></svg
+            >
+          </a>
+          <a
+            href="https://bsky.app/profile/aunchers.bsky.social"
+            aria-label="Bluesky"
+            title="Bluesky"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill-rule="evenodd"
+                d="M12 11C10 7 5 1 2 2 0 2 1 9 2 12c1 2 4 2 6 2-5 1-6 3-3 6s5 1 7-3c2 4 4 6 7 3s2-5-3-6c2 0 5 0 6-2 1-3 2-10 0-10-3-1-8 5-10 9Z"
+              ></path></svg
+            >
+          </a>
+          <button
+            type="button"
+            data-platform="Discord"
+            aria-label="Copy Discord handle: aunchers"
+            title="Copy Discord handle: aunchers"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill-rule="evenodd"
+                d="M5 5l4-2 .6 1.4a13 13 0 0 1 4.8 0L15 3l4 2c2.7 4 4 8 4 12-1.6 1.5-3.5 2.5-5.6 3l-1.2-1.8 1.8-.9-.6-.4a14 14 0 0 1-10.8 0l-.6.4 1.8.9L6.6 20C4.5 19.5 2.6 18.5 1 17c0-4 1.3-8 4-12Zm3.3 9.5a1.7 2 0 1 0 0-4 1.7 2 0 0 0 0 4Zm7.4 0a1.7 2 0 1 0 0-4 1.7 2 0 0 0 0 4Z"
+              ></path></svg
+            >
+          </button>
+          <button
+            type="button"
+            data-platform="Fluxer"
+            aria-label="Copy Fluxer handle: aunchers"
+            title="Copy Fluxer handle: aunchers"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                fill="currentColor"
+                d="M12 0c6.627 0 12 5.373 12 12s-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0M8.79 12.471q-1.092 0-2.078.493-.975.493-1.586 1.575-.395.712-.52 1.726c-.078.626.448 1.135 1.079 1.135.645 0 1.128-.543 1.284-1.17q.133-.531.429-.844.568-.6 1.435-.6.58 0 1.061.289.482.279 1.254.954 1.178 1.038 2.078 1.51.9.46 1.993.461 1.093 0 2.079-.493.985-.492 1.596-1.575.404-.714.522-1.734c.072-.623-.455-1.127-1.083-1.127-.65 0-1.134.549-1.307 1.176a2.1 2.1 0 0 1-.382.774q-.535.665-1.468.665-.579 0-1.05-.279-.46-.29-1.264-.964-1.19-.996-2.09-1.479a4 4 0 0 0-1.982-.493M8.79 6q-1.092 0-2.078.493-.975.492-1.586 1.575-.395.712-.52 1.726c-.078.625.448 1.135 1.079 1.135.645 0 1.128-.543 1.284-1.17q.133-.533.429-.845.568-.6 1.435-.6.58 0 1.061.29.482.278 1.254.953 1.178 1.04 2.078 1.51.9.462 1.993.462t2.079-.493q.985-.493 1.596-1.575.404-.716.522-1.734c.072-.624-.455-1.127-1.083-1.127-.65 0-1.134.549-1.307 1.175a2.1 2.1 0 0 1-.382.775q-.535.664-1.468.664-.579 0-1.05-.278-.46-.29-1.264-.965-1.19-.996-2.09-1.478A4 4 0 0 0 8.79 6"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="mailto:1_aunchers@proton.me"
+            aria-label="Email"
+            title="Email"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"
+              ><path
+                fill-rule="evenodd"
+                d="M2 4h20v16H2Zm2 2 8 6 8-6Zm0 2.5V18h16V8.5l-8 6Z"
+              ></path></svg
+            >
+          </a>
+        </div>
+        <a class="home-key" href="/assets/brand/aunchers.asc">PGP key</a>
+      </div>
+      <span class="social-feedback" role="status"></span>
     </div>
   </header>
-
-  <div class="card-grid">
-    <a class="card" href="/blog">
-      <span class="card-title">blog</span>
-      <span class="card-desc"
-        >thoughts, tutorials, journalism, and other writings.</span
-      >
-    </a>
-    <div
-      class="card card-locked"
-      aria-disabled="true"
-      aria-label="resume, closed for now"
-    >
-      <span class="card-title">resume</span>
-      <span class="card-desc">for applying to stuff.</span>
-    </div>
-  </div>
-
-  <section class="block">
-    <h2 class="block-label">stuff i've done</h2>
-    <div class="block-body">
-      <ul class="done-list">
-        {
-          done.map((proj) => (
-            <li>
-              <a
-                class="done-link"
-                href={`/projects/${proj.data.name.toLowerCase()}`}
-              >
-                <span class="done-name">{proj.data.name}</span>
-                <span class="done-meta">
-                  {proj.data.dateRange ||
-                    projectStatusLabels[proj.data.status || "active"]}
-                </span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <p class="block-more"><a href="/projects">more →</a></p>
-    </div>
-  </section>
-
-  <section class="block">
-    <h2 class="block-label">elsewhere</h2>
-    <div class="block-body">
-      <ul class="links-list">
-        <li class="social-item">
-          <span class="dead-name">matrix</span><abbr
-            class="social-help"
-            data-def="fully dead for now, nothing i can do about it"
-            tabindex="0">(?)</abbr
-          >
-          <span class="social-handle dead-handle"
-            >#home:matrix.aunchers.org</span
-          >
-        </li>
-        <li class="social-item">
-          <button
-            class="social-name"
-            type="button"
-            data-copy="aunchers">discord</button
-          ><abbr
-            class="social-help"
-            data-def="use almost every day. friends or important things only"
-            tabindex="0">(?)</abbr
-          >
-          <span class="social-handle">aunchers</span>
-        </li>
-        <li class="social-item">
-          <button
-            class="social-name"
-            type="button"
-            data-copy="aunchers">fluxer</button
-          ><abbr class="social-help" data-def="barely use" tabindex="0"
-            >(?)</abbr
-          >
-          <span class="social-handle">aunchers</span>
-        </li>
-        <li class="social-item">
-          <a
-            class="social-name"
-            href="https://github.com/aunchers"
-            target="_blank"
-            rel="noopener">github</a
-          ><abbr
-            class="social-help"
-            data-def="mainly for personal projects"
-            tabindex="0">(?)</abbr
-          >
-          <span class="social-handle">aunchers</span>
-        </li>
-        <li class="social-item">
-          <a class="social-name" href="mailto:1_aunchers@proton.me">email</a
-          ><abbr class="social-help" data-def="don't check often." tabindex="0"
-            >(?)</abbr
-          >
-          <span class="social-handle">1_aunchers@proton.me</span>
-        </li>
-      </ul>
-
-    </div>
-  </section>
-
-  <section class="block">
-    <h2 class="block-label">badges</h2>
-    <div class="block-body">
+  <p class="home-site-note">
+    Follow new posts via <a href="/rss.xml">RSS</a>. The <a
+      href="https://github.com/aunchers/aunchers.github.io">site code</a
+    > is{" "}
+    <a href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE"
+      >MIT-licensed</a
+    >.
+  </p>
+  <div class="home-community">
+    <section aria-labelledby="badges-title">
+      <h2 id="badges-title" class="badge-heading">badges</h2>
       <div class="badge-row">
-        <a href="https://aunchers.org">
-          <img
-            src="/badges/aunchers.png"
+        <a href="https://aunchers.org"
+          ><img
+            src="/assets/badges/aunchers.png"
             alt="aunchers"
             width="88"
             height="31"
-          />
-        </a>
-        <a href="https://astro.build">
-          <img
-            src="/badges/astro.png"
-            alt="built with astro"
+          /></a
+        >
+        <a href="https://astro.build"
+          ><img
+            src="/assets/badges/astro.png"
+            alt="built with Astro"
             width="88"
             height="31"
-          />
-        </a>
+          /></a
+        >
       </div>
-    </div>
-  </section>
-
-  <span slot="footer-meta">
-    <a href="/aunchers.asc">pgp key</a>
-    <a
-      href="https://github.com/aunchers/aunchers.github.io/blob/main/LICENSE"
-      target="_blank"
-      rel="noopener">license</a
-    >
-    <a
-      href="https://github.com/aunchers/aunchers.github.io"
-      target="_blank"
-      rel="noopener">source</a
-    >
-  </span>
+    </section>
+    {
+      webrings.length > 0 && (
+        <nav class="home-webrings" aria-label="Webrings">
+          {webrings.map((ring) => (
+            <div class="home-ring">
+              <a
+                href={ring.previous}
+                aria-label={`Previous site in ${ring.name}`}
+              >
+                prev
+              </a>
+              <a href={ring.url}>{ring.name}</a>
+              <a href={ring.next} aria-label={`Next site in ${ring.name}`}>
+                next
+              </a>
+            </div>
+          ))}
+        </nav>
+      )
+    }
+  </div>
 </BaseLayout>
 
-<script is:inline>
-  // discord and fluxer have no profile url, so copy the handle instead
-  document.querySelectorAll("[data-copy]").forEach(function (btn) {
-    var label = btn.textContent;
-    var timer;
-    btn.addEventListener("click", function () {
-      var value = btn.getAttribute("data-copy");
-      if (!value || !navigator.clipboard) return;
-      navigator.clipboard.writeText(value).then(
-        function () {
-          clearTimeout(timer);
-          btn.textContent = "Copied!";
-          timer = setTimeout(function () {
-            btn.textContent = label;
-          }, 1200);
-        },
-        function () {},
-      );
+<script>
+  const feedback = document.querySelector(".social-feedback");
+  let timer: number;
+  for (const button of document.querySelectorAll<HTMLButtonElement>(
+    "[data-platform]",
+  )) {
+    button.addEventListener("click", async () => {
+      if (!feedback) return;
+      try {
+        await navigator.clipboard.writeText("aunchers");
+        feedback.textContent = button.dataset.platform + " handle copied";
+      } catch {
+        feedback.textContent = button.dataset.platform + " handle: aunchers";
+      }
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        feedback.textContent = "";
+      }, 4000);
     });
-  });
+  }
 </script>

@@ -37,10 +37,6 @@ const historyUrl = frontmatter.slug
   : null;
 
 const updatedISO = lastCommit ? lastCommit.date : publishedISO;
-// repo path, used by the client-side "last updated" lookup
-const postPath = frontmatter.slug
-  ? `src/content/posts/${frontmatter.slug}.mdx`
-  : null;
 ---
 
 <BaseLayout
@@ -70,7 +66,7 @@ const postPath = frontmatter.slug
     <p class="post-subtitle">{frontmatter.description}</p>
     <div class="meta-row">
       <span>
-        <span class="meta-key">published</span>
+        <span class="meta-key">published</span>{" "}
         <time datetime={publishedISO}>{publishedISO}</time>
       </span>
       {
@@ -78,7 +74,7 @@ const postPath = frontmatter.slug
           <>
             <span class="meta-sep">·</span>
             <span>
-              <span class="meta-key">last updated</span>
+              <span class="meta-key">last updated</span>{" "}
               {historyUrl ? (
                 <a
                   href={historyUrl}
@@ -86,22 +82,10 @@ const postPath = frontmatter.slug
                   rel="noopener"
                   title="edit history"
                 >
-                  <time
-                    id="last-updated"
-                    datetime={updatedISO}
-                    data-post={postPath}
-                  >
-                    {updatedISO}
-                  </time>
+                  <time datetime={updatedISO}>{updatedISO}</time>
                 </a>
               ) : (
-                <time
-                  id="last-updated"
-                  datetime={updatedISO}
-                  data-post={postPath}
-                >
-                  {updatedISO}
-                </time>
+                <time datetime={updatedISO}>{updatedISO}</time>
               )}
             </span>
           </>
@@ -127,7 +111,7 @@ const postPath = frontmatter.slug
   <div class="post-shell">
     {headings && <Toc headings={headings} />}
 
-    <article class="post-content">
+    <article class="post-content prose">
       {
         series && (
           <p class="series-note">
@@ -147,7 +131,8 @@ const postPath = frontmatter.slug
                       href={`/blog/series/${series.slug}/${series.chapterSlug}`}
                     >
                       {series.chapter}
-                    </a>{" chapter"}
+                    </a>
+                    {" chapter"}
                   </>
                 ) : null}
               </>
@@ -156,7 +141,8 @@ const postPath = frontmatter.slug
                 {" of the "}
                 <a href={`/blog/series/${series.slug}/${series.chapterSlug}`}>
                   {series.chapter}
-                </a>{" chapter"}
+                </a>
+                {" chapter"}
               </>
             ) : null}{" "}
             in my{" "}
@@ -172,68 +158,3 @@ const postPath = frontmatter.slug
     <a href="/blog">← all posts</a>
   </nav>
 </BaseLayout>
-
-{
-  postPath && (
-    <script is:inline>
-      // ask github for this file's newest commit, so the date stays right
-      // even when the site was built without full git history
-      (function () {
-        var el = document.getElementById("last-updated");
-        if (!el || !window.fetch) return;
-
-        var path = el.getAttribute("data-post");
-        if (!path) return;
-
-        function show(iso) {
-          el.textContent = iso;
-          el.setAttribute("datetime", iso);
-        }
-
-        // if this file's newest commit is the one the page was built from,
-        // nothing newer exists, so there is nothing to ask github about
-        var footerHash = document.getElementById("footer-commit-hash");
-        var build = footerHash ? footerHash.textContent.trim() : "";
-        var key = "updated:" + path;
-
-        try {
-          var cached = JSON.parse(localStorage.getItem(key) || "null");
-          if (cached) {
-            if (cached.sha && build && cached.sha.slice(0, 7) === build) {
-              show(cached.date);
-              return;
-            }
-            if (Date.now() - cached.at < 86400000) {
-              show(cached.date);
-              return;
-            }
-          }
-        } catch (e) {}
-
-        if (!navigator.onLine) return;
-
-        var url =
-          "https://api.github.com/repos/Aunchers/aunchers.github.io/commits?path=" +
-          encodeURIComponent(path) +
-          "&per_page=1";
-
-        fetch(url, { headers: { Accept: "application/vnd.github+json" } })
-          .then(function (res) {
-            return res.ok ? res.json() : null;
-          })
-          .then(function (data) {
-            if (!data || !data[0] || !data[0].commit) return;
-            var iso = data[0].commit.committer.date.slice(0, 10);
-            show(iso);
-            try {
-              localStorage.setItem(
-                key,
-                JSON.stringify({ date: iso, sha: data[0].sha, at: Date.now() }),
-              );
-            } catch (e) {}
-          })
-          .catch(function () {});
-      })();
-    </script>
-  )
-}

@@ -1,0 +1,23 @@
+---
+import type { SeriesTopic } from '@/lib/series';
+
+interface Props {
+  rows: SeriesTopic['rows'];
+}
+const { rows } = Astro.props;
+---
+
+{
+  rows.length > 0 && (
+    <ul class="part-list">
+      {rows.map(({ post }) => (
+        <li class="part-item">
+          <a class="part-link" href={`/blog/${post.data.slug}`}>
+            <span class="part-title">{post.data.title}</span>
+          </a>
+          <p class="part-preview">{post.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}

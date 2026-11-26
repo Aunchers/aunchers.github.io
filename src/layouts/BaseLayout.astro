@@ -1,18 +1,6 @@
 ---
 import '@/styles/global.css';
-import { execSync } from 'node:child_process';
-
-function getLastCommit() {
-  try {
-    const hash = execSync('git rev-parse --short=7 HEAD', { encoding: 'utf8' }).trim();
-    const date = execSync('git log -1 --format=%as', { encoding: 'utf8' }).trim();
-    return { hash, date };
-  } catch {
-    return null;
-  }
-}
-
-const lastCommit = getLastCommit();
+import ThemeToggle from '@/components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -21,7 +9,15 @@ interface Props {
   ogType?: string;
   section?: 'home' | 'blog' | 'projects' | 'post' | 'resume' | '404';
 }
-const { title, description, ogImage, ogType, section = 'home' } = Astro.props;
+const { title, description, ogImage, ogType } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isHome = path === '/';
+const destinations = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Projects', href: '/projects' },
+];
 
 const siteUrl = "https://aunchers.github.io";
 const defaultDesc = "thoughts, tutorials, logs, and other writings.";
@@ -33,28 +29,45 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description || defaultDesc} />
-    <script is:inline>
-      var savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-      }
-    </script>
     <link
       rel="icon"
       id="favicon"
       type="image/svg+xml"
-      href="/batlogo.svg"
+      href="/assets/brand/batlogo.svg"
     />
+    <script is:inline>
+      var themes = ['bat', 'midnight', 'paper'];
+      function applyTheme(value) {
+        var theme = themes.includes(value) ? value : 'bat';
+        if (theme === 'bat') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('favicon').href = '/assets/brand/' + theme + 'logo.svg';
+        try {
+          if (theme === 'bat') localStorage.removeItem('theme');
+          else localStorage.setItem('theme', theme);
+        } catch {}
+      }
+      var savedTheme;
+      try { savedTheme = localStorage.getItem('theme'); } catch {}
+      // Apply before the body is painted to avoid flashing the default theme.
+      applyTheme(savedTheme);
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+          var current = document.documentElement.getAttribute('data-theme') || 'bat';
+          applyTheme(themes[(themes.indexOf(current) + 1) % themes.length]);
+        });
+      });
+    </script>
     <link
       rel="preload"
-      href="/fonts/dm-sans.woff2"
+      href="/assets/fonts/dm-sans.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/fira-code-latin.woff2"
+      href="/assets/fonts/fira-code-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -70,223 +83,25 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
   <body>
     <a class="skip" href="#main">skip to content</a>
 
-    <header class="topbar">
-      <div class="topbar-inner">
-        <a class="brand" href="/">aunchers<span class="brand-dot">.</span></a>
-        <nav class="nav" aria-label="main">
-          <a href="/blog" aria-current={section === "blog" ? "page" : undefined}>blog</a>
-          <a
-            href="/projects"
-            aria-current={section === "projects" ? "page" : undefined}
-          >projects</a>
-          <span class="nav-locked" aria-disabled="true">resume</span>
-          <!-- <a href="/resume" aria-current={section === "resume" ? "page" : undefined}>resume</a> -->
-          <button
-            id="theme-toggle"
-            class="theme-toggle"
-            type="button"
-            aria-label="switch theme"
-            title="switch theme"
-          >
-            <svg
-              class="theme-icon"
-              data-icon="bat"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M17 16c.74 -2.286 2.778 -3.762 5 -3c-.173 -2.595 .13 -5.314 -2 -7.5c-1.708 2.648 -3.358 2.557 -5 2.5v-4l-3 2l-3 -2v4c-1.642 .057 -3.292 .148 -5 -2.5c-2.13 2.186 -1.827 4.905 -2 7.5c2.222 -.762 4.26 .714 5 3c2.593 0 3.889 .952 5 4c1.111 -3.048 2.407 -4 5 -4z"
-              ></path>
-              <path d="M9 8a3 3 0 0 0 6 0"></path>
-            </svg>
-            <svg
-              class="theme-icon"
-              data-icon="midnight"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"
-              ></path>
-            </svg>
-            <svg
-              class="theme-icon"
-              data-icon="paper"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-              <path
-                d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
-              ></path>
-            </svg>
-          </button>
-        </nav>
-      </div>
-    </header>
-
     <main id="main">
-      <div class="wrap">
-        <slot />
+      <div class:list={['wrap', { 'interior-wrap': !isHome }]}>
+        <div class="site-card">
+          <div class="site-card-bar">
+            <nav class="site-destinations" aria-label="Main navigation">
+              {destinations.map(link => (
+                <a href={link.href} aria-current={path === link.href ? 'page' :
+                  link.href !== '/' && path.startsWith(link.href + '/') ? 'location' : undefined}>
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+            <ThemeToggle />
+          </div>
+          <slot />
+        </div>
       </div>
     </main>
 
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-col">
-          <p>made with love by aunchers</p>
-          {
-            lastCommit && (
-              <p class="footer-commit">
-                commit{" "}
-                <a
-                  id="footer-commit-link"
-                  href={`https://github.com/aunchers/aunchers.github.io/commit/${lastCommit.hash}`}
-                >
-                  <span id="footer-commit-hash">{lastCommit.hash}</span>
-                </a>{" "}
-                ·{" "}
-                <span id="footer-commit-date" title={lastCommit.date}>
-                  {lastCommit.date}
-                </span>
-              </p>
-            )
-          }
-        </div>
-        <p class="footer-meta">
-          <a href="/rss.xml">rss</a>
-          <slot name="footer-meta" />
-        </p>
-      </div>
-    </footer>
-
-    <script is:inline>
-      var THEME_ORDER = ["bat", "midnight", "paper"];
-      function currentTheme() {
-        return document.documentElement.getAttribute("data-theme") || "bat";
-      }
-      function updateThemeAssets() {
-        var theme = currentTheme();
-        var favicon = document.getElementById("favicon");
-        if (favicon) {
-          favicon.href = "/" + theme + "logo.svg";
-        }
-      }
-
-      updateThemeAssets();
-      new MutationObserver(updateThemeAssets).observe(
-        document.documentElement,
-        { attributes: true },
-      );
-
-      var themeBtn = document.getElementById("theme-toggle");
-      if (themeBtn) {
-        themeBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          var next =
-            THEME_ORDER[
-              (THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length
-            ];
-          if (next === "bat") {
-            document.documentElement.removeAttribute("data-theme");
-            localStorage.removeItem("theme");
-          } else {
-            document.documentElement.setAttribute("data-theme", next);
-            localStorage.setItem("theme", next);
-          }
-          updateThemeAssets();
-        });
-      }
-    </script>
-    <script is:inline>
-      // the footer should name the newest commit, even on a stale build
-      (function () {
-        var link = document.getElementById("footer-commit-link");
-        var hashEl = document.getElementById("footer-commit-hash");
-        var dateEl = document.getElementById("footer-commit-date");
-        if (!link || !hashEl || !dateEl || !window.fetch) return;
-
-        // "3 days ago", with the exact date kept in the title
-        function ago(iso) {
-          var days = Math.floor(
-            (Date.now() - new Date(iso + "T00:00:00Z").getTime()) / 86400000,
-          );
-          if (days <= 0) return "today";
-          if (days === 1) return "yesterday";
-          if (days < 30) return days + " days ago";
-          var months = Math.floor(days / 30);
-          if (months < 12) {
-            return months + (months === 1 ? " month ago" : " months ago");
-          }
-          var years = Math.floor(days / 365);
-          return years + (years === 1 ? " year ago" : " years ago");
-        }
-
-        function show(sha, iso) {
-          hashEl.textContent = sha.slice(0, 7);
-          link.href =
-            "https://github.com/aunchers/aunchers.github.io/commit/" + sha;
-          dateEl.textContent = ago(iso);
-          dateEl.title = iso;
-        }
-
-        // if this page was built from the commit we already know is the
-        // newest, there is nothing to correct, so don't ask github at all
-        var key = "updated:repo";
-        var build = hashEl.textContent.trim();
-        try {
-          var cached = JSON.parse(localStorage.getItem(key) || "null");
-          if (cached) {
-            if (cached.sha.slice(0, 7) === build) {
-              show(cached.sha, cached.date);
-              return;
-            }
-            if (Date.now() - cached.at < 21600000) {
-              show(cached.sha, cached.date);
-              return;
-            }
-          }
-        } catch (e) {}
-
-        if (!navigator.onLine) return;
-
-        fetch(
-          "https://api.github.com/repos/Aunchers/aunchers.github.io/commits?per_page=1",
-          { headers: { Accept: "application/vnd.github+json" } },
-        )
-          .then(function (res) {
-            return res.ok ? res.json() : null;
-          })
-          .then(function (data) {
-            if (!data || !data[0] || !data[0].commit) return;
-            var sha = data[0].sha;
-            var iso = data[0].commit.committer.date.slice(0, 10);
-            show(sha, iso);
-            try {
-              localStorage.setItem(
-                key,
-                JSON.stringify({ sha: sha, date: iso, at: Date.now() }),
-              );
-            } catch (e) {}
-          })
-          .catch(function () {});
-      })();
-    </script>
     {
       // no service worker in dev, so hot reload never fights a stale cache
       import.meta.env.PROD && (

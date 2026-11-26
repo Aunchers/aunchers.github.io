@@ -1,4 +1,5 @@
 ---
+import SeriesPostList from '@/components/SeriesPostList.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { seriesChapters, seriesInfo, seriesSlugs } from '@/lib/series';
@@ -46,18 +47,7 @@ const total = chapters.reduce((n, chapter) => n + chapter.count, 0);
           </ul>
         )}
 
-        {loose.length > 0 && (
-          <ul class="part-list">
-            {loose.map((row) => (
-              <li class="part-item">
-                <a class="part-link" href={`/blog/${row.post.data.slug}`}>
-                  <span class="part-title">{row.post.data.title}</span>
-                </a>
-                <p class="part-preview">{row.post.data.description}</p>
-              </li>
-            ))}
-          </ul>
-        )}
+        <SeriesPostList rows={loose} />
       </>
     )
   }
