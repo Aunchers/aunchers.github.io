@@ -33,7 +33,7 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
       rel="icon"
       id="favicon"
       type="image/svg+xml"
-      href="/batlogo.svg"
+      href="/assets/brand/batlogo.svg"
     />
     <script is:inline>
       var themes = ['bat', 'midnight', 'paper'];
@@ -41,7 +41,7 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
         var theme = themes.includes(value) ? value : 'bat';
         if (theme === 'bat') document.documentElement.removeAttribute('data-theme');
         else document.documentElement.setAttribute('data-theme', theme);
-        document.getElementById('favicon').href = '/' + theme + 'logo.svg';
+        document.getElementById('favicon').href = '/assets/brand/' + theme + 'logo.svg';
         try {
           if (theme === 'bat') localStorage.removeItem('theme');
           else localStorage.setItem('theme', theme);
@@ -60,14 +60,14 @@ const defaultDesc = "thoughts, tutorials, logs, and other writings.";
     </script>
     <link
       rel="preload"
-      href="/fonts/dm-sans.woff2"
+      href="/assets/fonts/dm-sans.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/fira-code-latin.woff2"
+      href="/assets/fonts/fira-code-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin

@@ -10,7 +10,7 @@ Use `InlineImage` for an inline image and label, with an optional link:
 ```astro
 import InlineImage from "@/components/InlineImage.astro";
 
-<InlineImage src="/pfp/equine.webp" label="Equine Browser" href="https://github.com/aunchers/equine" />
+<InlineImage src="/assets/people/equine.webp" label="Equine Browser" href="https://github.com/aunchers/equine" />
 ```
 
 `src` accepts any image URL, so the same component works for people, projects,
