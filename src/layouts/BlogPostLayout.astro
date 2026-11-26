@@ -70,7 +70,7 @@ const postPath = frontmatter.slug
     <p class="post-subtitle">{frontmatter.description}</p>
     <div class="meta-row">
       <span>
-        <span class="meta-key">published</span>
+        <span class="meta-key">published</span>{" "}
         <time datetime={publishedISO}>{publishedISO}</time>
       </span>
       {
@@ -78,7 +78,7 @@ const postPath = frontmatter.slug
           <>
             <span class="meta-sep">·</span>
             <span>
-              <span class="meta-key">last updated</span>
+              <span class="meta-key">last updated</span>{" "}
               {historyUrl ? (
                 <a
                   href={historyUrl}
@@ -90,6 +90,7 @@ const postPath = frontmatter.slug
                     id="last-updated"
                     datetime={updatedISO}
                     data-post={postPath}
+                    data-revision={lastCommit.hash}
                   >
                     {updatedISO}
                   </time>
@@ -99,6 +100,7 @@ const postPath = frontmatter.slug
                   id="last-updated"
                   datetime={updatedISO}
                   data-post={postPath}
+                  data-revision={lastCommit.hash}
                 >
                   {updatedISO}
                 </time>
@@ -192,8 +194,7 @@ const postPath = frontmatter.slug
 
         // if this file's newest commit is the one the page was built from,
         // nothing newer exists, so there is nothing to ask github about
-        var footerHash = document.getElementById("footer-commit-hash");
-        var build = footerHash ? footerHash.textContent.trim() : "";
+        var build = el.getAttribute("data-revision") || "";
         var key = "updated:" + path;
 
         try {
