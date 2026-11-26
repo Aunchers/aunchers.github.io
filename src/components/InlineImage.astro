@@ -3,9 +3,10 @@ interface Props {
   src: string;
   label: string;
   href?: string;
+  fit?: 'cover' | 'contain';
 }
 
-const { src, label, href } = Astro.props;
+const { src, label, href, fit = 'cover' } = Astro.props;
 const Tag = href ? 'a' : 'span';
 ---
 
@@ -17,6 +18,7 @@ const Tag = href ? 'a' : 'span';
 >
   <img
     class="mention-image"
+    style={fit === 'contain' ? 'object-fit: contain; border: 0; border-radius: 0;' : undefined}
     src={src}
     alt=""
     width="20"
